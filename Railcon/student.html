@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+    <title>Railway Concession Registration Form</title> 
+	<style>
+	#submit_form {
+		margin:auto;
+		display:block;
+	}
+	</style>
+</head>
+<body>
+
+<form action="profile.php" method="POST" enctype="multipart/form-data">
+
+	<fieldset>
+
+	<h3>Railway Concession Registration Form</h3>
+
+	<table border='0' cellpadding='10px' cellspacing='2'>
+	<tr>
+	<td><label>FullName:</label></td>
+	<td><input type="text" name="name" placeholder="Last First Middle Name" required="required"/></td>
+	</tr>
+	<tr>
+	<td><label>Roll No.:</label></td>
+	<td><input type="number" name="roll" placeholder="Roll Number only" required="required"/></td>
+	</tr>
+	<tr>
+	<td><label>Email:</label></td>
+	<td><input type="email" name="email" placeholder="Enter Your Email" required="required"/></td>
+	</tr>
+		<tr>
+	<td><label>Date Of Birth:</label></td>
+	<td><input type="date" name="dob" required/></td>
+		</tr>
+		
+	<tr>
+	<td><label>Contact No.:</label></td>
+	<td><input type="number" name="contact" placeholder="Enter Your Contact No." required="required" maxlength="10"/></td>
+	</tr>
+	<tr>
+	<td><label>Aadhar No.:</label></td>
+	<td><input type="number" name="aadhar" placeholder="Enter Your Aadhar No."/></td>
+	</tr>
+	<tr>
+	<td><label>Address:</label></td>
+	<td><textarea name="address" rows="4" cols="10" placeholder="Enter Your Postal Address" required="required">
+	</textarea></td>
+	</tr>
+	<tr>
+	<td><label>PIN Code:</label></td>
+	<td><input type="number" name="pincode" maxlength="6" placeholder="Enter Your Pin Code" required="required"/></td>
+	</tr>
+	<tr>
+	<td><label>Source Station:</label></td>
+	<td><input type="text" name="source" maxlength="30" placeholder="Enter Source Station" required="required"/></td>
+	</tr>
+	<tr>
+	<td><label>Destination Station:</label></td>
+	<td><input type="text" name="destination" maxlength="30" placeholder="Enter Destination Station" required="required"/></td>
+	</tr>
+	<tr>
+	<td><label>Previous PassNo.:</label></td>
+	<td><input type="text" name="passno" maxlength="40" placeholder="Enter Previous Pass Number else Enter No"/></td>
+	</tr>
+	<tr>
+	<td><label>Class Of Travel:</label></td>
+	<td><input type="text" name="classof" maxlength="30" placeholder="First, Second, etc" required="required"/></td>
+	</tr>
+	<tr>
+	<td><label>Duration of Pass:</label></td>
+	<td><input type="text" name="duration" maxlength="30" placeholder="Monthly, Quarterly,etc" required="required"/></td>
+	</tr>
+	<tr>
+	<td><label>Branch of Academics:</label></td>
+		<td>
+			<select name="branch" required="required">
+		<option>Automobile Engineering</option>
+		<option>Civil Engineering</option>
+		<option>Computer Science Engineering</option>
+		<option>Electronics Engineering</option>
+		<option>Electronics And Telecommunications Engineering</option>
+		<option>Information Technology Engineering</option>
+		<option>Mechanical Engineering</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+	<td><label>Academic Year:</label></td>
+	<td><input type="radio" name="year" value="F.E" required="required" checked="checked"/>First Year<br>
+	<input type="radio" name="year" value="S.E" required="required"/>Second Year<br>
+	<input type="radio" name="year" value="T.E" required="required"/>Third Year<br>
+	<input type="radio" name="year" value="B.E" required="required"/>Bachelor Year<br>
+	</td>
+	</tr>
+	<tr>
+		<!--<td><label>Aadhar Card Picture:</label></td>
+		<td><input type="file" name="image" id="image"/></td>-->
+		<td><label>Upload Your Aadhar Image</label></td>
+		<td>
+		<input type='file' name='UploadImage'  required>
+		<!--<input type='submit' value="submit" name="submit_image">-->
+		</td>
+		
+	</tr>
+	</table>
+	<br>
+	<input type="submit" name="submit" id="submit_form" value="Submit Form"/>
+	</fieldset>
+</form>    
+</body>
+</html>
