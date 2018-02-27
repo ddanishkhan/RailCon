@@ -31,17 +31,17 @@ echo "Currently Viewing: $selected". "<form action = 'dashboard.php' method = 'P
 
 //$disp_ver = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student WHERE verified='1' ";
 //$disp_unver = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student LIMIT 10";
-$sql_display = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student LIMIT 10";
+$sql_display = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student";
 $result = $connect->query($sql_display);
 
 if ($result->num_rows > 0) {
 	
 	echo "<table border='1' width='100%'> <tr> <th>ID</th> <th>Name</th> <th>Source</th> <th>Destination</th> 
-	<th>Passno</th> <th>Duration</th> <th>Status</th> <th>Aadhar</th> <th>Issue</th> </tr>";
+	<th>Passno</th> <th>Duration</th> <th>Status</th> <th>ID Card</th> <th>Issue</th> </tr>";
 	
      while($row = $result->fetch_assoc()) {
         echo "<tbody><tr><td>". $idd=$row['id'] ;
-		echo "</td><td>";
+		echo '</td><td>';
 			echo $row['fullname'];
 		echo "</td><td>";
 			echo $row['source'];
@@ -58,10 +58,12 @@ if ($result->num_rows > 0) {
 				echo "Not Issued";
 		echo "</td><td>";
 			$MyPhoto = $row['img_loc'];
-			echo "<img id='".$idd."' src = 'MyUploadImages/".$MyPhoto."' width='100' height='150'/>
+			echo "<img id='".$idd."' src = 'MyUploadImages/".$MyPhoto."'  height='100'/>
 	<!-- The Modal -->
+	<!-- Be very careful editing this -->
 	<div id='myModal".$idd."' class='modal'>
-	<span class='close".$idd."' style='position: absolute;
+	<span class='close".$idd."' 
+	style='position: absolute;
     top: 15px;
     right: 35px;
     color: #f1f1f1;
@@ -70,14 +72,13 @@ if ($result->num_rows > 0) {
     transition: 0.3s;'
 	>&times;</span>
 	<img class='modal-content' id='img1".$idd."'>
-	<div id='caption'></div>
 	</div>
 
 	<script>
 	// Get the modal
 	var modal = document.getElementById('myModal".$idd."');
 	
-	// Get the image and insert it inside the modal - use its 'alt' text as a caption
+	// Get the image and insert it inside the modal
 	var img = document.getElementById('".$idd."');
 	var modalImg = document.getElementById('img1".$idd."');
 	img.onclick = function(){
@@ -115,6 +116,7 @@ $connect->close();
 	<head> 
 		<title> Administrator Panel </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="TEIT-17-18 Students">
 <style>
 
 
@@ -141,17 +143,7 @@ $connect->close();
     max-width: 700px;
 }
 
-/* Caption of Modal Image */
-#caption {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-    text-align: center;
-    color: #ccc;
-    padding: 10px 0;
-    height: 150px;
-}
+
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px){
@@ -163,4 +155,4 @@ $connect->close();
 	<head>
 
 	
-<//html>
+</html>
