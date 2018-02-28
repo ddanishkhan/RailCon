@@ -6,33 +6,13 @@ if(mysqli_connect_errno($connect))
 		echo 'Failed to connect';
 
 
-/* Testing Code
-$selected = 'All';
-$sql_display="";
-if(isset ( $_POST['verified_view'] ) ){
-	$sql_display = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student WHERE verified='1' ";
-	$selected = 'Issued';
-}
-elseif(isset ( $_POST['unverified_view'] ) ){
-	$sql_display = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student WHERE verified='0' LIMIT 15";
-	$selected = 'Not Issued';
-}
-else{
-	$sql_display = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student";
-}*/
-
 echo "<h2>Admin Panel</h2>";
 
-/* Testing Code
-echo "Currently Viewing: $selected". "<form action = 'dashboard.php' method = 'POST' >
-	<input type='submit' name='verified_view' value='Issued'/>
-	<input type='submit' name='unverified_view' value='Not Issued'/> <br/>
-	";*/
-
-//$disp_ver = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student WHERE verified='1' ";
-//$disp_unver = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student LIMIT 10";
 $sql_display = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc FROM student";
 $result = $connect->query($sql_display);
+
+echo "<a href='export_to_csv.php' > Download as csv </a>";
+
 
 if ($result->num_rows > 0) {
 	
@@ -155,4 +135,4 @@ $connect->close();
 	<head>
 
 	
-</html>
+<//html>
