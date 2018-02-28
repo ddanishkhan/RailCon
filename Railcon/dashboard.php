@@ -132,7 +132,5 @@ $connect->close();
     }
 }
 </style>
-	<head>
-
-	
-<//html>
+	<head>	
+</html>
