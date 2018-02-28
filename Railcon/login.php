@@ -19,14 +19,15 @@ if(isset($_POST['submit']))
 	if($dbuser == $user && $dbpass == $pass)
 	{
 		$_SESSION['user'] = $dbuser;
-		header("Refresh:1; url=dashboard.php");
-	    echo "<h2>Loading, Please Wait</h2>";
+		 echo "<h2>Loading, Please Wait</h2>";
+		header("Refresh:3; url=dashboard.php");
+	   
 	}
 	else
 	{
-	header("Refresh:1; url=index.html");
 	echo "<script> alert('Incorrect Login Credentials'); </script> </h2>";
-    }
+	header("Refresh:1; url=index.html");
+	}
 $q->free_result();
 $q->close();
 $db->close();
