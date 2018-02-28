@@ -72,8 +72,8 @@ if(isset($_POST['submit']))
 		header("Refresh:1,url=student.html");
 		die();
 	}
-	elseif(($_FILES["UploadImage"]["size"] > 1000000)){
-		echo "<script>alert('File size greater than 1MB')</script>";
+	elseif(($_FILES["UploadImage"]["size"] > 500000)){
+		echo "<script>alert('File size greater than 0.5MB')</script>";
 		header("Refresh:1, url=student.html");
 		die();
 	}
