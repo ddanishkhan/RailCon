@@ -1,4 +1,33 @@
 <?php
+
+/*SQL Query
+CREATE TABLE `student` (
+ `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+ `fullname` varchar(30) NOT NULL,
+ `gender` tinyint(1) NOT NULL,
+ `semester` tinyint(2) unsigned NOT NULL,
+ `email` varchar(30) NOT NULL,
+ `DOB` date NOT NULL,
+ `contact` bigint(15) unsigned NOT NULL,
+ `aadhar` bigint(15) unsigned NOT NULL,
+ `address` varchar(50) NOT NULL,
+ `pincode` mediumint(6) unsigned NOT NULL,
+ `source` varchar(20) NOT NULL,
+ `destination` varchar(20) NOT NULL,
+ `passno` varchar(20) NOT NULL,
+ `classof` varchar(20) NOT NULL,
+ `duration` varchar(20) NOT NULL,
+ `branch` varchar(20) NOT NULL,
+ `year` varchar(20) NOT NULL,
+ `img_loc` varchar(50) NOT NULL,
+ `verified` tinyint(1) unsigned NOT NULL DEFAULT '0',
+ `dateofentry` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `Remark` varchar(50) NOT NULL DEFAULT 'No Remarks',
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+*/
+
 session_start();
 $_SESSION['dashboard']="true";
 
