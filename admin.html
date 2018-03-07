@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+        <head>
+	        <title>Admin Panel</title>
+	    </head>
+	<body>
+	    <div class="filter_box">
+		    <div class="filter_form_box" style="margin:auto;">
+		    <form action="admin.php" name="filter_form" method="POST">
+			    <label>Select records to display:</label>
+				<select name="filter">
+				<option value="Issued">Records of issued railway concessions</option>
+				<option value="Not_Issued">Records of not issued railway concessions</option>
+				</select>
+				<input type="submit" name="filter_submit" value="Show Records">
+            </form>
+			</div><br>
+			<div>
+			<a href="http://localhost/Railcon/dashboard.php"> View All Records</a>
+			</div>
+			<br>
+			<div class="search_box" style="margin:auto;">
+			
+			<form action="search.php" name="search_s" method="GET">
+			<label>Search the Records</label>
+			<input type="text" name="query"/><br>
+			<input type="submit" value="Search">			
+			</form>
+			
+			</div>
+	    </div>
+	</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+<head>
+    <title>Railway Concession Registration Form</title> 
+<style type="text/css">
+
+.form-style-1 {
+    padding: 20px 12px 10px 20px;
+    font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+.form-style-1 li,input[type=submit] {
+    padding: 5px;
+    display: block;
+    list-style: none;
+    margin: 10px 10% 0 10%;
+}
+.form-style-1 label{
+    margin:0 0 3px 0;
+    padding:0px;
+    display:block;
+    font-weight: bold;
+	font-size:1em;
+}
+.form-style-1 input[type=text], 
+.form-style-1 input[type=date],
+.form-style-1 input[type=number],
+.form-style-1 input[type=email],
+textarea, 
+select{
+	width:90%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border:1px solid #BEBEBE;
+    padding: 7px;
+    margin:0px;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;  
+}
+.form-style-1 input[type=text]:focus, 
+.form-style-1 input[type=date]:focus,
+.form-style-1 input[type=datetime]:focus,
+.form-style-1 input[type=number]:focus,
+.form-style-1 input[type=search]:focus,
+.form-style-1 input[type=time]:focus,
+.form-style-1 input[type=email]:focus,
+.form-style-1 textarea:focus, 
+.form-style-1 select:focus{
+    -moz-box-shadow: 0 0 8px #88D5E9;
+    -webkit-box-shadow: 0 0 8px #88D5E9;
+    box-shadow: 0 0 8px #88D5E9;
+    border: 1px solid #88D5E9;
+}
+
+
+.form-style-1 .field-long{
+    width: 100%;
+}
+.form-style-1 .field-select{
+    width: 100%;
+}
+.form-style-1 .field-textarea{
+    height: 100px;
+}
+.form-style-1 input[type=submit]{
+    background: #4B99AD;
+    padding: 8px 15px 8px 15px;
+    border: none;
+    color: #fff;
+}
+.form-style-1 input[type=submit]:hover{
+    background: #4691A4;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+	cursor:pointer;
+}
+.form-style-1 .required{
+    color:red;
+}
+</style>
+</head>
+<body>
+<fieldset>
+<form action="profile.php" method="POST" enctype="multipart/form-data">
+<ul class="form-style-1">
+	<h1>Railway Concession Registration Form</h1>
+
+
+	<li> <label>Full Name:</label>
+	<input type="text" name="name" placeholder="Last First Middle Name" required autofocus/></li>
+
+	<li><label>Gender:</label> 
+	 <input type="radio" name="gender" value="0" required checked> Male </input> <br/>
+	 <input type="radio" name="gender" value="1" required /> Female</input></li>
+	  
+	<li><label>Email:</label> 
+	 <input type="email" name="email" placeholder="Enter Your Email" required/> </li>
+	 
+	<li><label>Date Of Birth:</label> 
+	 <input type="date" name="dob" required/> </li>
+		 
+	<li><label>Contact No.:</label> 
+	 <input type="number" name="contact" placeholder="Enter Your Contact No." required maxlength="10"/> </li>
+	  
+	<li><label>12 digit Aadhar No.:</label> 
+	 <input type="text" name="aadhar" placeholder="12 Digit Aadhar Number" pattern="[1-9]{1}[0-9]{11}" maxlength="12"/> </li>
+	 	 
+	<li><label>Address:</label> 
+	 <textarea name="address" rows="4" placeholder="Enter Your Postal Address" required ></textarea> </li>
+	 
+	<li><label>PIN Code:</label> 
+	 <input type="number" name="pincode" maxlength="6" placeholder="Enter Pincode" required /> </li>
+	 
+	<li><label>Source Station:</label> 
+	 <input type="text" name="source" maxlength="30" placeholder="Enter Source Station" required /> </li>
+	 
+	<li><label>Destination Station:</label> 
+		<select name="destination" required>
+		<option>Byculla Station</option>
+		<option>Sandhurst Road Station</option>
+		<option>Dockyard Road</option>
+		<option>Mumbai Central</option>
+	</select> </li>
+	 
+	 <li><label>Previous PassNo.:</label> 
+	 <input type="text" name="passno" maxlength="40" placeholder="Enter Previous Pass Number else Enter No"/> </li>
+	 
+	 <li><label>Class Of Travel:</label> 
+		<input type="radio" name="classof" value="First" required checked/>First Class<br/>
+		<input type="radio" name="classof" value="Second" required />Second Class<br/></li>
+
+	<li><label>Duration of Pass:</label> 
+	<input type="radio" name="duration" value="Monthly" required checked/>Monthly<br/>
+	<input type="radio" name="duration" value="Quarterly" required />Quarterly<br/></li>
+	
+	<li><label>Branch of Academics:</label>  
+		<select name="branch" required>
+		<option>Automobile</option>
+		<option>Civil </option>
+		<option>Computer Science</option>
+		<option>Electronics Engineering</option>
+		<option>Electronics & Telecommunications Er</option>
+		<option>Information Technology</option>
+		<option>Mechanical</option>
+		</select></li>
+		 
+	<li><label>Academic Year:</label> 
+	<input type="radio" name="year" value="F.E" required="required" checked="checked"/>First Year<br>
+	<input type="radio" name="year" value="S.E" required="required"/>Second Year<br>
+	<input type="radio" name="year" value="T.E" required="required"/>Third Year<br>
+	<input type="radio" name="year" value="B.E" required="required"/>Bachelor Year<br></li>	
+	 
+	<li><label>Semester:</label> 
+	<select name="semester" required>
+	<option>1</option>
+	<option>2</option>
+	<option>3</option>
+	<option>4</option>
+	<option>5</option>
+	<option>6</option>
+	<option>7</option>
+	<option>8</option>
+	</select>
+	</li>
+
+	<li><label>Upload Your ID Card Image as shown</label>	 	 
+	
+	<input type='file' name='UploadImage' required ></input> </li>
+	 
+	<li><img src="Card.png" width=70%/></li>
+		 
+	<br/>
+	<input type="submit" name="submit" id="submit_form" value="Submit Form"/>
+	
+	</ul>
+</form>   
+</fieldset> 
+</body>
+</html>
