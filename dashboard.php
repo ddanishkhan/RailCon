@@ -1,33 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+	<head> 
+		<title> Administrator Panel </title>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta name="author" content="TEIT-17-18 Students"/>
+	<link rel="stylesheet" type="text/css" href="styletable.css">
+	</head>
+	
+	<body>
+	<h1 style='width:100%; text-align:center; font-variant:small-caps;'>Admin Panel</h1>
+	<ul>
+	<li><a href='export_to_csv.php' > Download as Excel File</a></li>
+	<li><a href='http://localhost/Railcon/admin.html'>Filter Records</a></li>
+	<form action="search.php" name="search_s" method="GET">
+		<li style='float:right; padding: 14px 16px;'>
+		<input type="text" name="query" /> </li>
+		<li style='float:right;'> <input id="nav_search" type="submit" value="Search"> </li>
+	</form>
+	</ul>
+	</body>
+</html>
+
 <?php
-
-/*SQL Query
-CREATE TABLE `student` (
- `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
- `fullname` varchar(30) NOT NULL,
- `gender` tinyint(1) NOT NULL,
- `semester` tinyint(2) unsigned NOT NULL,
- `email` varchar(30) NOT NULL,
- `DOB` date NOT NULL,
- `contact` bigint(15) unsigned NOT NULL,
- `aadhar` bigint(15) unsigned NOT NULL,
- `address` varchar(50) NOT NULL,
- `pincode` mediumint(6) unsigned NOT NULL,
- `source` varchar(20) NOT NULL,
- `destination` varchar(20) NOT NULL,
- `passno` varchar(20) NOT NULL,
- `classof` varchar(20) NOT NULL,
- `duration` varchar(20) NOT NULL,
- `branch` varchar(20) NOT NULL,
- `year` varchar(20) NOT NULL,
- `img_loc` varchar(50) NOT NULL,
- `verified` tinyint(1) unsigned NOT NULL DEFAULT '0',
- `dateofentry` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- `Remark` varchar(50) NOT NULL DEFAULT 'No Remarks',
- PRIMARY KEY (`id`),
- UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
-*/
-
 session_start();
 $_SESSION['dashboard']="true";
 
@@ -36,18 +30,8 @@ $connect=mysqli_connect('localhost','root', '' ,'railcon');
 if(mysqli_connect_errno($connect))
 		echo 'Failed to connect';
 
-echo "<h2 style='width:100%; text-align:center; font-variant:small-caps;'>Admin Panel</h2>";
-
 $sql_display = "SELECT id, fullname, gender, source, destination, passno, duration, verified,img_loc FROM student";
 $result = $connect->query($sql_display);
-
-echo "
-	<ul>
-	<li><a href='export_to_csv.php' > Download as Excel File</a></li>
-	<li><a href='http://localhost/Railcon/admin.html' onclick ='dash_change();'>
-Filter Records</a></li>
-	</ul>
-";
 
 if ($result->num_rows > 0) {
 	
@@ -138,15 +122,3 @@ if ($result->num_rows > 0) {
 	}
 	$connect->close();
 ?>
-
-<!DOCTYPE HTML>
-<html>
-	<head> 
-		<title> Administrator Panel </title>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<meta name="author" content="TEIT-17-18 Students"/>
-	
-	<link rel="stylesheet" type="text/css" href="styletable.css">
-
-	</head>
-</html>
