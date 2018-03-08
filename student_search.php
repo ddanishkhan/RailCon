@@ -4,13 +4,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //something posted
 
 	//checking which button clicked
-    if (isset($_POST['email_id'])) {
+if (isset($_POST['email_id'])) {
 	$connect=mysqli_connect('localhost','root', '' ,'railcon');
 	
 	$email_search = $_POST['email_id'];
 	
 	$sql_display = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc, remark FROM student WHERE email='$email_search' LIMIT 1 ";
-	//$status_check = "SELECT * FROM student WHERE email = '$email_id' LIMIT 1";
 	$result = $connect->query($sql_display);
 	
 	if ($result->num_rows > 0) {
@@ -78,16 +77,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		echo "</td><td>";
 		echo $row['remark'];
 		echo "</td></tr></tbody>";
-         }
+         }//end while
 	echo "</table>";
 
 		}
-	}
-	else{
+		else{
 		echo "No Record Exists";
+		header("Refresh:1; url=student.html");
 	}
-	
-} //end of if POST
+}//end of POST email_id
+
+} //end of if POST REQUEST_METHOD
 
 ?>
 <!DOCTYPE HTML>

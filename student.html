@@ -2,93 +2,13 @@
 <html>
 <head>
     <title>Railway Concession Registration Form</title> 
-<style type="text/css">
-
-.form-style-1 {
-    padding: 20px 12px 10px 20px;
-    font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-}
-.form-style-1 li,input[type=submit] {
-    padding: 5px;
-    display: block;
-    list-style: none;
-    margin: 10px 10% 0 10%;
-}
-.form-style-1 label{
-    margin:0 0 3px 0;
-    padding:0px;
-    display:block;
-    font-weight: bold;
-	font-size:1em;
-}
-.form-style-1 input[type=text], 
-.form-style-1 input[type=date],
-.form-style-1 input[type=number],
-.form-style-1 input[type=email],
-textarea, 
-select{
-	width:90%;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    border:1px solid #BEBEBE;
-    padding: 7px;
-    margin:0px;
-    -webkit-transition: all 0.30s ease-in-out;
-    -moz-transition: all 0.30s ease-in-out;
-    -ms-transition: all 0.30s ease-in-out;
-    -o-transition: all 0.30s ease-in-out;
-    outline: none;  
-}
-.form-style-1 input[type=text]:focus, 
-.form-style-1 input[type=date]:focus,
-.form-style-1 input[type=datetime]:focus,
-.form-style-1 input[type=number]:focus,
-.form-style-1 input[type=search]:focus,
-.form-style-1 input[type=time]:focus,
-.form-style-1 input[type=email]:focus,
-.form-style-1 textarea:focus, 
-.form-style-1 select:focus{
-    -moz-box-shadow: 0 0 8px #88D5E9;
-    -webkit-box-shadow: 0 0 8px #88D5E9;
-    box-shadow: 0 0 8px #88D5E9;
-    border: 1px solid #88D5E9;
-}
-
-
-.form-style-1 .field-long{
-    width: 100%;
-}
-.form-style-1 .field-select{
-    width: 100%;
-}
-.form-style-1 .field-textarea{
-    height: 100px;
-}
-.form-style-1 input[type=submit]{
-    background: #4B99AD;
-    padding: 8px 15px 8px 15px;
-    border: none;
-    color: #fff;
-}
-.form-style-1 input[type=submit]:hover{
-    background: #4691A4;
-    box-shadow:none;
-    -moz-box-shadow:none;
-    -webkit-box-shadow:none;
-	cursor:pointer;
-}
-.form-style-1 .required{
-    color:red;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="indadmstu.css">
 </head>
 <body>
 <fieldset>
 <form action="profile.php" method="POST" enctype="multipart/form-data">
 <ul class="form-style-1">
 	<h1>Railway Concession Registration Form</h1>
-
 
 	<li> <label>Full Name:</label>
 	<input type="text" name="name" placeholder="Last First Middle Name" required autofocus/></li>
@@ -143,7 +63,7 @@ select{
 		<option>Civil </option>
 		<option>Computer Science</option>
 		<option>Electronics Engineering</option>
-		<option>Electronics & Telecommunications Er</option>
+		<option>Electronics & Telecommunications</option>
 		<option>Information Technology</option>
 		<option>Mechanical</option>
 		</select></li>
@@ -167,14 +87,15 @@ select{
 	</select>
 	</li>
 
-	<li><label>Upload Your ID Card Image as shown</label>	 	 
+	<li><label>Upload Your ID Card Image <br/><span class="required" style="font-weight:lighter"> *Size less than 0.5MB <br/>*Minimum Image Resolution widthxheight : 300x500</span></label>	 	 
 	
 	<input type='file' name='UploadImage' required ></input> </li>
 	 
-	<li><img src="Card.png" width=70%/></li>
+	<li><img src="Card.jpeg" width=70%/></li>
 		 
 	<br/>
-	<input type="submit" name="submit" id="submit_form" value="Submit Form"/>
+	<li><input type="submit" name="submit" id="submit_form" value="Submit Form"/>
+	</li>
 	
 	</ul>
 </form>   

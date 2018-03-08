@@ -38,12 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				echo "Not Issued";
 		echo "</td></tr></tbody></table>";
 	
-	echo "<h2 align='center'><a href = 'http://localhost/Railcon/admin.php'> Go Back </a></h2>";
+	header("Location: http://localhost/railcon/admin.php");
 	
 	}
 	else{
-		echo "Already Issued";
+		echo "<script>alert('Already Issued')</script>";
 		}
+	header("Location: http://localhost/railcon/admin.php");
 	}
 	
 	elseif(isset($_POST['cancel_verify'])) {
