@@ -25,12 +25,23 @@
 session_start();
 $_SESSION['dashboard']="true";
 
+$size = 10;
+
+if(isset($_GET['page'])){
+	$start = $_GET['page']*$size;
+	}
+else{
+	$start=0;
+	//$_SESSION['page']=1;
+	}
+
 //database connection
 $connect=mysqli_connect('localhost','root', '' ,'railcon');
 if(mysqli_connect_errno($connect))
 		echo 'Failed to connect';
 
-$sql_display = "SELECT id, fullname, gender, source, destination, passno, duration, verified,img_loc FROM student";
+$sql_display = "SELECT id, fullname, gender, source, destination, passno,pass_end,voucher,season, duration, verified,img_loc 
+FROM student LIMIT $start, $size";
 $result = $connect->query($sql_display);
 
 if ($result->num_rows > 0) {
@@ -53,7 +64,11 @@ if ($result->num_rows > 0) {
 		echo "</td><td>";
 			echo $row['destination'];
 		echo "</td><td>";
-			echo $row['passno'];
+			echo $row['passno']."<br/>";
+			echo $row['pass_end']."<br/>";
+			echo $row['voucher']."<br/>";
+			echo $row['season']."<br/>";
+			
 		echo "</td><td>";
 			echo $row['duration'];
 		echo "</td><td>";
@@ -112,13 +127,27 @@ if ($result->num_rows > 0) {
 		<form id='Remarks' method='POST' action='update_remark.php'>
 		<input type='text' name='remark' placeholder='Enter Remarks' style='width:90%'/>
 		<input type='hidden' name = 'id' value = ".$idd."></input>
-		<input type='submit' name='update_remark' value='Remark'/>
+		<input type='submit' name='update_remark' value='Remark' style='width:50%;'/>
 		</form>";
 		echo "</td></tr></tbody>";
          }
 	echo "</table>";
+	
 	}else {
     echo "<strong> 0 results </strong>";
 	}
+
+	$sql_query = "SELECT id FROM student";
+	$result = $connect->query($sql_query);
+	
+	$total_records = $result->num_rows;
+	
+	$pages = intval($total_records / $size);
+
+	for ($i=0; $i <= $pages; $i++){
+	echo "<a href='dashboard.php?page=".$i."'> $i </a>";
+	}
+	
 	$connect->close();
+	
 ?>

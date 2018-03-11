@@ -21,6 +21,9 @@ CREATE TABLE `student` (
  `source` varchar(20) NOT NULL,
  `destination` varchar(20) NOT NULL,
  `passno` varchar(20) NOT NULL,
+ `pass_end` date DEFAULT NULL,
+ `voucher` varchar(20) DEFAULT NULL,
+ `season` int(20) DEFAULT NULL,
  `classof` varchar(20) NOT NULL,
  `duration` varchar(20) NOT NULL,
  `branch` varchar(20) NOT NULL,
@@ -51,6 +54,10 @@ CREATE TABLE `student` (
 	$source  = $_POST['source'];
 	$destination = $_POST['destination'];
 	$passno  = $_POST['passno'];
+	 //$pass_start = $_POST['pass_start'];
+     $pass_end  = $_POST['pass_end'];
+     $voucher  = $_POST['voucher'];
+     $season  = $_POST['season'];	
 	$classof = $_POST['classof'];
 	$duration = $_POST['duration'];
 	$branch  =  $_POST['branch'];
@@ -74,45 +81,43 @@ CREATE TABLE `student` (
 	}
 	elseif($UploadedFileName==''){
 		echo "<script> alert('File Name cannot be empty') </script>";
-		header("Refresh:1,url=student.html");
+		header("Refresh:1;url=student.html");
 		die();
 	}
 	elseif(($_FILES["UploadImage"]["size"] > 500000)){
 		echo "<script>alert('File size greater than 0.5MB')</script>";
-		header("Refresh:1, url=student.html");
+		header("Refresh:1; url=student.html");
 		die();
 	}
 	elseif( $image_height<500 || $image_width<300 ){
 		echo "<script>alert('Minimum Image Resolution widthxheight : 300x500')</script>";
-		header("Refresh:0.5, url=student.html");
+		header("Refresh:0.5; url=student.html");
 		die();
 	}
 	else
 	{
-	//create a folder MyUploadImages for storing images
-	$upload_directory = "MyUploadImages/"; //This is the folder which you created just now
-	$TargetPath=time().$UploadedFileName;
+	 //create a folder MyUploadImages for storing images
+	 $upload_directory = "MyUploadImages/"; //This is the folder which you created just now
+	 $TargetPath=time().$UploadedFileName;
 	
-	$empty = 0;
-	$q = mysqli_prepare($db,"INSERT INTO student(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,
-	source,destination,passno,classof,duration,branch,year,img_loc) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") OR die($q->error);
-	mysqli_stmt_bind_param($q,"isiissiisissssssss",$empty,$fullname,$gender,$sem,$email,$age,$contact,$aadhar,$address,$pincode,$source,$destination,$passno,$classof,$duration,$branch,$year,$TargetPath);
-	if(mysqli_stmt_execute($q)){
+	 $empty = 0;
+	 $q = mysqli_prepare($db,"INSERT INTO student(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,
+	 source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,img_loc) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") OR die($q->error);
+	 mysqli_stmt_bind_param($q,"isiissiisisssssisssss",$empty,$fullname,$gender,$sem,$email,$age,$contact,$aadhar,$address,$pincode,$source,$destination,$passno,$pass_end,$voucher,$season,$classof,$duration,$branch,$year,$TargetPath);	
+	 if(mysqli_stmt_execute($q))
+	 {
 		//echo "\nInserted into Table\n";
 		if(move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory.$TargetPath) ){
 			echo "<strong> File and Details Uploaded  </n> </strong>";
-		}
+		}//ok
 		else{
 			$del_q = "DELETE FROM student WHERE email='$email' LIMIT 1";
 			mysqli_stmt_execute($del_q); //execute stmt
-		}
-	}
+		}//ok
+	 }//end if mysqli_stmt
 	
-	if($db->errno){
-		//echo "$db->errno";
-		die("\nEmail ID already Exists");
-    }
-	else{
+	 if($db->errno){ die("\nEmail ID already Exists"); }
+	 else{
 		//echo "No errors";
 		$sql_id = "SELECT id FROM student WHERE email='$email' LIMIT 1" ;
 		$result = $db->query($sql_id);
@@ -121,8 +126,9 @@ CREATE TABLE `student` (
 		echo "<br/> Please note the Enrollment ID for receiving your Concession Form". "</div>";
 		
 		//header("Refresh:2; url=student.html");
-		}
+		} //ok end
+		
 	$db->close();
-	}
+	}// end else for insertion
 }
 ?>
