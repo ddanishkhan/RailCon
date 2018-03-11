@@ -15,25 +15,27 @@
 	<ul class="form-style-1">	
 	<h1>Admin Panel</h1>
 	<fieldset>
+	
 	<form action="admin.php" name="filter_form" method="POST">
-			  <li>
-			  <label>Select records to display:</label>  
-				<select name="filter">
-				<option value="Not_Issued">Records of not issued railway concessions</option>
-				<option value="Issued">Records of issued railway concessions</option>
-				</select>
-				<input type="submit" name="filter_submit" value="Show Records">
-				</li>
-            </form> 
+		<li>
+		<label>Select records to display:</label>  
+		<select name="filter">
+		<option value="Not_Issued">Not Issued Forms</option>
+		<option value="Issued">Issued Forms</option>
+		<option value="Males">Male Student Forms</option>
+		<option value="Females">Female Student Forms</option>
+		</select><br/>
+		<input type="submit" name="filter_submit" value="Show Records" />
+		</li>
+    </form> 
 			
-			
-			
-			<form action="search.php" name="search_s" method="GET">
-			<li>
-			<label>Search the Records</label>
-			<input type="text" name="query"/><br>
-			<input type="submit" value="Search"></li>
-			</form>
+	<form action="search.php" name="search_s" method="GET">
+		<li>
+		<label>Search the Records</label>
+		<input type="text" name="query" /><br/>
+		<input type="submit" value="Search" /></li>
+	</form>
+	
 	</ul>			
 	</fieldset>
 

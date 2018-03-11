@@ -46,14 +46,36 @@ session_start();
 	if($filter == "Issued")
 	{
 		$_SESSION['record_filter'] = 'Issued';
-		//echo $_SESSION['record_filter'] ;
 		
-		$sql_display = "SELECT id, fullname, source, destination, passno, classof, duration, img_loc FROM student WHERE verified=1";
-        $result = $db->query($sql_display);
-	if ($result->num_rows > 0) {
+		//Set Query for Issued
+		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,voucher,season, classof, duration, img_loc FROM student WHERE verified=1";
+	}
+	elseif($filter == "Not_Issued")
+	{
+		$_SESSION['record_filter'] = 'Not_Issued';
+		
+		// set Query for Not_Issued
+		$sql_display = "SELECT id, fullname,gender, source, destination, passno,pass_end,voucher,season, classof, duration, img_loc FROM student WHERE verified=0";
+	}
+	elseif($filter == "Males")
+	{
+		$_SESSION['record_filter'] = 'Males';
+		
+		//set Query for Males non-issued
+		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,voucher,season, classof, duration, img_loc FROM student WHERE gender=0 AND verified=0";
+	}
+	elseif($filter == "Females")
+	{
+		$_SESSION['record_filter'] = 'Females';
+		
+		//Set Query for Females Not-Issued
+		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,voucher,season, classof, duration, img_loc FROM student WHERE gender=1 AND verified=0";
+	}
 	
-	echo "<table border='1' width='100%'> <tr> <th>ID</th> <th>Name</th> <th>Source</th> <th>Destination</th> 
-	<th>Passno</th> <th>Classof</th> <th>Duration</th> <th>ID Card</th> <th>Issue</th><th>Remark</th></tr>";
+    $result = $db->query($sql_display);
+	if ($result->num_rows > 0) {
+		echo "<table border='1' width='100%'> <tr> <th>ID</th> <th>Name</th> <th>Source</th> <th>Destination</th> 
+	 <th>Passno</th> <th>Classof</th> <th>Duration</th> <th>ID Card</th> <th>Issue</th><th>Remark</th></tr>";
 	
      while($row = $result->fetch_assoc()) {
         echo "<tbody><tr><td>". $idd=$row['id'] ;
@@ -64,7 +86,11 @@ session_start();
 		echo "</td><td>";
 			echo $row['destination'];
 		echo "</td><td>";
-			echo $row['passno'];
+			echo $row['passno']."<br/>";
+			echo $row['pass_end']."<br/>";
+			echo $row['voucher']."<br/>";
+			echo $row['season']."<br/>";
+			
 		echo "</td><td>";
 			echo $row['classof'];
 		echo "</td><td>";
@@ -107,7 +133,7 @@ session_start();
 		modal.style.display = 'none';
 	}
 	</script>
-			";
+	";
 						
 		echo "</td><td>";
 			echo '<form action="update.php" method="POST">
@@ -123,102 +149,11 @@ session_start();
 		<input type='submit' name='update_remark' value='Remark'/>
 		</form>";
 		echo "</td></tr></tbody>";
-		}
+		}//end of fetching the rows
 	echo "</table>";
 	}
-		else{
-		echo "No Records";
-	}
-  }
-  
-  if($filter == "Not_Issued")
-	{
-		$_SESSION['record_filter'] = 'Not_Issued';
-		$sql_display = "SELECT id, fullname,gender, source, destination, passno, classof, duration, img_loc FROM student WHERE verified=0";
-        $result = $db->query($sql_display);
-	if ($result->num_rows > 0) {
-	
-	echo "<table border='1' width='100%'> <tr> <th>ID</th> <th>Name</th> <th>Gender</th> <th>Source</th> <th>Destination</th> 
-	<th>Pass No.</th> <th>Class</th> <th>Duration</th> <th>ID Card</th> <th>Issue</th> <th>Remarks</th> </tr>";
-	
-     while($row = $result->fetch_assoc()) {
-        echo "<tbody><tr><td>". $idd=$row['id'] ;
-		echo '</td><td>';
-			echo $row['fullname'];
-		echo "</td><td>";
-			if( $row['gender']=='1' )
-				echo "Female";
-			else
-				echo "Male";
-		echo "</td><td>";
-			echo $row['source'];
-		echo "</td><td>";
-			echo $row['destination'];
-		echo "</td><td>";
-			echo $row['passno'];
-		echo "</td><td>";
-			echo $row['classof'];
-		echo "</td><td>";
-			echo $row['duration'];
-		echo "</td><td>";
-			$MyPhoto = $row['img_loc'];
-			echo "<img id='".$idd."' src = 'MyUploadImages/".$MyPhoto."'  height='100'/>
-	<!-- The Modal -->
-	<!-- Be very careful editing this -->
-	<div id='myModal".$idd."' class='modal'>
-	<span class='close".$idd."' 
-	style='position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;'
-	>&times;</span>
-	<img class='modal-content' id='img1".$idd."'>
-	</div>
-
-	<script>
-	// Get the modal
-	var modal = document.getElementById('myModal".$idd."');
-	
-	// Get the image and insert it inside the modal
-	var img = document.getElementById('".$idd."');
-	var modalImg = document.getElementById('img1".$idd."');
-	img.onclick = function(){
-		modal.style.display = 'block';
-		modalImg.src = this.src;
-	}
-
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName('close".$idd."')[0];
-	
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() { 
-		modal.style.display = 'none';
-	}
-	</script>
-			";
-						
-		echo "</td><td>";
-			echo '<form action="update.php" method="POST">
-			<input type="hidden" name = "id" value = '.$idd .'>
-			<input type = "submit" name= "verify_it" value="Issue"><br/>
-			<!--<input type = "submit" name= "cancel_verify" value="Cancel Issue">-->
-			</form>';
-		echo "</td><td>";
-		echo "
-		<form id='Remarks' method='POST' action='update_remark.php'>
-		<input type='text' name='remark' placeholder='Enter Remarks' style='width:90%'/>
-		<input type='hidden' name = 'id' value = ".$idd."></input>
-		<input type='submit' name='update_remark' value='Remark'/>
-		</form>";
-		echo "</td></tr></tbody>";
-         }
-	echo "</table>";
-	} // end if($result)
 	else{
-		echo "No Records";
+		echo "<strong style='font-size:2em'>No Records</strong>";
 	}
-  }
+	
 ?>
