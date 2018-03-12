@@ -48,34 +48,34 @@ session_start();
 		$_SESSION['record_filter'] = 'Issued';
 		
 		//Set Query for Issued
-		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,voucher,season, classof, duration, img_loc FROM student WHERE verified=1";
+		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,voucher,verified,season, classof, duration, img_loc FROM student WHERE verified=1";
 	}
 	elseif($filter == "Not_Issued")
 	{
 		$_SESSION['record_filter'] = 'Not_Issued';
 		
 		// set Query for Not_Issued
-		$sql_display = "SELECT id, fullname,gender, source, destination, passno,pass_end,voucher,season, classof, duration, img_loc FROM student WHERE verified=0";
+		$sql_display = "SELECT id, fullname,gender, source, destination, passno,pass_end,verified,voucher,season, classof, duration, img_loc FROM student WHERE verified=0";
 	}
 	elseif($filter == "Males")
 	{
 		$_SESSION['record_filter'] = 'Males';
 		
 		//set Query for Males non-issued
-		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,voucher,season, classof, duration, img_loc FROM student WHERE gender=0 AND verified=0";
+		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,verified, voucher,season, classof, duration, img_loc FROM student WHERE gender=0 AND verified=0";
 	}
 	elseif($filter == "Females")
 	{
 		$_SESSION['record_filter'] = 'Females';
 		
 		//Set Query for Females Not-Issued
-		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,voucher,season, classof, duration, img_loc FROM student WHERE gender=1 AND verified=0";
+		$sql_display = "SELECT id, fullname, source, destination, passno,verified, pass_end,voucher,season, classof, duration, img_loc FROM student WHERE gender=1 AND verified=0";
 	}
 	
     $result = $db->query($sql_display);
 	if ($result->num_rows > 0) {
 		echo "<table border='1' width='100%'> <tr> <th>ID</th> <th>Name</th> <th>Source</th> <th>Destination</th> 
-	 <th>Passno</th> <th>Classof</th> <th>Duration</th> <th>ID Card</th> <th>Issue</th><th>Remark</th></tr>";
+	 <th>Passno</th> <th>Classof</th> <th>Duration</th> <th>ID Card</th> <th>Status</th> <th>Issue</th><th>Remark</th></tr>";
 	
      while($row = $result->fetch_assoc()) {
         echo "<tbody><tr><td>". $idd=$row['id'] ;
@@ -136,9 +136,14 @@ session_start();
 	";
 						
 		echo "</td><td>";
+			if($row['verified']=="1" )
+				echo "Issued";
+			else
+				echo "Not Issued";
+		echo "</td><td>";
 			echo '<form action="update.php" method="POST">
 			<input type="hidden" name = "id" value = '.$idd .'>
-			<!--<input type = "submit" name= "verify_it" value="Issue"><br/>-->
+			<input type = "submit" name= "verify_it" value="Issue"><br/>
 			<input type = "submit" name= "cancel_verify" value="Not Issue">
 			</form>';
 		echo "</td><td>";
