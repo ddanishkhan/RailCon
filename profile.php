@@ -54,7 +54,6 @@ CREATE TABLE `student` (
 	$source  = $_POST['source'];
 	$destination = $_POST['destination'];
 	$passno  = $_POST['passno'];
-	 //$pass_start = $_POST['pass_start'];
      $pass_end  = $_POST['pass_end'];
      $voucher  = $_POST['voucher'];
      $season  = $_POST['season'];	
@@ -63,7 +62,8 @@ CREATE TABLE `student` (
 	$branch  =  $_POST['branch'];
 	$year    = $_POST['year'];
 	$age	= $_POST['dob'];
-	
+	$dateofentry = date("Y-m-d");
+
 	$from = new DateTime($age);
 	$to = new DateTime('today');
 	$cur_age = $from->diff($to)->y; //calculating age Requires PHP >=5.3.0
@@ -102,8 +102,8 @@ CREATE TABLE `student` (
 	
 	 $empty = 0;
 	 $q = mysqli_prepare($db,"INSERT INTO student(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,
-	 source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,img_loc) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") OR die($q->error);
-	 mysqli_stmt_bind_param($q,"isiissiisisssssisssss",$empty,$fullname,$gender,$sem,$email,$age,$contact,$aadhar,$address,$pincode,$source,$destination,$passno,$pass_end,$voucher,$season,$classof,$duration,$branch,$year,$TargetPath);	
+	 source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,img_loc,dateofentry) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") OR die($q->error);
+	 mysqli_stmt_bind_param($q,"isiissiisisssssissssss",$empty,$fullname,$gender,$sem,$email,$age,$contact,$aadhar,$address,$pincode,$source,$destination,$passno,$pass_end,$voucher,$season,$classof,$duration,$branch,$year,$TargetPath,$dateofentry);	
 	 if(mysqli_stmt_execute($q))
 	 {
 		//echo "\nInserted into Table\n";
