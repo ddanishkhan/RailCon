@@ -10,7 +10,7 @@
 <body>
 <h1 style='width:100%; text-align:center; font-variant:small-caps;'>Search Results</h1>
 <ul>
-<li><a href='admin.html' > Search Another</a></li>
+<li><a href='admin_filter.php' > Search Another</a></li>
 <li><a href='http://localhost/Railcon/admin.html'>
 Filter Records</a></li>
 </ul>
