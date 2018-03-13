@@ -11,7 +11,7 @@
 	<h1 style='width:100%; text-align:center; font-variant:small-caps;'>Admin Panel</h1>
 	<ul>
 	<li><a href='export_to_csv.php' > Download as Excel File</a></li>
-	<li><a href='http://localhost/Railcon/admin.html'>Filter Records</a></li>
+	<li><a href='http://localhost/Railcon/admin_filter.php'>Filter Records</a></li>
 	<form action="search.php" name="search_s" method="GET">
 		<li style='float:right; padding: 14px 16px;'>
 		<input type="text" name="query" /> </li>
