@@ -40,7 +40,7 @@ $connect=mysqli_connect('localhost','root', '' ,'railcon');
 if(mysqli_connect_errno($connect))
 		echo 'Failed to connect';
 
-$sql_display = "SELECT id, fullname, gender, source, destination, passno,pass_end,voucher,season, duration, verified,img_loc 
+$sql_display = "SELECT id, fullname, gender, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season, duration, verified,img_loc 
 FROM student LIMIT $start, $size";
 $result = $connect->query($sql_display);
 
