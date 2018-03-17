@@ -15,6 +15,15 @@
 <?php
 session_start();
 
+$size = 10;
+
+if(isset($_GET['page'])){
+	$start = $_GET['page']*$size;
+	}
+else{
+	$start=0;
+	//$_SESSION['page']=1;
+	}
 	
     $db = new mysqli("localhost","root","","railcon");
 
@@ -87,7 +96,8 @@ session_start();
         $_SESSION['record_filter'] = "Dates";	    
 		$dateofentry = $_SESSION['actual_date'];
 		//Set Query for Dates
-		$sql_display = "SELECT id, fullname, source, destination, passno,verified, pass_end,voucher,season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0";
+		$sql_display = "SELECT id, fullname, source, destination, passno,verified, pass_end,voucher,season, classof, duration, img_loc, 
+		DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0 LIMIT $start, $size";
 	}
 	
 	
@@ -181,5 +191,17 @@ session_start();
 	else{
 		echo "<strong style='font-size:2em'>No Records</strong>";
 	}
+	
+	$sql_query = "SELECT id FROM student";
+	$result = $db->query($sql_query);
+	
+	$total_records = $result->num_rows;
+	
+	$pages = intval($total_records / $size);
+
+	for ($i=0; $i <= $pages; $i++){
+	echo "<a href='admin.php?page=".$i."'> $i </a>";
+	}
+
 	
 ?>
