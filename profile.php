@@ -20,7 +20,7 @@ CREATE TABLE `student` (
  `pincode` mediumint(6) unsigned NOT NULL,
  `source` varchar(20) NOT NULL,
  `destination` varchar(20) NOT NULL,
- `passno` varchar(20) NOT NULL,
+ `passno` varchar(20) DEFAULT NULL,
  `pass_end` date DEFAULT NULL,
  `voucher` varchar(20) DEFAULT NULL,
  `season` int(20) DEFAULT NULL,
@@ -31,6 +31,7 @@ CREATE TABLE `student` (
  `img_loc` varchar(50) NOT NULL,
  `verified` tinyint(1) unsigned NOT NULL DEFAULT '0',
  `dateofentry` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `datetodelete` timestamp NULL DEFAULT NULL,
  `Remark` varchar(50) NOT NULL DEFAULT 'No Remarks',
  PRIMARY KEY (`id`),
  UNIQUE KEY `email` (`email`)
@@ -106,17 +107,28 @@ CREATE TABLE `student` (
 	 mysqli_stmt_bind_param($q,"isiissiisisssssissssss",$empty,$fullname,$gender,$sem,$email,$age,$contact,$aadhar,$address,$pincode,$source,$destination,$passno,$pass_end,$voucher,$season,$classof,$duration,$branch,$year,$TargetPath,$dateofentry);	
 	 if(mysqli_stmt_execute($q))
 	 {
-		//echo "\nInserted into Table\n";
+		/* echo "\nInserted into Table\n"; */
 		if(move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory.$TargetPath) ){
+			
+			if($duration=="Monthly"){
+			  $set_del = "UPDATE student SET datetodelete = DATE_ADD(dateofentry , INTERVAL 30 DAY) WHERE email = '$email'" ;
+			  echo "<strong> File and Details Uploaded  </n> </strong>";
+			  $db->query($set_del);	}
+			elseif($duration=="Quarterly"){
+			  $set_del = "UPDATE student SET datetodelete = DATE_ADD(dateofentry , INTERVAL 90 DAY) WHERE email = '$email'" ;
 			echo "<strong> File and Details Uploaded  </n> </strong>";
+			    $db->query($set_del);		}
+				
 		}//ok
 		else{
 			$del_q = "DELETE FROM student WHERE email='$email' LIMIT 1";
 			mysqli_stmt_execute($del_q); //execute stmt
 		}//ok
 	 }//end if mysqli_stmt
+	 
+	if($db->errno){ echo $db->error ; die("Error Email Exists"); }
 	
-	 if($db->errno){ die("\nEmail ID already Exists"); }
+	elseif($db->errno){ echo $db->error ; die("Error Email Exists"); }
 	 else{
 		//echo "No errors";
 		$sql_id = "SELECT id FROM student WHERE email='$email' LIMIT 1" ;

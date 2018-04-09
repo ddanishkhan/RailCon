@@ -2,6 +2,11 @@
     padding: 20px 12px 10px 20px;
     font: 0.9em "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
+
+table.table-top{
+	border-radius:10px;
+}
+
 .form-style-1 li {
     padding: 5px;
     display: block;
