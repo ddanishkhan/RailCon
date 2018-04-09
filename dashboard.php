@@ -10,7 +10,7 @@
 	<body>
 	<h1 style='width:100%; text-align:center; font-variant:small-caps;'>Admin Panel</h1>
 	<ul>
-	<li><a href='export_to_csv.php' > Download as Excel File</a></li>
+	<li><a href='export_to_csv.php'  > Download as Excel File</a></li>
 	<li><a href='http://localhost/Railcon/admin_filter.php'>Filter Records</a></li>
 	<form action="search.php" name="search_s" method="GET">
 		<li style='float:right; padding: 14px 16px;'>
@@ -24,6 +24,8 @@
 <?php
 session_start();
 $_SESSION['dashboard']="true";
+
+/*//$ipaddress = $_SERVER['REMOTE_ADDR']; //ip address*/
 
 $size = 10;
 
@@ -40,13 +42,13 @@ $connect=mysqli_connect('localhost','root', '' ,'railcon');
 if(mysqli_connect_errno($connect))
 		echo 'Failed to connect';
 
-$sql_display = "SELECT id, fullname, gender, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season, duration, verified,img_loc 
+$sql_display = "SELECT id, fullname, gender,DOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season, duration, verified,img_loc 
 FROM student LIMIT $start, $size";
 $result = $connect->query($sql_display);
 
 if ($result->num_rows > 0) {
 	
-	echo "<table id='table-top' border='1' width='100%' > <tr> <th>ID</th> <th>Name</th> <th>Gender</th> <th>Source</th> <th>Destination</th> 
+	echo "<table class='table-top' border='1' width='100%' > <tr> <th>ID</th> <th>Name</th> <th>Gender</th> <th>Age</th> <th>Source</th> <th>Destination</th> 
 	<th>Passno</th> <th>Duration</th> <th>Status</th> <th>ID Card</th> <th>Issue</th> <th>Remarks</th> 
 	</tr>";
 	
@@ -58,7 +60,11 @@ if ($result->num_rows > 0) {
 			if( $row['gender']=='1' )
 				echo "Female";
 			else
-				echo "Male";		
+				echo "Male";	
+		echo "</td><td>";
+				$diff = date_diff(date_create(), date_create($row['DOB']) );
+				echo $diff->format("%Y Yrs <br/> %M Mnth");
+			
 		echo "</td><td>";
 			echo $row['source'];
 		echo "</td><td>";
@@ -144,8 +150,9 @@ if ($result->num_rows > 0) {
 	
 	$pages = intval($total_records / $size);
 
+	echo "<br/><ul style='background-color:#FE642E; border-radius:10px;'>";
 	for ($i=0; $i <= $pages; $i++){
-	echo "<a href='dashboard.php?page=".$i."'> $i </a>";
+	echo "<li> <a href='dashboard.php?page=".$i."'> $i </a>";
 	}
 	
 	$connect->close();

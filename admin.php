@@ -192,15 +192,14 @@ else{
 		echo "<strong style='font-size:2em'>No Records</strong>";
 	}
 	
+	//page number
 	$sql_query = "SELECT id FROM student";
 	$result = $db->query($sql_query);
-	
 	$total_records = $result->num_rows;
-	
 	$pages = intval($total_records / $size);
-
+	echo "<br/><ul style='background-color:#FE642E; border-radius:10px;'>";
 	for ($i=0; $i <= $pages; $i++){
-	echo "<a href='admin.php?page=".$i."'> $i </a>";
+	echo "<li> <a href='admin.php?page=".$i."'> $i </a>";
 	}
 
 	
