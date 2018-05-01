@@ -35,5 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	
 	
 } //POST
+else{
+	header("Location: http://localhost/railcon/");
+}
 
 ?>

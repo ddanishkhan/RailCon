@@ -66,4 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 	
 }// requested Method call
+else{
+	header("Location: http://localhost/railcon/");
+}
 ?>

@@ -9,7 +9,8 @@ if (isset($_POST['email_id'])) {
 	
 	$email_search = $_POST['email_id'];
 	
-	$sql_display = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc, remark FROM student WHERE email='$email_search' LIMIT 1 ";
+	$sql_display = "SELECT id, fullname, source, destination, passno, duration, verified, img_loc, remark 
+	FROM student WHERE email='$email_search' LIMIT 1 ";
 	$result = $connect->query($sql_display);
 	
 	if ($result->num_rows > 0) {

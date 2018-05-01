@@ -1,5 +1,7 @@
 <?php
 // Connection 
+session_start();
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 $conn=mysql_connect('localhost','root','');
 //database name
 $db=mysql_select_db('railcon',$conn);
@@ -19,6 +21,11 @@ while ($row = mysql_fetch_assoc($user_query)) {
         $flag = true;
     }
     echo implode("\t", array_values($row)) . "\r\n";
+}
+}//Authentication
+else{
+	echo "<script> alert('Log In First'); </script>";
+	header("Refresh:1; url=index.html");
 }
 
 ?>

@@ -1,10 +1,16 @@
-<!DOCTYPE HTML>
+<?php
+session_start();
+
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+	
+	echo "
+	<!DOCTYPE HTML>
 <html>
 	<head> 
 		<title> Administrator Panel </title>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<meta name="author" content="TEIT-17-18 Students"/>
-	<link rel="stylesheet" type="text/css" href="styletable.css">
+		<meta name='viewport' content='width=device-width, initial-scale=1'/>
+		<meta name='author' content='TEIT-17-18 Students'/>
+	<link rel='stylesheet' type='text/css' href='styletable.css'>
 	</head>
 	
 	<body>
@@ -12,17 +18,16 @@
 	<ul>
 	<li><a href='export_to_csv.php'  > Download as Excel File</a></li>
 	<li><a href='http://localhost/Railcon/admin_filter.php'>Filter Records</a></li>
-	<form action="search.php" name="search_s" method="GET">
+	<form action='search.php' name='search_s' method='GET'>
 		<li style='float:right; padding: 14px 16px;'>
-		<input type="text" name="query" /> </li>
-		<li style='float:right;'> <input id="nav_search" type="submit" value="Search"> </li>
+		<input type='text' name='query' /> </li>
+		<li style='float:right;'> <input id='nav_search' type='submit' value='Search'> </li>
 	</form>
 	</ul>
 	</body>
-</html>
-
-<?php
-session_start();
+</html>";
+	
+	//echo $_SESSION['loggedin'];
 $_SESSION['dashboard']="true";
 
 /*//$ipaddress = $_SERVER['REMOTE_ADDR']; //ip address*/
@@ -42,14 +47,14 @@ $connect=mysqli_connect('localhost','root', '' ,'railcon');
 if(mysqli_connect_errno($connect))
 		echo 'Failed to connect';
 
-$sql_display = "SELECT id, fullname, gender,DOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season, duration, verified,img_loc 
+$sql_display = "SELECT id, fullname, gender,DOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
 FROM student LIMIT $start, $size";
 $result = $connect->query($sql_display);
 
 if ($result->num_rows > 0) {
 	
 	echo "<table class='table-top' border='1' width='100%' > <tr> <th>ID</th> <th>Name</th> <th>Gender</th> <th>Age</th> <th>Source</th> <th>Destination</th> 
-	<th>Passno</th> <th>Duration</th> <th>Status</th> <th>ID Card</th> <th>Issue</th> <th>Remarks</th> 
+	<th>Passno</th> <th>Class</th> <th>Duration</th> <th>DateOfEntry</th> <th>Status</th> <th>ID Card</th> <th>Issue</th> <th>Remarks</th>  
 	</tr>";
 	
      while($row = $result->fetch_assoc()) {
@@ -76,8 +81,12 @@ if ($result->num_rows > 0) {
 			echo $row['season']."<br/>";
 			
 		echo "</td><td>";
+			echo $row['classof'];
+		echo "</td><td>";
 			echo $row['duration'];
 		echo "</td><td>";
+		    echo $row['date'];
+		echo "</td><td>";	
 			if($row['verified']=="1" )
 				echo "Issued";
 			else
@@ -156,5 +165,9 @@ if ($result->num_rows > 0) {
 	}
 	
 	$connect->close();
-	
+}//authentication
+else{
+	echo "<script> alert('Log In First'); </script>";
+	header("Refresh:1; url=index.html");
+}
 ?>

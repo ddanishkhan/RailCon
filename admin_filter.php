@@ -1,4 +1,8 @@
 <?php
+session_start();
+
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+
     $db = new mysqli("localhost","root","","railcon");
 
 	if($db->connect_errno){die('Database connection failed.');}
@@ -31,8 +35,6 @@
 		<input type='submit' name='filter_submit' value='Show Records'/>
 		</li>
     </form>" ;
-	
-	
 	
 	$sql_display = "SELECT DISTINCT DATE_FORMAT(dateofentry, '%d/%m/%Y') as date FROM student";
 	$result = $db->query($sql_display);
@@ -72,4 +74,9 @@
 	
 	</body>
 </html>";
+}//Authentication
+else{
+	echo "<script> alert('Log In First'); </script>";
+	header("Refresh:1; url=index.html");
+}
 ?>
