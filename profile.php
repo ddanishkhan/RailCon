@@ -37,6 +37,24 @@ CREATE TABLE `student` (
  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 	
+	
+TRIGGER to transfer on delete
+BEGIN
+insert into oldstudent(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,
+voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) 
+values(old.id,old.fullname,old.gender,old.semester,old.email,old.DOB,old.contact,old.aadhar, old.address, old.pincode, old.source, old.destination,old.passno, old.pass_end, 
+old.voucher, old.season, old.classof, old.duration, old.branch, old.year, old.verified, old.dateofentry, old.datetodelete,old.Remark);
+END
+
+EVENT
+
+BEGIN
+INSERT INTO oldstudent(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark)
+SELECT (id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark)
+FROM student
+WHERE student.datetodelete < (NOW() - INTERVAL 1 DAY);
+DELETE FROM student WHERE datetodelete < (NOW() - INTERVAL 1 DAY);
+END
 	*/
 	
 	session_start();

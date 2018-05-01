@@ -6,17 +6,13 @@
 		<meta name="author" content="TEIT-17-18 Students">
 		<link rel="stylesheet" type="text/css" href="styletable.css">
 	</head>
-	<body>
-	
-	<h2 style='width:100%; text-align:center; font-variant:small-caps;'>Admin Panel</h2>
-	
-	</body>
 </html>
 <?php
 session_start();
-
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+	
+echo '	<h2 style="width:100%; text-align:center; font-variant:small-caps;">Admin Panel</h2>';
 $size = 10;
-
 if(isset($_GET['page'])){
 	$start = $_GET['page']*$size;
 	}
@@ -26,12 +22,10 @@ else{
 	}
 	
     $db = new mysqli("localhost","root","","railcon");
-
 	if($db->connect_errno){die('Database connection failed.');}
 	
 	$filter = "Not_Issued";
-	
-		//changes made for date
+	//changes made for date
 	if( isset($_POST['date_submit']) )
 	{
 	    $dateofentry = $_POST['date_filter'];
@@ -67,28 +61,40 @@ else{
 	{
 		$_SESSION['record_filter'] = 'Issued';
 		//Set Query for Issued
-		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,voucher,verified,season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date FROM student WHERE verified=1";
+		$sql_display = "SELECT id, fullname,gender,DOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified,voucher,
+		season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
+		FROM student WHERE verified=1
+		LIMIT $start, $size";
 	}
 	elseif($filter == "Not_Issued")
 	{
 		$_SESSION['record_filter'] = 'Not_Issued';
 		
 		// set Query for Not_Issued
-		$sql_display = "SELECT id, fullname,gender, source, destination, passno,pass_end,verified,voucher,season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date FROM student WHERE verified=0";
+		$sql_display = "SELECT id, fullname,gender,DOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified,voucher,
+		season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
+		FROM student WHERE verified=0
+		LIMIT $start, $size";
 	}
 	elseif($filter == "Males")
 	{
 		$_SESSION['record_filter'] = 'Males';
 		
 		//set Query for Males non-issued
-		$sql_display = "SELECT id, fullname, source, destination, passno,pass_end,verified, voucher,season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date FROM student WHERE gender=0 AND verified=0";
+		$sql_display = "SELECT id, fullname,gender,DOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified, voucher,
+		season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
+		FROM student WHERE gender=0 AND verified=0 
+		LIMIT $start, $size";
 	}
 	elseif($filter == "Females")
 	{
 		$_SESSION['record_filter'] = 'Females';
 		
 		//Set Query for Females Not-Issued
-		$sql_display = "SELECT id, fullname, source, destination, passno,verified, pass_end,voucher,season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date FROM student WHERE gender=1 AND verified=0";
+		$sql_display = "SELECT id, fullname,gender,DOB, source, destination, passno,verified, DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,
+		season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
+		FROM student WHERE gender=1 AND verified=0 
+		LIMIT $start, $size";
 	}
 	//raw text filter for dates
 	elseif($filter == "Dates")
@@ -96,20 +102,32 @@ else{
         $_SESSION['record_filter'] = "Dates";	    
 		$dateofentry = $_SESSION['actual_date'];
 		//Set Query for Dates
-		$sql_display = "SELECT id, fullname, source, destination, passno,verified, pass_end,voucher,season, classof, duration, img_loc, 
-		DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0 LIMIT $start, $size";
+		$sql_display = "SELECT id, fullname, gender,DOB, source, destination, passno,verified, DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,
+		season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
+		FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0 
+		LIMIT $start, $size";
 	}
-	
 	
     $result = $db->query($sql_display);
 	if ($result->num_rows > 0) {
-		echo "<table border='1' width='100%'> <tr> <th>ID</th> <th>Name</th> <th>Source</th> <th>Destination</th> 
-	 <th>Passno</th> <th>Classof</th> <th>Duration</th> <th>Date Of Entry</th> <th>ID Card</th> <th>Status</th> <th>Issue</th><th>Remark</th></tr>";
+	
+	echo "<table class='table-top' border='1' width='100%' > <tr> <th>ID</th> <th>Name</th> <th>Gender</th> <th>Age</th> <th>Source</th> <th>Destination</th> 
+	<th>Passno</th> <th>Class</th> <th>Duration</th> <th>DateOfEntry</th> <th>Status</th> <th>ID Card</th> <th>Issue</th> <th>Remarks</th> 
+	</tr>";
 	
      while($row = $result->fetch_assoc()) {
-        echo "<tbody><tr><td>". $idd=$row['id'] ;
+        echo "<tr><td>". $idd=$row['id'] ;
 		echo '</td><td>';
 			echo $row['fullname'];
+		echo "</td><td>";
+			if( $row['gender']=='1' )
+				echo "Female";
+			else
+				echo "Male";	
+		echo "</td><td>";
+				$diff = date_diff(date_create(), date_create($row['DOB']) );
+				echo $diff->format("%Y Yrs <br/> %M Mnth");
+			
 		echo "</td><td>";
 			echo $row['source'];
 		echo "</td><td>";
@@ -127,6 +145,12 @@ else{
 		echo "</td><td>";
 		    echo $row['date'];
 		echo "</td><td>";	
+			if($row['verified']=="1" )
+				echo "Issued";
+			else
+				echo "Not Issued";
+		
+		echo "</td><td>";
 			$MyPhoto = $row['img_loc'];
 			echo "<img id='".$idd."' src = 'MyUploadImages/".$MyPhoto."'  height='100px' width='130px'/>
 	<!-- The Modal -->
@@ -167,11 +191,7 @@ else{
 	";
 						
 		echo "</td><td>";
-			if($row['verified']=="1" )
-				echo "Issued";
-			else
-				echo "Not Issued";
-		echo "</td><td>";
+
 			echo '<form action="update.php" method="POST">
 			<input type="hidden" name = "id" value = '.$idd .'>
 			<input type = "submit" name= "verify_it" value="Issue"><br/>
@@ -201,6 +221,10 @@ else{
 	for ($i=0; $i <= $pages; $i++){
 	echo "<li> <a href='admin.php?page=".$i."'> $i </a>";
 	}
-
+}//Authentication
+else{
+	echo "<script> alert('Log In First'); </script>";
+	header("Refresh:1; url=index.html");
+}
 	
 ?>

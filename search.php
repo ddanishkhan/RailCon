@@ -1,4 +1,10 @@
-<!DOCTYPE HTML>
+
+
+<?php
+session_start();
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+	
+	echo '<!DOCTYPE HTML>
 <html>
 <head><title>Searching the database</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,18 +14,15 @@
 </head>
 
 <body>
-<h1 style='width:100%; text-align:center; font-variant:small-caps;'>Search Results</h1>
+<h1 style="width:100%; text-align:center; font-variant:small-caps;">Search Results</h1>
 <ul>
-<li><a href='admin_filter.php' > Search Another</a></li>
-<li><a href='http://localhost/Railcon/admin.html'>
+<li><a href="admin_filter.php" > Search Another</a></li>
+<li><a href="http://localhost/Railcon/admin.html">
 Filter Records</a></li>
 </ul>
 </body>
-
-</html>
-
-<?php
-
+</html>';
+	
 	mysql_connect("localhost", "root", "") or die("Error mysql");
 	mysql_select_db("railcon") or die(mysql_error() ) ;
 
@@ -129,4 +132,9 @@ Filter Records</a></li>
         echo "<script>alert('Minimum Length is 3')</script>";
 		header("Refresh:0 ; url=http://localhost/railcon/admin.php");
     }
+}//Authentication
+else{
+	echo "<script> alert('Log In First'); </script>";
+	header("Refresh:1; url=index.html");
+}
 ?>
