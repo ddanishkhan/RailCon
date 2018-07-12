@@ -1,20 +1,161 @@
-<!DOCTYPE html>
-<html>
-     <head><title>RailCon</title></head>	 
-	 <link rel="stylesheet" type="text/css" href="indadmstu.css" />
-<body>
-<form action="login.php" method="POST">
-<ul class="form-style-1">
-<h1>Admin Login</h1>
-<li><label>Username</label>
-<input type="text" name="user" placeholder="Enter your username"/ autofocus>
-</li>
-<li><label>Password</label>
-<input type="password" name="pass" placeholder="Enter your password"/><br/>
-</li>
-<li><input type="submit" name="submit" value="Sign In"/>
-</li>
-</form>
-</ul>
-</body>
+<!doctype html>
+<html>
+    <head>
+    <title>Railway Concession Registration Form</title> 
+    <link rel="stylesheet" type="text/css" href="indadmstu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name='viewport' content='width=device-width, initial-scale=1'/>
+    <meta name='author' content='TEIT-17-18 Students'/>
+    <style>
+    img{pointer-events: none;}
+    </style>
+    </head>
+<body>
+
+<!--<table>
+<td width="951px" valign="middle" align="right" height="80" bgcolor="#" background="mhsccoe.jpg" style="background-repeat:no-repeat;"></td>
+</table>-->
+<img src="mhsccoe.jpg" alt="MHSSCOE Logo" align="middle" style="pointer-events: none; display:block; margin:0 auto;max-width:948px; width:100%; ">
+
+<fieldset style="max-width:920px; display:block; align:middle;  margin:0 auto; ">
+<form action="profile.php" method="POST" enctype="multipart/form-data" style="max-width:951px">
+<ul class="form-style-1">
+	<h1>Railway Concession Registration Form</h1>
+
+	<li> <label>*Full Name:</label>
+	<input type="text" name="name" id="name" placeholder="Last First Middle Name" required autofocus/></li>
+
+	<li><label>*Gender:</label> 
+	 <input type="radio" name="gender" value="0" required checked> Male <br/>
+	 <input type="radio" name="gender" value="1" required /> Female</li>
+	  
+	<li><label>*Email:</label> 
+	 <input type="email" name="email" placeholder="Enter Your Email" required/> </li>
+	 
+	<li><label>*Date Of Birth:</label> 
+	 <input type="date" name="dob" required/> </li>
+		 
+	<li><label>*Contact No.:</label> 
+	 <input type="number" name="contact" placeholder="Enter Your Contact No." required maxlength="10"/> </li>
+	  
+	<li><label>*12 digit Aadhar No.:</label> 
+	 <input type="text" name="aadhar" placeholder="12 Digit Aadhar Number" pattern="[1-9]{1}[0-9]{11}" maxlength="12"/> </li>
+	 	 
+	<li><label>*Address:</label> 
+	 <textarea name="address" rows="4" placeholder="Enter Your Postal Address" required ></textarea> </li>
+	 
+	<li><label>*PIN Code:</label> 
+	 <input type="number" name="pincode" maxlength="6" placeholder="Enter Pincode" required /> </li>
+	 
+	<li><label>*Source Station:</label> 
+	 <input type="text" name="source" maxlength="30" placeholder="Enter Source Station" required /> </li>
+	 
+	<li><label>*Destination Station:</label> 
+		<select name="destination" required>
+		<option>Byculla Station</option>
+		<option>Sandhurst Road Station</option>
+		<option>Dockyard Road</option>
+		<option>Mumbai Central</option>
+	</select> </li>
+	 
+	 <li><label>Previous PassNo.:</label> 
+	 <input type="text" name="passno" maxlength="40" placeholder="Enter Previous Pass Number"> </li>
+	 
+	<li><img src="Railway Pass.jpeg" width=90% height="300px" /></li>
+	 
+	 <li><label>Pass Expiry:</label>
+	 <input type='date' name='pass_end'/> </li>
+	 
+	 <li><label>Voucher No:</label>
+	 <input type='text' name='voucher' placeholder='Enter Vch No.(Bottom Right)'/> </li>
+	 
+	 <li><label>Enter Season ticket no:</label>
+	 <input type='number' maxlength='4' name='season' placeholder='Enter Season Ticket No.(Top Right)'/> </li>
+	 
+	 <li><label>*Class Of Travel:</label> 
+		<input type="radio" name="classof" value="First" required checked/>First Class<br/>
+		<input type="radio" name="classof" value="Second" required />Second Class<br/></li>
+
+	<li><label>*Duration of Pass:</label> 
+	<input type="radio" name="duration" value="Monthly" required checked/>Monthly<br/>
+	<input type="radio" name="duration" value="Quarterly" required />Quarterly<br/></li>
+	
+	<li><label>*Branch of Academics:</label>  
+		<select name="branch" required>
+		<option>Automobile</option>
+		<option>Civil </option>
+		<option>Computer Science</option>
+		<option>Electronics Engineering</option>
+		<option>Electronics & Telecommunications</option>
+		<option>Information Technology</option>
+		<option>Mechanical</option>
+		</select></li>
+		 
+	<li><label>*Academic Year:</label> 
+	<input type="radio" name="year" value="F.E" required="required" checked="checked"/>First Year<br>
+	<input type="radio" name="year" value="S.E" required="required"/>Second Year<br>
+	<input type="radio" name="year" value="T.E" required="required"/>Third Year<br>
+	<input type="radio" name="year" value="B.E" required="required"/>Bachelor Year<br></li>	
+	 
+	<li><label>*Semester:</label> 
+	<select name="semester" required>
+	<option>1</option>
+	<option>2</option>
+	<option>3</option>
+	<option>4</option>
+	<option>5</option>
+	<option>6</option>
+	<option>7</option>
+	<option>8</option>
+	</select>
+	</li>
+
+	<li><label>*Upload Your ID Card Image <br/><span class="required" style="font-weight:lighter"> *Size less than 0.5MB <br/>*Minimum Image Resolution widthxheight : 300x500</span></label>	 	 
+	
+	<input type='file' name='UploadImage' required > </li>
+	 
+	<li><img src="Card.jpeg" width=90%/></li>
+		 
+	<br/>
+	<li><input type="submit" name="submit" id="submit_form" value="Submit Form"/>
+	</li>
+	
+	</ul>
+</form>   
+</fieldset>
+
+<footer class="footer-distributed">
+
+	<div class="footer-left">
+
+		<h3><span>powered by </span>FOSSNOW</h3>
+
+		<p class="footer-links">
+			<a href="http://fossnow.com" target="_blank" >Home</a>
+			~
+			<a href="http://fossnow.com/fossnow-team" target="_blank" >Meet The Team</a>
+			<br/>
+			<a href="mailto:dk@fossnow.com">support@fossnow.com</a>
+		</p>
+			<p class="footer-company-name">FOSSNOW &copy; 2018</p>
+	</div>
+
+	<div class="footer-center">
+	</div>
+
+	<div class="footer-right">
+		<p class="footer-company-about">
+			<span>About the company</span>
+			FossNow is an Open Source resource platform to all your techie updates. 
+			Tune in to get hands on the latest to meagre updates of the technology world.	
+		</p>
+
+		<div class="footer-icons">
+		 <a href="https://www.facebook.com/fossnowdotcom/" target="_blank" class="fa fa-facebook"></a>
+		 <a href="https://instagram.com/fossnow" target="_blank" class="fa fa-instagram"> </a>
+		 <a href="https://twitter.com/fossnowdotcom" target="_blank" class="fa fa-twitter"></a>
+		</div>
+	</div>
+</footer>
+</body>
 </html>
