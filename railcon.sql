@@ -174,16 +174,16 @@ CREATE DEFINER=`root`@`localhost` EVENT `clearoldrecords` ON SCHEDULE EVERY 1 DA
 
 CREATE DEFINER=`root`@`localhost` EVENT `clearrecordseconds` ON SCHEDULE EVERY 1 MINUTE STARTS '2018-04-10 00:00:00' ON COMPLETION PRESERVE DISABLE DO DELETE FROM student WHERE datetodelete < (NOW() - INTERVAL 1 DAY)$$
 
-CREATE DEFINER=`root`@`localhost` EVENT `e_daily` ON SCHEDULE EVERY 10 DAY STARTS '2018-04-09 00:00:00' ON COMPLETION PRESERVE ENABLE DO BEGIN
-INSERT INTO oldstudent(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark)
-
-SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark
-
-FROM student
-
-WHERE datetodelete < (NOW() - INTERVAL 1 DAY);
-
-DELETE FROM student WHERE datetodelete < (NOW() - INTERVAL 1 DAY);
+CREATE DEFINER=`root`@`localhost` EVENT `e_daily` ON SCHEDULE EVERY 10 DAY STARTS '2018-04-09 00:00:00' ON COMPLETION PRESERVE ENABLE DO BEGIN
+INSERT INTO oldstudent(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark)
+
+SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark
+
+FROM student
+
+WHERE datetodelete < (NOW() - INTERVAL 1 DAY);
+
+DELETE FROM student WHERE datetodelete < (NOW() - INTERVAL 1 DAY);
 END$$
 
 DELIMITER ;
