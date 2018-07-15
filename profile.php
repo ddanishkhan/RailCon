@@ -1,17 +1,14 @@
 <?php
-if(isset($_POST['submit']))
-{
+if(isset($_POST['submit']))
+{
 	session_start();
-	$db = new mysqli("localhost","id5617200_railcon","lightbulb17","id5617200_railcon");
-	if($db->connect_errno)
-	{	die("Database Connection failed"); }
-
+   //database connection	include('database_connection.php');
 	$fullname= $_POST['name'];
 	$gender = $_POST['gender']; // 0 for male, 1 female
 	$sem    = $_POST['semester']; //roll is semester
 	$email   = $_POST['email'];
 	$contact = $_POST['contact']; 
-	$aadhar  = $_POST['aadhar'];
+	$aadhar  = 123456789;
 	$address = $_POST['address'];
 	$pincode = $_POST['pincode'];
 	$source  = $_POST['source'];
