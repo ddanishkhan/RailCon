@@ -2,12 +2,11 @@
 // Connection 
 session_start();
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
-$conn=mysql_connect('localhost','id5617200_railcon','lightbulb17');
+$conn=mysql_connect('localhost','root','','railcon');
 //database name
-$db=mysql_select_db('id5617200_railcon',$conn);
-
+$db=mysql_select_db('railcon',$conn);
 $filename = "RailwayConcession.xls"; // File Name
-// Download file
+// Download file
 header("Content-Disposition: attachment; filename=\"$filename\"");
 header("Content-Type: application/vnd.ms-excel");
 $user_query = mysql_query('select id,fullname,semester,email,DOB,contact,aadhar,address,pincode,

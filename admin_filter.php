@@ -2,10 +2,7 @@
 session_start();
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
-
-    $db = new mysqli("localhost","id5617200_railcon","lightbulb17","id5617200_railcon");
-
-	if($db->connect_errno){die('Database connection failed.');}
+   //database connection	include('database_connection.php');
     echo "<html>
         <head>
 	        <title>Admin Panel</title>
@@ -15,9 +12,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 		li.a_align, a.button{
 		list-style-type: none;
 		text-decoration: none;
-		}
+		}
 		</style>
-		
 	<body>
 	<ul class='form-style-1'>	
 	<h1>Admin Panel</h1>
