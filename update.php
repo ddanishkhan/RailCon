@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {	//database connection	include('database_connection.php');
-    
+
 	//checking which button clicked
     if (isset($_POST['verify_it'])) {
 	//$db=mysqli_connect('localhost','id5617200_railcon', 'lightbulb17' ,'id5617200_railcon');
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {	//database connection	include('d
 	    $sql_update_status = "UPDATE student SET verified = 1 WHERE id='$var_id' ";
 	    $db->query($sql_update_status);
 	
-		if($_SESSION['dashboard']=="true"){header("Location: dashboard.php");}
+		if($_SESSION['dashboard']=="true"){ echo "Card Issued";}
 		else{header("Location: admin.php");}
 	    }
 	    else{
