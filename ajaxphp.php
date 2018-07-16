@@ -14,7 +14,6 @@ $status_check = "SELECT verified FROM student WHERE id = '$var_id' LIMIT 1";
 $s_check = $db->query($status_check);
 
 $s_value = $row = $s_check->fetch_assoc();
-echo $s_value['verified'];
   if($s_value['verified'] == "0")
 
   {

@@ -18,7 +18,12 @@ function issue(id){
   xhttp.send(fd);
   xhttp.onreadystatechange = function(){
     if(this.readyState==4 && this.status==200){
-      console.log(this.responseText);
+      if(this.responseText == "Card Issued"){
+        document.getElementById("success-alert").style.display = "block";
+      }
+      else if(this.responseText == "Card Already Issued"){
+        document.getElementById("warning-alert").style.display = "block";
+      }
     }
   }
 }

@@ -129,6 +129,15 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
                       <!--<h3 class="h4">Compact Table</h3>-->
                     </div>
                     <div class="card-body">
+											<div id="success-alert" style="display:none;" class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> The card has been issued
+  </div>
+	<div id="warning-alert" style="display:none;" class="alert alert-warning alert-dismissible">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>warning!</strong> The card has been already issued
+</div>
+
                       <div class="table-responsive">
                         <table class="table table-striped table-sm">
                           <thead>
