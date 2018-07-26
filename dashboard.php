@@ -3,19 +3,24 @@ session_start();
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 	include('database_connection.php');
 	$_SESSION['dashboard'] = true;
-
-	$size = 10;
+	
+	$size = 15;
+	
 	if(isset($_GET['page'])){
 		$start = $_GET['page']*$size;
+		$_SESSION['dashpage'] = $_GET['page']; 
+	}
+	elseif( isset($_SESSION['dashpage']) ){
+		$start = $_SESSION['dashpage'] * $size;
 	}
 	else{
 		$start=0;
 	}
 
-	$sql_display = "SELECT id, fullname, gender,DOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date
+	$sql_display = "SELECT id, fullname, gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
 	FROM student LIMIT $start, $size";
 	$result = $db->query($sql_display);
-	//stored result object of query here
+	
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +28,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name='author' content='TEIT-17-18 Students'>
+	<meta name='author' content='Danish Ayub Khan'>
     <title>RailCon Admin Panel</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,9 +51,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 	<link rel='stylesheet' type='text/css' href='modal.css'>
-	<script type="text/JavaScript" src="js/ajax.js"></script>
 	<style>
-
+	
 	</style>
   </head>
   <body>
@@ -70,15 +74,15 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
                 <!-- Navbar Brand --><a href="#" class="navbar-brand d-none d-sm-inline-block">
                   <div class="brand-text d-none d-lg-inline-block"><span>RailCon </span><strong>Dashboard</strong></div>
                   <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>Railway Concession</strong></div></a>
-
+                
               </div>
               <!-- Navbar Menu -->
               <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-
+			  
                 <!--Download as Excel File-->
-				<li class="nav-link"><a href="export_to_csv.php"><i class="fa fa-file-text"></i><span class="d-none d-sm-inline">Download
+				<li class="nav-link"><a href="export_to_csv.php"><i class="fa fa-file-text"></i><span class="d-none d-sm-inline">Download  
 				</span></a></li>
-
+				
 				<!-- Search-->
                 <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
 
@@ -89,7 +93,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
           </div>
         </nav>
       </header>
-      <div class="page-content align-items-stretch">
+      <div class="page-content align-items-stretch"> 
 
         <div class="content-inner" style="width:100%">
           <!-- Breadcrumb-->
@@ -99,16 +103,16 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
               <li class="breadcrumb-item active">Dashboard - All Entries  </li>
             </ul>
           </div>
-          <section class="tables">
+          <section class="tables">   
             <div class="container-fluid">
               <div class="row">
                 <div class="col-lg-12">
                   <div class="card">
                     <div class="card-header d-flex align-items-center">
-
+	
 <!--Pagination -->
 <nav aria-label="...">
-<ul class="pagination">
+<ul class="pagination">				
 </html>
 <?php
 	//page number
@@ -117,49 +121,38 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
     $total_records_pages = $result_pages->num_rows;
     $pages         = intval($total_records_pages / $size);
 
-    for ($i = 0, $j=1; $i < $pages; $i++, $j++) {
-        //echo "<a href='dashboard.php?page=" .$i. "'> $j </a>";
+    for ($i = 0; $i <= $pages; $i++) {
 		echo "<li class='page-item'>";
-		echo "<a class='page-link' href='dashboard.php?page=".$i."'> $j </a>";
+		echo "<a class='page-link' href='dashboard.php?page=".$i."'> $i </a>";
 		echo "</li>";
 		}
 ?>
 
-<html>
-                      <!--<h3 class="h4">Compact Table</h3>-->
+<html>				
                     </div>
                     <div class="card-body">
-											<div id="success-alert" style="display:none;" class="alert alert-success alert-dismissible">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success!</strong> The card has been issued
-  </div>
-	<div id="warning-alert" style="display:none;" class="alert alert-warning alert-dismissible">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>warning!</strong> The card has been already issued
-</div>
-
-                      <div class="table-responsive">
+                      <div class="table-responsive">   
                         <table class="table table-striped table-sm">
                           <thead>
                             <tr>
                               <th>#</th>
                               <th>Name</th>
                               <th>Gender</th>
-                              <th>Age</th>
+                              <th>DOB/Age</th>
 							  <th>Source</th>
 							  <th>Destination</th>
 							  <th>Passno</th>
-							  <th>Class</th>
-							  <th>Duration</th>
-							  <th>DateOfEntry</th>
-							  <th>Status</th>
-							  <th>ID Card</th>
-							  <th>Issue</th>
-							  <th>Remarks</th>
+							  <th>Class</th> 
+							  <th>Duration</th> 
+							  <th>DateOfEntry</th> 
+							  <th>Status</th> 
+							  <th>ID Card</th> 
+							  <th>Issue</th> 
+							  <th>Remarks</th> 
                             </tr>
                           </thead>
 						  <tbody>
-
+							
 </html>
 
 <?php
@@ -173,10 +166,13 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 			if( $row['gender']=='1' )
 				echo "Female";
 			else
-				echo "Male";
+				echo "Male";	
 		echo "</td><td>";
 				$diff = date_diff(date_create(), date_create($row['DOB']) );
-				echo $diff->format("%Y Yrs <br/> %M Mnth");
+				echo $row['dateOB'];
+				echo "<br>";
+				echo "--- <br>";
+				echo $diff->format("%Y Y %M M");
 		echo "</td><td>";
 			echo $row['source'];
 		echo "</td><td>";
@@ -192,7 +188,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 			echo $row['duration'];
 		echo "</td><td>";
 		    echo $row['date'];
-		echo "</td><td>";
+		echo "</td><td>";	
 			if($row['verified']=="1" )
 				echo "Issued";
 			else
@@ -203,7 +199,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 	<!-- The Modal -->
 	<!-- Be very careful editing this -->
 	<div id='myModal".$idd."' class='modal'>
-	<span class='close".$idd."'
+	<span class='close".$idd."' 
 	style='position: absolute;
     top: 15px;
     right: 35px;
@@ -214,7 +210,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 	>&times;</span>
 	<img class='modal-content' id='img1".$idd."'>
 	</div>
-
+	
 	<script>
 	// Get the modal
 	var modal = document.getElementById('myModal".$idd."');
@@ -228,18 +224,16 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 	// Get the <span> element that closes the modal
 	var span = document.getElementsByClassName('close".$idd."')[0];
 	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
+	span.onclick = function() { 
 		modal.style.display = 'none';
 	}
 	</script>
 			";
 		echo "</td><td>";
 
-			echo '
-			<input onclick="issue('.$idd.')" type = "submit" class="bg-green" name= "verify_it" value="Issue">
-			<form action="update.php" method="POST">
+			echo '<form action="update.php" method="POST">
 			<input type="hidden" name = "id" value = '.$idd .'>
-			<br/>
+			<input type = "submit" class="bg-green" name= "verify_it" value="Issue"><br/>
 			<input type = "submit" class="bg-red" name= "cancel_verify" value="Not Issue">
 			</form>';
 		echo "</td><td>";
@@ -253,8 +247,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 	}
 	}//end if
 ?>
-
-<html>
+						 
+<html>						  
                             <tr>
                               <th scope="row">-</th>
                               <td>-</td>
@@ -276,7 +270,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
                       </div>
                     </div>
                   </div>
-
+               
               </div>
             </div>
           </section>
@@ -305,7 +299,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
   </body>
 </html>
 
-<?php
+<?php	
 }
 else{
 	header("Refresh:1; url=login.html");
