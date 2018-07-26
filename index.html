@@ -6,6 +6,7 @@
     <title>Railway Concession Registration Form</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name='author' content='Danish Ayub Khan'>
     <meta name="robots" content="all,follow">
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -30,6 +31,13 @@
       <!-- Main Navbar-->
       <header class="header">
         <nav class="navbar">
+		  <!-- Search Box-->
+          <div class="search-box">
+            <button class="dismiss"><i class="icon-close"></i></button>
+            <form id="searchForm" action="studentsearch.php" name="search_s" method="POST">
+              <input type="search" name="email_id" placeholder="Check Status of your form by Email ID...." class="form-control">
+            </form>
+          </div>
           <div class="container-fluid">
             <div class="navbar-holder d-flex align-items-center justify-content-between">
               <!-- Navbar Header-->
@@ -39,6 +47,13 @@
                   <div class="brand-text d-none d-lg-inline-block"><span>Railway </span><strong> Concession</strong></div>
                   <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>Concession Form</strong></div></a>
               </div>
+			  <!-- Navbar Menu -->
+              <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+				
+				<!-- Search-->
+                <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+
+              </ul>
             </div>
           </div>
         </nav>
@@ -53,12 +68,15 @@
               <div class="row">
                 <!-- Form Elements -->
                 <div class="col-lg-12">
+				<iframe style="text-align:center;" width="100%" src="https://www.youtube.com/embed/xfNbu190YBA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+				<a href="https://www.youtube.com/embed/xfNbu190YBA">Guide to Railcon</a>
+				</iframe>
                   <div class="card">
                     
                       <img src="mhsccoe.jpg" alt="MHSSCOE Logo" align="middle" style="pointer-events: none; display:block; margin:0 auto;max-width:948px; width:100%; ">
                     
                     <div class="card-body">
-                      <form action="profile.php" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                      <form action="" method="POST" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
                           <label class="col-sm-3 form-control-label">Full Name</label>
                           <div class="col-sm-9">
@@ -167,7 +185,7 @@
 						<div class="line"></div>
 						
 						<div class="row">
-                          <label class="col-sm-3 form-control-label">Old Pass Expiry </label>
+                          <label class="col-sm-3 form-control-label">Old Pass Expiry <br> <small class="text-primary">If Exists</small></label>
                           <div class="col-sm-9">
                             <div class="form-group-material">
                               <input type="date" name="pass_end"/>
@@ -178,7 +196,7 @@
 						<div class="line"></div>
 						
 						<div class="row">
-                          <label class="col-sm-3 form-control-label">Old Voucher No: </label>
+                          <label class="col-sm-3 form-control-label">Old Voucher No:<br><small class="text-primary">If Exists</small> </label>
                           <div class="col-sm-9">
                             <div class="form-group-material">
                               <input type='text' name='voucher' placeholder='Enter Vch No.(Bottom Right)' class="form-control"/>
@@ -189,7 +207,7 @@
 						<div class="line"></div>
 						
 						<div class="row">
-                          <label class="col-sm-3 form-control-label">Old Season Ticket no. </label>
+                          <label class="col-sm-3 form-control-label">Old Season Ticket no. <br><small class="text-primary">If Exists</small></label>
                           <div class="col-sm-9">
                             <div class="form-group-material">
                               <input type='number' maxlength='4' name='season' placeholder='Enter Season Ticket No.(Top Right)' class="form-control" />
@@ -293,12 +311,20 @@
                         <div class="form-group row">
                           <label for="fileInput" class="col-sm-3 form-control-label">Upload Your ID Card Image</label><br>
 						  <small>
-						  *Size less than 0.5MB <br/>*Minimum Image Resolution widthxheight : 500x300<br>
-						  *Reference image below
+						  <br>*MAX SIZE 1 MB 
+						  <br>*Minimum Resolution: 100x100 
+						  <br>*only JPEG/JPG Allowed
+						  <br>*Reference image below
 						  </small>
 						  
                           <div class="col-sm-9">
-                            <input id="fileInput" type="file" name="UploadImage" class="form-control-file">
+                            <input id="fileInput" type="file" name="UploadImage" class="form-control-file" required>
+							<p id="error1" style="display:none; color:#FF0000;">
+							Invalid Image Format! Image Format Must Be JPG, JPEG.
+							</p>
+							<p id="error2" style="display:none; color:#FF0000;">
+							Maximum File Size Limit is 1MB.
+							</p>
                           </div>
                         </div>
 						
@@ -323,11 +349,12 @@
             <div class="container-fluid">
               <div class="row">
                 <div class="col-sm-6">
-                  <p>MHSSCOE &copy; 2018</p>
+                  <p> <a href="mhssce.ac.in">MHSSCOE &copy; 2018 </a> </p>
                 </div>
                 <div class="col-sm-6 text-right">
-                  <p>Powered by <a href="http://psychocodes.in" class="external">Psychocodes.in</a></p>
-                  <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+				  <p>Developed by <a href="www.linkedin.com/in/danishayubkhan">Danish A. Khan </a>& <a href="https://www.linkedin.com/in/husain-amreliwala-121b5312b/">Husain Amrelivala</a></p>
+                  <!--<p>Powered <a href="http://psychocodes.in" class="external">Psychocodes.in</a></p>-->
+
                 </div>
               </div>
             </div>
@@ -342,6 +369,35 @@
     <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+	<script>
+	$('button[type="submit"]').prop("disabled", true);
+var a=0;
+//binds to onchange event of your input field
+$('#fileInput').bind('change', function() {
+if ($('button:submit').attr('disabled',false)){
+	$('button:submit').attr('disabled',true);
+	}
+var ext = $('#fileInput').val().split('.').pop().toLowerCase();
+if ($.inArray(ext, ['jpg','jpeg']) == -1){
+	$('#error1').slideDown("slow");
+	$('#error2').slideUp("slow");
+	a=0;
+	}else{
+	var picsize = (this.files[0].size);
+	if (picsize > 1000000){
+	$('#error2').slideDown("slow");
+	a=0;
+	}else{
+	a=1;
+	$('#error2').slideUp("slow");
+	}
+	$('#error1').slideUp("slow");
+	if (a==1){
+		$('button:submit').attr('disabled',false);
+		}
+}
+});
+	</script>
     <!-- Main File-->
     <script src="js/front.js"></script>
   </body>
