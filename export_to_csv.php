@@ -1,29 +1,11 @@
-<?php
-// Connection 
-session_start();
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
-$conn=mysql_connect('localhost','root','','railcon');
-//database name
-$db=mysql_select_db('railcon',$conn);
-$filename = "RailwayConcession.xls"; // File Name
-// Download file
-header("Content-Disposition: attachment; filename=\"$filename\"");
-header("Content-Type: application/vnd.ms-excel");
-$user_query = mysql_query('select id,fullname,semester,email,DOB,contact,aadhar,address,pincode,
-	source,destination,passno,classof,duration,branch,year from student');
-// Write data to file
-$flag = false;
-while ($row = mysql_fetch_assoc($user_query)) {
-    if (!$flag) {
-        // display field/column names as first row
-        echo implode("\t", array_keys($row)) . "\r\n";
-        $flag = true;
-    }
-    echo implode("\t", array_values($row)) . "\r\n";
-}
+<?php
+// Connection 
+session_start();
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){	$conn=mysql_connect('localhost','root','','railcon');
+/*******EDIT LINES 3-8*******/$DB_Server = "localhost"; //MySQL Server    $DB_Username = "root"; //MySQL Username     $DB_Password = "";             //MySQL Password     $DB_DBName = "railcon";         //MySQL Database Name  $DB_TBLName = "student"; //MySQL Table Name   $filename = "RailwayConcession";         //File Name/*******YOU DO NOT NEED TO EDIT ANYTHING BELOW THIS LINE*******/    //create MySQL connection   $sql = "Select * from $DB_TBLName";$Connect = @mysql_connect($DB_Server, $DB_Username, $DB_Password) or die("Couldn't connect to MySQL:<br>" . mysql_error() . "<br>" . mysql_errno());//select database   $Db = @mysql_select_db($DB_DBName, $Connect) or die("Couldn't select database:<br>" . mysql_error(). "<br>" . mysql_errno());   //execute query $result = @mysql_query($sql,$Connect) or die("Couldn't execute query:<br>" . mysql_error(). "<br>" . mysql_errno());    $file_ending = "xls";//header info for browserheader("Content-Type: application/xls");    header("Content-Disposition: attachment; filename=$filename.xls");  header("Pragma: no-cache"); header("Expires: 0");/*******Start of Formatting for Excel*******/   //define separator (defines columns in excel & tabs in word)$sep = "\t"; //tabbed character//start of printing column names as names of MySQL fieldsfor ($i = 0; $i < mysql_num_fields($result); $i++) {echo mysql_field_name($result,$i) . "\t";}print("\n");    //end of printing column names  //start while loop to get data    while($row = mysql_fetch_row($result))    {        $schema_insert = "";        for($j=0; $j<mysql_num_fields($result);$j++)        {            if(!isset($row[$j]))                $schema_insert .= "NULL".$sep;            elseif ($row[$j] != "")                $schema_insert .= "$row[$j]".$sep;            else                $schema_insert .= "".$sep;        }        $schema_insert = str_replace($sep."$", "", $schema_insert);        $schema_insert = preg_replace("/\r\n|\n\r|\n|\r/", " ", $schema_insert);        $schema_insert .= "\t";        print(trim($schema_insert));        print "\n";    }
 }//Authentication
-else{
-	echo "<script> alert('Log In First'); </script>";
-	header("Refresh:1; url=login.html");
+else{
+	echo "<script> alert('Log In First'); </script>";
+	header("Refresh:1; url=login.html");
 }
 ?>
