@@ -231,11 +231,19 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 			";
 		echo "</td><td>";
 
-			echo '<form action="update.php" method="POST">
-			<input type="hidden" name = "id" value = '.$idd .'>
-			<input type = "submit" class="bg-green" name= "verify_it" value="Issue"><br/>
-			<input type = "submit" class="bg-red" name= "cancel_verify" value="Not Issue">
-			</form>';
+			echo "<form action='update.php' method='POST'>
+			<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-green' name= 'verify_it' value='Issue'><br/>
+			<input type = 'submit' class='bg-red' name= 'cancel_verify' value='Not Issue'><br/>
+			</form></br>
+			<form action='edit.php' method='POST'>
+			<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-blue' name= 'edit' value ='Edit Record'></br>
+			</form>
+			<form action='delete.php' method='POST' >
+			<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-red' name= 'delete' value ='Delete Record'/>
+			</form>";
 		echo "</td><td>";
 		echo "
 		<form id='Remarks' method='POST' action='update_remark.php'>
@@ -293,7 +301,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
     <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="vendor/confirmation.js"></script>
+	<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
     <!-- Main File-->
     <script src="js/front.js"></script>
   </body>
