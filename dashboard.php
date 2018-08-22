@@ -8,13 +8,16 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 	
 	if(isset($_GET['page'])){
 		$start = $_GET['page']*$size;
-		$_SESSION['dashpage'] = $_GET['page']; 
+		$_SESSION['dashpage'] = $_GET['page'];
+		$currpage = $_GET['page'];
 	}
 	elseif( isset($_SESSION['dashpage']) ){
 		$start = $_SESSION['dashpage'] * $size;
+		$currpage = $_SESSION['dashpage'];
 	}
 	else{
 		$start=0;
+		$currpage = 0;
 	}
 
 	$sql_display = "SELECT id, fullname, gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
@@ -50,10 +53,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-	<link rel='stylesheet' type='text/css' href='modal.css'>
-	<style>
-	
-	</style>
   </head>
   <body>
     <div class="page">
@@ -108,7 +107,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
               <div class="row">
                 <div class="col-lg-12">
                   <div class="card">
-                    <div class="card-header d-flex align-items-center">
+                    <div class="card-header d-flex align-items-center" style="overflow:auto;">
 	
 <!--Pagination -->
 <nav aria-label="...">
@@ -121,7 +120,16 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
     $total_records_pages = $result_pages->num_rows;
     $pages         = intval($total_records_pages / $size);
 
-    for ($i = 0; $i <= $pages; $i++) {
+    for ($i = 0; $i < $currpage; $i++) {
+		echo "<li class='page-item'>";
+		echo "<a class='page-link' href='dashboard.php?page=".$i."'> $i </a>";
+		echo "</li>";
+		}
+	echo "<li class='page-item active'>";
+	echo "<a class='page-link' href='dashboard.php?page=".$i."'> $i </a>";
+	echo "</li>";
+	$i++;	
+    for (; $i <= $pages; $i++) {
 		echo "<li class='page-item'>";
 		echo "<a class='page-link' href='dashboard.php?page=".$i."'> $i </a>";
 		echo "</li>";
@@ -161,7 +169,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 
         echo "<tr><th scope='row'>". $idd=$row['id'] ;
 		echo '</th><td>';
+			
+			echo "<a href='complete_data.php?student=".$idd."'>";
 			echo $row['fullname'];
+			echo "</a>";
 		echo "</td><td>";
 			if( $row['gender']=='1' )
 				echo "Female";
@@ -195,40 +206,38 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 				echo "Not Issued";
 		echo "</td><td>";
 			$MyPhoto = $row['img_loc'];
-			echo "<img id='".$idd."' src = 'MyUploadImages/".$MyPhoto."'  height='100'/>
-	<!-- The Modal -->
-	<!-- Be very careful editing this -->
-	<div id='myModal".$idd."' class='modal'>
-	<span class='close".$idd."' 
-	style='position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;'
-	>&times;</span>
-	<img class='modal-content' id='img1".$idd."'>
-	</div>
+			
+			echo "<img id='".$idd."' src = 'MyUploadImages/".$MyPhoto."' data-toggle='modal' data-target='#myModal' height='100'/>";
+		
+?>
+	<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style = "max-width:90%; max-height:90%">
+        <div class="modal-content">
+            <div class="modal-body ">
+                <img class="showimage img-responsive" src="" style = "max-width:90%"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+			
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('img').on('click', function () {
+        var image = $(this).attr('src');
+        //alert(image);
+        $('#myModal').on('show.bs.modal', function () {
+            $(".showimage").attr("src", image);
+        });
+    });
+});
 	
-	<script>
-	// Get the modal
-	var modal = document.getElementById('myModal".$idd."');
-	// Get the image and insert it inside the modal
-	var img = document.getElementById('".$idd."');
-	var modalImg = document.getElementById('img1".$idd."');
-	img.onclick = function(){
-		modal.style.display = 'block';
-		modalImg.src = this.src;
-	}
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName('close".$idd."')[0];
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() { 
-		modal.style.display = 'none';
-	}
-	</script>
-			";
+</script>
+
+<?php
 		echo "</td><td>";
 
 			echo "<form action='update.php' method='POST'>
@@ -236,14 +245,21 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 			<input type = 'submit' class='bg-green' name= 'verify_it' value='Issue'><br/>
 			<input type = 'submit' class='bg-red' name= 'cancel_verify' value='Not Issue'><br/>
 			</form></br>
+			
 			<form action='edit.php' method='POST'>
 			<input type='hidden' name = 'id' value = ".$idd .">
 			<input type = 'submit' class='bg-blue' name= 'edit' value ='Edit Record'></br>
 			</form>
-			<form action='delete.php' method='POST' >
-			<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-red' name= 'delete' value ='Delete Record'/>
-			</form>";
+			";
+		?>
+
+		<form action='delete.php' method='POST' onsubmit="return confirm('Are you sure you want to Delete?');" >
+
+		<?php
+		echo "<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-red' name= 'delete' value ='Delete Record'>
+			</form>	";
+			
 		echo "</td><td>";
 		echo "
 		<form id='Remarks' method='POST' action='update_remark.php'>
@@ -287,7 +303,11 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
             <div class="container-fluid">
               <div class="row">
                 <div class="col-sm-6">
-                  <p>MHSSCOE &copy; 2018</p>
+                  <p> <a href="http://www.mhssce.ac.in" target="_blank">MHSSCOE &copy; 2018 </a> </p>
+                </div>
+                <div class="col-sm-6 text-right">
+				  <p>Developed by <a target="_blank" href="https://www.linkedin.com/in/danishayubkhan">Danish A. Khan </a> & <a target="_blank" href="https://www.linkedin.com/in/husain-amreliwala-121b5312b/">Husain Amrelivala</a></p>
+                  
                 </div>
               </div>
             </div>
@@ -301,8 +321,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
     <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/confirmation.js"></script>
-	<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
     <!-- Main File-->
     <script src="js/front.js"></script>
   </body>
