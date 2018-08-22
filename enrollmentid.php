@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Enrollment Number</title>
-    <meta name="description" content="">
+    <meta name="author" content="Danish Ayub Khan">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
     <!-- Bootstrap CSS-->
@@ -43,7 +43,7 @@
                 <div class="col-xl-3 col-sm-6">
                   <div class="item d-flex align-items-center">
                     <div class="icon bg-violet"><i class="icon-user"></i></div>
-                    <div class="title"><span>Enrollment<br>Number</span>
+                    <div class="title"><span>Read<br>Instruction Carefully</span>
                       <div class="progress">
                         <div role="progressbar" style="width: 50%; height: 4px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-violet"></div>
                       </div>
@@ -94,7 +94,7 @@
                     <div class="project-title d-flex align-items-center">
                       <div class="text">
                         <h3 class="h4">Check Status of you form at <a href="http://railcon.epizy.com/studentsearch.html"> Form Status</a></h3>
-						<small>Alternatively you will recieve a mail</small>
+						<small>Alternatively you will recieve a Mail when concession is prepared</small>
                       </div>
                     </div>
                   </div>
@@ -115,7 +115,8 @@
                   <p>MHSSCOE &copy; 2018</p>
                 </div>
                 <div class="col-sm-6 text-right">
-                  <p>Powered by <a href="https://psychocodes.in" class="external">PsychoCodes</a></p>
+				  <p>Developed by <a href="www.linkedin.com/in/danishayubkhan">Danish A. Khan </a>& <a href="https://www.linkedin.com/in/husain-amreliwala-121b5312b/">Husain Amrelivala</a></p>
+                  <!--<p>Powered <a href="http://psychocodes.in" class="external">Psychocodes.in</a></p>-->
                 </div>
               </div>
             </div>

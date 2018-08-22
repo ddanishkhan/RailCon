@@ -2,11 +2,14 @@
 
 session_start();
 
-if(isset($_POST['submit']))
+if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == TRUE ){
+	header("Location: dashboard.php");	
+}
+elseif(isset($_POST['submit']))
 {
 	include('database_connection.php');
 	$user = $_POST['loginUsername'];
-	$pass = $_POST['loginPassword'];
+	$pass = md5($_POST['loginPassword']) ;
 
 	$q = $db->prepare("SELECT id, username, password FROM members WHERE username=?") OR die('query preparation failed');
 	$q->bind_param('s',$user);
@@ -16,19 +19,16 @@ if(isset($_POST['submit']))
 
 	$q->fetch();
 
-	if($dbuser == $user && $dbpass == $pass)
-	{
-	$_SESSION['user'] = $dbuser;
-	$_SESSION['loggedin'] = TRUE;
-
-	header("Location: dashboard.php");
+	if($dbuser == $user && $dbpass == $pass){
+		$_SESSION['user'] = $dbuser;
+		$_SESSION['loggedin'] = TRUE;
+		header("Location: dashboard.php");
 	}
 
-	else
-	{
-	echo "<script> alert('Incorrect Login Credentials'); </script>";
-	$_SESSION['loggedin'] = False;
-	header("Refresh:1; url=login.html");
+	else{
+		echo "<script> alert('Incorrect Login Credentials'); </script>";
+		$_SESSION['loggedin'] = False;
+		header("Refresh:1; url=page-login.html");
 	}
 
 	$q->free_result();
