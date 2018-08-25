@@ -87,6 +87,7 @@ else {
               <div class="row">
                 <div class="col-lg-12">
                   <div class="card">
+
                     <div class="card-header d-flex align-items-center">
                       <!--<h3 class="h4">Compact Table</h3>-->
                     </div>
@@ -114,7 +115,7 @@ else {
 <?php
 
 		/* database connection*/
-		include ('database_connection.php');
+		include 'database_connection.php' ;
 		$min_length = 3;
 		
 		$query = $_POST['email_id'];
@@ -128,7 +129,7 @@ else {
 		$query = mysqli_real_escape_string($db, $query);
 
 	// makes sure nobody uses SQL injection
-		$raw_results = mysqli_query($db, "SELECT id, fullname, source, destination, passno,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date, remark FROM student
+		$raw_results = mysqli_query($db, "SELECT id, fullname, source, destination, passno,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date, remark, edit FROM student
 WHERE (`email` LIKE '%" . $query . "%') LIMIT 3" );
 		
 		if(!mysqli_num_rows($raw_results) > 0){
@@ -197,6 +198,15 @@ modal.style.display = 'none';
 ";
 				echo "</td><td>";
 				echo $row['remark'];
+				//checking edit permissions are granted or not.
+		if($row['edit'] == 1){
+			echo "<br>";
+			echo "<br>";
+			echo "<form action='student_edit.php' method='POST' >
+				<input type='hidden' name = 'id' value = ".$idd .">
+				<input type = 'submit' class='bg-green' name= 'student_edit' value ='Edit form'/>
+				</form>";
+		}
 				echo "</td></tr>";
 			} //end while			
 		}

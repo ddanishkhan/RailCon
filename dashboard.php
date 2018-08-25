@@ -250,6 +250,11 @@ $(document).ready(function () {
 			<input type='hidden' name = 'id' value = ".$idd .">
 			<input type = 'submit' class='bg-blue' name= 'edit' value ='Edit Record'></br>
 			</form>
+			
+			<form action='editform.php' method='POST' >
+			<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-green' name= 'edit_form' value ='Allow Edit'/>
+			</form>
 			";
 		?>
 
