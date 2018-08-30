@@ -1,3 +1,18 @@
+//Query for updation of monthly records
+
+INSERT INTO oldstudent(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark)
+SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark
+FROM student
+WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
+AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+AND duration="Monthly";
+
+//Query for deleting
+DELETE FROM student
+WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
+AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+AND duration="Monthly";
+
 //EVENT
 
 CREATE DEFINER=`root`@`localhost` EVENT `e_daily` ON SCHEDULE EVERY 10 SECOND STARTS '2018-04-09 00:00:00' ON COMPLETION PRESERVE 
@@ -11,66 +26,3 @@ WHERE datetodelete < (NOW() - INTERVAL 1 DAY);
 
 DELETE FROM student WHERE datetodelete < (NOW() - INTERVAL 1 DAY);
 END
-
-//oldstudent
-CREATE TABLE `oldstudent` (
- `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
- `fullname` varchar(30) NOT NULL,
- `gender` tinyint(1) NOT NULL,
- `semester` tinyint(2) unsigned NOT NULL,
- `email` varchar(30) NOT NULL,
- `DOB` date NOT NULL,
- `contact` bigint(15) unsigned NOT NULL,
- `aadhar` bigint(15) unsigned NOT NULL,
- `address` varchar(50) NOT NULL,
- `pincode` mediumint(6) unsigned NOT NULL,
- `source` varchar(20) NOT NULL,
- `destination` varchar(20) NOT NULL,
- `passno` varchar(20) DEFAULT NULL,
- `pass_end` date DEFAULT NULL,
- `voucher` varchar(20) DEFAULT NULL,
- `season` int(20) DEFAULT NULL,
- `classof` varchar(20) NOT NULL,
- `duration` varchar(20) NOT NULL,
- `branch` varchar(20) NOT NULL,
- `year` varchar(20) NOT NULL,
- `img_loc` varchar(50) NOT NULL,
- `verified` tinyint(1) unsigned NOT NULL DEFAULT '0',
- `dateofentry` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- `datetodelete` timestamp NULL DEFAULT NULL,
- `Remark` varchar(50) NOT NULL DEFAULT 'No Remarks',
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1
-
-//student
-	
-CREATE TABLE `student` (
- `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
- `fullname` varchar(30) NOT NULL,
- `gender` tinyint(1) NOT NULL,
- `semester` tinyint(2) unsigned NOT NULL,
- `email` varchar(30) NOT NULL,
- `DOB` date NOT NULL,
- `contact` bigint(15) unsigned NOT NULL,
- `aadhar` bigint(15) unsigned NOT NULL,
- `address` varchar(50) NOT NULL,
- `pincode` mediumint(6) unsigned NOT NULL,
- `source` varchar(20) NOT NULL,
- `destination` varchar(20) NOT NULL,
- `passno` varchar(20) DEFAULT NULL,
- `pass_end` date DEFAULT NULL,
- `voucher` varchar(20) DEFAULT NULL,
- `season` int(20) DEFAULT NULL,
- `classof` varchar(20) NOT NULL,
- `duration` varchar(20) NOT NULL,
- `branch` varchar(20) NOT NULL,
- `year` varchar(20) NOT NULL,
- `img_loc` varchar(50) NOT NULL,
- `verified` tinyint(1) unsigned NOT NULL DEFAULT '0',
- `dateofentry` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- `datetodelete` timestamp NULL DEFAULT NULL,
- `Remark` varchar(50) NOT NULL DEFAULT 'No Remarks',
- PRIMARY KEY (`id`),
- UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1
-
