@@ -1,12 +1,6 @@
 <?php
-if (!$_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['loggedin'] == true ){
-  header("location:login.html");
-}
-else {
-	if (!isset($_POST['email_id'])) {
-		echo "Error Enter Email ID";
-	}
-	else{
+session_start();
+if (isset($_POST['email_id']) || isset($_SESSION['studentemail']) ) {
 ?>
 
 <!DOCTYPE html>
@@ -103,22 +97,26 @@ else {
 							  <th>Class</th> 
 							  <th>Duration</th> 
 							  <th>DateOfEntry</th> 
-							  <th>Status</th> 
+							  <th style="background-color: #f2dede;">Status</th> 
 							  <th>ID Card</th> 
-							  <th>Remarks</th> 
+							  <th style="background-color: #d9edf7;">Remarks</th> 
                             </tr>
                           </thead>
-						  <tbody>
-							
+						  <tbody>		
 </html>
-
 <?php
 
 		/* database connection*/
 		include 'database_connection.php' ;
 		$min_length = 3;
 		
-		$query = $_POST['email_id'];
+		if( isset($_POST['email_id']) ){
+			$query = $_POST['email_id'];
+		}
+		else{
+			$query = $_SESSION['studentemail'];
+		}
+		
 		
 		if (strlen($query) >= $min_length) { 
 	
@@ -154,7 +152,7 @@ WHERE (`email` LIKE '%" . $query . "%') LIMIT 3" );
 		echo "</td><td>";
 		    echo $row['date'];
 
-		echo "</td><td>";	
+		echo "</td><td style='background-color: #f2dede;'>";	
 			if($row['verified']=="1" )
 				echo "Issued";
 			else
@@ -196,7 +194,7 @@ modal.style.display = 'none';
 }
 </script>
 ";
-				echo "</td><td>";
+				echo "</td><td style='background-color: #d9edf7;'>";
 				echo $row['remark'];
 				//checking edit permissions are granted or not.
 		if($row['edit'] == 1){
@@ -265,5 +263,8 @@ modal.style.display = 'none';
 		echo "<script>alert('Minimum Length is 3')</script>";
 	}
 }
+else{
+	echo "Enter Email ID";
 }
+
 ?>
