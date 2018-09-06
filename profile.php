@@ -33,6 +33,8 @@ else
 	$fullname= $_POST['name'];
 	$gender = $_POST['gender'];
 	$sem    = $_POST['semester'];
+	/*SESSION variable for email redirecting to student search if email is already inserted*/
+	$_SESSION['studentemail'] = $_POST['email'];
 	$email   = $_POST['email'];
 	$contact = $_POST['contact']; 
 	$aadhar  = 123456789;
@@ -88,10 +90,60 @@ else
 	}
 	else
 	{
+	/*   Query to check email exists if exists then check if it is one month/3 month old based on date of entry   */
+	$select = mysqli_query($db, "SELECT `email` FROM `student` WHERE `email` = '".$_POST['email']."'") or exit(mysqli_error($db));
+	if(mysqli_num_rows($select)) {	
+		/**********     ACTION for email exists already     **************/
+		echo "Email Exists ALREADY";
+		
+		/*****TRANSACTION FOR MONTHLY PASSES **/
+		mysqli_query ($db, 'BEGIN TRANSACTION;');
+		echo "Begin TRANSACTION<br>";
+		mysqli_query ($db, "INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) AND duration='Monthly';");
+		if ($errMsg = mysqli_error ($db))
+		{
+			mysqli_query ($db,'ROLLBACK;');
+		echo "TRANSACTION 1 Error<br>";
+			die ($errMsg);
+		}
+		mysqli_query ($db, "DELETE FROM student
+	WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) AND duration='Monthly';");
+		if ($errMsg = mysqli_error ($db))
+		{
+			mysqli_query ($db,'ROLLBACK;');
+		echo "TRANSACTION 2 Error<br>";
+			die ($errMsg);
+		}
+		mysqli_query ($db, 'COMMIT');
+		/*****TRANSACTION FOR MONTHLY PASSES **/
+		
+		/*****TRANSACTION FOR Quarterly PASSES **/
+		mysqli_query ($db, 'BEGIN TRANSACTION;');
+		echo "Begin TRANSACTION<br>";
+		mysqli_query ($db, "INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 4 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 4 MONTH) AND duration='Quarterly';");
+		if ($errMsg = mysqli_error ($db))
+		{
+			mysqli_query ($db,'ROLLBACK;');
+		echo "TRANSACTION 1 Error<br>";
+			die ($errMsg);
+		}
+		mysqli_query ($db, "DELETE FROM student
+	WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 4 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 4 MONTH) AND duration='Quarterly';");
+		if ($errMsg = mysqli_error ($db))
+		{
+			mysqli_query ($db,'ROLLBACK;');
+		echo "TRANSACTION 2 Error<br>";
+			die ($errMsg);
+		}
+		mysqli_query ($db, 'COMMIT');
+		/*****TRANSACTION FOR Quarterly PASSES **/
+	
+	}
+	 echo "UPLAODING";
 	 //create a folder MyUploadImages for storing images
 	 $upload_directory = "MyUploadImages/";
 	 
-	 echo $TargetPath=time()."id.".pathinfo($UploadedFileName, PATHINFO_EXTENSION);
+	$TargetPath=time()."id.".pathinfo($UploadedFileName, PATHINFO_EXTENSION);
 	
 	 $empty = 0;
 	 $q = mysqli_prepare($db,"INSERT INTO student(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,
@@ -115,18 +167,13 @@ else
 		else{
 			$del_q = "DELETE FROM student WHERE email='$email' LIMIT 1";
 			mysqli_stmt_execute($del_q); //execute stmt
- echo "Error Email Exists" ;
 		}/*ok*/
+ echo "Error Email Exists" ;
 	 }/*end if mysqli_stmt*/
 	 
 if($db->errno){
 	$_SESSION['studenterror'] = "EMAIL EXISTS ALREADY!";		
-	//header("location:error.php");
-	die(); 
-	}
-elseif($db->errno){
-	$_SESSION['studenterror'] = "EMAIL EXISTS ALREADY!";		
-	//header("location:error.php");
+	header("location:studentsearch.php");
 	die(); 
 	}
 else{
@@ -135,7 +182,7 @@ else{
 		$row = $result->fetch_assoc();
 		$_SESSION['enroll_id'] = $row['id'];
 		$db->close();
-		//header("location:enrollmentid.php");
+		header("location:enrollmentid.php");
 		} //ok end
 	}// end else for insertion
 }
