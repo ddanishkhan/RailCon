@@ -122,16 +122,16 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 
     for ($i = 0; $i < $currpage; $i++) {
 		echo "<li class='page-item'>";
-		echo "<a class='page-link' href='dashboard.php?page=".$i."'> $i </a>";
+		echo "<a class='page-link' href='?page=".$i."'> $i </a>";
 		echo "</li>";
 		}
 	echo "<li class='page-item active'>";
-	echo "<a class='page-link' href='dashboard.php?page=".$i."'> $i </a>";
+	echo "<a class='page-link' href='?page=".$i."'> $i </a>";
 	echo "</li>";
 	$i++;	
     for (; $i <= $pages; $i++) {
 		echo "<li class='page-item'>";
-		echo "<a class='page-link' href='dashboard.php?page=".$i."'> $i </a>";
+		echo "<a class='page-link' href='?page=".$i."'> $i </a>";
 		echo "</li>";
 		}
 ?>

@@ -1,5 +1,7 @@
 <?php
 session_start();
+$_SESSION['dashboard'] = False;
+
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     include('database_connection.php');
     
@@ -17,12 +19,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 		$start=0;
 		$currpage = 0;
 	}
-	if(isset($_GET['entries']) && $_GET['entries'] == 'all' ){
-		$_SESSION['dashboard'] = true;
-	}
-	else{
-		$_SESSION['dashboard'] = false;		
-	}
 	
 	$filter = "Not_Issued";
 	
@@ -35,58 +31,48 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     elseif (isset($_POST['filter_submit'])) {
         $filter = $_POST['filter'];
     }
-        elseif (isset($_SESSION['record_filter'])) {
+    elseif (isset($_SESSION['record_filter'])) {
         $filter = $_SESSION['record_filter'];
     }
     else {
         $_SESSION['filter'] = "Not_Issued";
     }	
 	
-	/***************************FILTERS QUERY**********************************************/
-	if(isset($_SESSION['dashboard'])){
-		$_SESSION['record_filter'] = 'All Entries';
-		$sql_display = "SELECT id, fullname, gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-		FROM student LIMIT $start, $size";
-
-	$sql_query_pages = "SELECT id FROM student";
-	}
-	elseif ($filter == "Issued") {
+	    if ($filter == "Issued") {
         $_SESSION['record_filter'] = 'Issued';
         //Set Query for Issued
         $sql_display               = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified,voucher,season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
         FROM student WHERE verified=1
+ORDER BY id
         LIMIT $start, $size";
 		$sql_query_pages = "SELECT id FROM student WHERE verified=1";
     } //$filter == "Issued"
-    
-	elseif ($filter == "Not_Issued") {
+    elseif ($filter == "Not_Issued") {
         $_SESSION['record_filter'] = 'Not_Issued';
         // set Query for Not_Issued
         $sql_display               = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified,voucher,
         season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-        FROM student WHERE verified=0
+        FROM student WHERE verified=0 ORDER BY id
         LIMIT $start, $size";
 		$sql_query_pages = "SELECT id FROM student WHERE verified=0";
     } //$filter == "Not_Issued"
-    
-	elseif ($filter == "Males") {
+        elseif ($filter == "Males") {
         $_SESSION['record_filter'] = 'Males';
         //set Query for Males non-issued
         $sql_display               = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified, voucher,
         season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-        FROM student WHERE gender=0 AND verified=0 
+        FROM student WHERE gender=0 AND verified=0 ORDER BY id
         LIMIT $start, $size";
 		
 		$sql_query_pages = "SELECT id FROM student WHERE gender=0 AND verified=0 ";
 		
     } //$filter == "Males"
-    
-	elseif ($filter == "Females") {
+        elseif ($filter == "Females") {
         $_SESSION['record_filter'] = 'Females';
         //Set Query for Females Not-Issued
         $sql_display               = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,verified, DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,
         season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-        FROM student WHERE gender=1 AND verified=0 
+        FROM student WHERE gender=1 AND verified=0 ORDER BY id
         LIMIT $start, $size";
 		
 		$sql_query_pages = "SELECT id FROM student WHERE gender=1 AND verified=0 ";
@@ -94,20 +80,18 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     } //$filter == "Females"
         
     //raw text filter for dates
-    
-	elseif ($filter == "Dates") {
+        elseif ($filter == "Dates") {
         $_SESSION['record_filter'] = "Dates";
         $dateofentry               = $_SESSION['actual_date'];
         //Set Query for Dates
         $sql_display               = "SELECT id, fullname, gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,verified, DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,
         season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-        FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0 
+        FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0 ORDER BY id
         LIMIT $start, $size";
 		
 		$sql_query_pages = "SELECT id FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0 ";
 		
     } //$filter == "Dates"
-/***************************FILTERS QUERY END***************************/
 ?>
 
 <!DOCTYPE html>
@@ -186,7 +170,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           <div class="breadcrumb-holder container-fluid">
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="admin_filter.php">Filter</a></li>
-              <li class="breadcrumb-item"><a href="admin.php?entries=all">Dashboard</a>
+              <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a>
 			  <li class="breadcrumb-item active"></html><?php echo $_SESSION['record_filter']?><html> </li>
             </ul>
           </div>
@@ -257,6 +241,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 
 <?php
 
+
+
+
+	
     $result = $db->query($sql_display);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -347,11 +335,6 @@ $(document).ready(function () {
 			<input type='hidden' name = 'id' value = ".$idd .">
 			<input type = 'submit' class='bg-blue' name= 'edit' value ='Edit Record'></br>
 			</form>
-			
-			<form action='editform.php' method='POST' >
-			<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-green' name= 'edit_form' value ='Allow Edit'/>
-			</form>
 			";
 		?>
 
@@ -360,7 +343,12 @@ $(document).ready(function () {
 		<?php
 		echo "<input type='hidden' name = 'id' value = ".$idd .">
 			<input type = 'submit' class='bg-red' name= 'delete' value ='Delete Record'>
-			</form>	";
+			</form>	
+            <form action='editform.php' method='POST' >
+			<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-green' name= 'edit_form' value ='Allow Edit'/>
+			</form>
+            ";
 			
 		echo "</td><td>";
 		echo "
@@ -432,4 +420,4 @@ else {
     echo "<script> alert('Log In First'); </script>";
     header("Refresh:1; url=login.html");
 }
-?>
+?>		
