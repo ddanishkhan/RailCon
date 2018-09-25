@@ -67,11 +67,13 @@ unset( $_SESSION['adminpage'] );
 	</form>
 
 	<form action='change_number.php' name='changenum' method='POST'>
+	<!--
 	<li>
 		<label>Change Start Number</label>
 		<input type='number' name='startnum' /><br/>
 		<input type='submit' name='startnumbutton' value='Change Start' />
 	</li>
+	-->
 	<li>
 		<label>Change End Number</label>
 		<input type='number' name='endnum' /><br/>
