@@ -92,6 +92,10 @@ ORDER BY id
 		$sql_query_pages = "SELECT id FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0 ";
 		
     } //$filter == "Dates"
+	
+	/*QUERY MAIN*/
+	$result = $db->query($sql_display);
+
 ?>
 
 <!DOCTYPE html>
@@ -171,7 +175,7 @@ ORDER BY id
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="admin_filter.php">Filter</a></li>
               <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a>
-			  <li class="breadcrumb-item active"></html><?php echo $_SESSION['record_filter']?><html> </li>
+			  <li class="breadcrumb-item active"></html><?php echo $_SESSION['record_filter']?></li>
             </ul>
           </div>
           <section class="tables">   
@@ -180,221 +184,27 @@ ORDER BY id
                 <div class="col-lg-12">
                   <div class="card">
                     <div class="card-header d-flex align-items-center">
-<!--Pagination -->
-<nav aria-label="...">
-<ul class="pagination">
-</html>
-
-<?php
-	//page number
-    /*$sql_query_pages     = "SELECT id FROM student";*/
-    $result_pages        = $db->query($sql_query_pages);
-    $total_records_pages = $result_pages->num_rows;
-    $pages         = intval($total_records_pages / $size);
-
-    for ($i = 0; $i < $currpage; $i++) {
-		echo "<li class='page-item'>";
-		echo "<a class='page-link' href='?page=".$i."'> $i </a>";
-		echo "</li>";
-		}
-		
-		echo "<li class='page-item active'>";
-		echo "<a class='page-link' href='?page=".$i."'> $i </a>";
-		echo "</li>";
-	$i++;
-		
-    for (; $i <= $pages; $i++) {
-		echo "<li class='page-item'>";
-		echo "<a class='page-link' href='?page=".$i."'> $i </a>";
-		echo "</li>";
-		}	
-?>
-<html>
-  </ul>
-</nav>
-                      <!--<h3 class="h4">Compact Table</h3>-->
+					<!--Pagination -->
+					<?php require 'pagination.php' ?>
+					<!--Pagination -->
                     </div>
-                    <div class="card-body">
-                      <div class="table-responsive">   
-                        <table class="table table-striped table-sm">
-                          <thead>
-                            <tr>
-                              <th>#</th>
-                              <th>Name</th>
-                              <th>Gender</th>
-                              <th>Age</th>
-							  <th>Source</th>
-							  <th>Destination</th>
-							  <th>Passno</th>
-							  <th>Class</th> 
-							  <th>Duration</th> 
-							  <th>DateOfEntry</th> 
-							  <th>Status</th> 
-							  <th>ID Card</th> 
-							  <th>Issue</th> 
-							  <th>Remarks</th> 
-                            </tr>
-                          </thead>
-						  <tbody>
-							
-</html>
-
-<?php
-
-
-
-
-	
-    $result = $db->query($sql_display);
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-			
-            echo "<tr><th scope='row'>" . $idd = $row['id'];
-            echo '</th><td>';
-			echo "<a href='complete_data.php?student=".$idd."'>";
-			echo $row['fullname'];
-			echo "</a>";
-            echo "</td><td>";
-            if ($row['gender'] == '1')
-                echo "Female";
-            else
-                echo "Male";
-            echo "</td><td>";
-			
-			$diff = date_diff(date_create(), date_create($row['DOB']) );
-			echo $row['dateOB'];
-			echo "<br/>";
-			echo "--- <br>";
-			echo $diff->format("%Y Y %M M");
-			
-            echo "</td><td>";
-            echo $row['source'];
-            echo "</td><td>";
-            echo $row['destination'];
-            echo "</td><td>";
-            echo $row['passno'] . "<br/>";
-            echo $row['pass_end'] . "<br/>";
-            echo $row['voucher'] . "<br/>";
-            echo $row['season'] . "<br/>";
-            echo "</td><td>";
-            echo $row['classof'];
-            echo "</td><td>";
-            echo $row['duration'];
-            echo "</td><td>";
-            echo $row['date'];
-            echo "</td><td>";
-            if ($row['verified'] == "1")
-                echo "Issued";
-            else
-                echo "Not Issued";
-            echo "</td><td>";
-            $MyPhoto = $row['img_loc'];
-            			$MyPhoto = $row['img_loc'];
-			
-			echo "<img id='".$idd."' src = 'MyUploadImages/".$MyPhoto."' data-toggle='modal' data-target='#myModal' height='100'/>";
-		
-?>
-	<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog" style = "max-width:90%; max-height:90%">
-        <div class="modal-content">
-            <div class="modal-body ">
-                <img class="showimage img-responsive" src="" style = "max-width:90%"/>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-			
-<script src="http://code.jquery.com/jquery.min.js"></script>
-<script>
-$(document).ready(function () {
-    $('img').on('click', function () {
-        var image = $(this).attr('src');
-        //alert(image);
-        $('#myModal').on('show.bs.modal', function () {
-            $(".showimage").attr("src", image);
-        });
-    });
-});
-	
-</script>
-
-<?php
-            echo "</td><td>";
-            $_SESSION['dashboard'] = False;
-			
-			echo "<form action='update.php' method='POST'>
-			<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-green' name= 'verify_it' value='Issue'><br/>
-			<input type = 'submit' class='bg-red' name= 'cancel_verify' value='Not Issue'><br/>
-			</form></br>
-			
-			<form action='edit.php' method='POST'>
-			<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-blue' name= 'edit' value ='Edit Record'></br>
-			</form>
-			";
-		?>
-
-		<form action='delete.php' method='POST' onsubmit="return confirm('Are you sure you want to submit?');" >
-
-		<?php
-		echo "<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-red' name= 'delete' value ='Delete Record'>
-			</form>	
-            <form action='editform.php' method='POST' >
-			<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-green' name= 'edit_form' value ='Allow Edit'/>
-			</form>
-            ";
-			
-		echo "</td><td>";
-		echo "
-		<form id='Remarks' method='POST' action='update_remark.php'>
-		<input type='text' name='remark' placeholder='Enter Remarks' style='width:90%'/>
-		<input type='hidden' name = 'id' value = ".$idd."></input>
-		<input type='submit' class='bg-blue' name='update_remark' value='Remark' style='width:80%;'/>
-		</form>";
-		echo "</td></tr>";
-        }
-    } //$result->num_rows > 0
-	else {
-    echo "<strong style='font-size:2em'>No Records</strong>";
-    }
-?>
-<html>						  
-                            <tr>
-                              <th scope="row">-</th>
-                              <td>-</td>
-                              <td>---</td>
-                              <td>---</td>
-							  <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-							  <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-							  <td>---</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+					<?php
+					require 'admin_table.php';
+					?>
+					<div class="card-header d-flex align-items-center">
+					<!--Pagination -->
+					<?php require 'pagination.php' ?>
+					<!--Pagination -->
+					</div>
                   </div>
-               
-              </div>
-            </div>
+				</div>
+             </div>
           </section>
           <!-- Page Footer-->
           <footer class="main-footer">
             <div class="container-fluid">
               <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                   <p>MHSSCOE &copy; 2018</p>
                 </div>
               </div>
@@ -402,6 +212,7 @@ $(document).ready(function () {
           </footer>
         </div>
       </div>
+    </div>
     </div>
     <!-- JavaScript files-->
     <script src="vendor/jquery/jquery.min.js"></script>

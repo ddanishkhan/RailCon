@@ -5,6 +5,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 
 	// database connection
 	include ('database_connection.php');
+	
+	
 ?>
 
 <!DOCTYPE html>
@@ -144,7 +146,7 @@ WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') 
 		}
 		else {
 
-			while ($row = mysqli_fetch_array($raw_results)) {
+		while ($row = mysqli_fetch_array($raw_results)) {
 
 				echo "<tr><th scope='row'>". $idd=$row['id'] ;
 		echo '</th><td>';

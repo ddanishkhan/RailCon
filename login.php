@@ -28,7 +28,7 @@ elseif(isset($_POST['submit']))
 	else{
 		echo "<script> alert('Incorrect Login Credentials'); </script>";
 		$_SESSION['loggedin'] = False;
-		header("Refresh:1; url=page-login.html");
+		header("Refresh:1; url=login.html");
 	}
 
 	$q->free_result();
