@@ -33,6 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 
 	elseif(isset($_POST['cancel_verify'])) {
+
+		include ('PHPMailer/senderrormail.php');
+	
+		
 		$var_id = $_POST['id'];
 		$status_check = "SELECT verified FROM student WHERE id = '$var_id' LIMIT 1";
 		$s_check = $db->query($status_check);

@@ -22,7 +22,7 @@ elseif(isset($_POST['submit']))
 	if($dbuser == $user && $dbpass == $pass){
 		$_SESSION['user'] = $dbuser;
 		$_SESSION['loggedin'] = TRUE;
-		header("Location: dashboard.php");
+		header("Location: admin.php");
 	}
 
 	else{
@@ -35,6 +35,8 @@ elseif(isset($_POST['submit']))
 	$q->close();
 	$db->close();
 }
-else{header('Location: login.html');}
+else{
+	header('Location: login.html');
+	}
 
 ?>

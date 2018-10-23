@@ -94,20 +94,20 @@ else
 	$select = mysqli_query($db, "SELECT `email` FROM `student` WHERE `email` = '".$_POST['email']."'") or exit(mysqli_error($db));
 	if(mysqli_num_rows($select)) {	
 		/**********     ACTION for email exists already     **************/
-		echo "Email Exists ALREADY";
+		echo "Email Exists ALREADY<br>";
 		
 		/*****TRANSACTION FOR MONTHLY PASSES **/
 		mysqli_query ($db, 'BEGIN TRANSACTION;');
 		echo "Begin TRANSACTION<br>";
-		mysqli_query ($db, "INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) AND duration='Monthly';");
+		mysqli_query ($db, "INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) AND duration='Monthly' AND verified=1;" ) ;
 		if ($errMsg = mysqli_error ($db))
 		{
 			mysqli_query ($db,'ROLLBACK;');
-		echo "TRANSACTION 1 Error<br>";
+		echo "TRANSACTION 1 (Monthly Forms) Error<br>";
 			die ($errMsg);
 		}
 		mysqli_query ($db, "DELETE FROM student
-	WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) AND duration='Monthly';");
+	WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) AND duration='Monthly'  AND verified=1;");
 		if ($errMsg = mysqli_error ($db))
 		{
 			mysqli_query ($db,'ROLLBACK;');
@@ -120,7 +120,7 @@ else
 		/*****TRANSACTION FOR Quarterly PASSES **/
 		mysqli_query ($db, 'BEGIN TRANSACTION;');
 		echo "Begin TRANSACTION<br>";
-		mysqli_query ($db, "INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 4 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 4 MONTH) AND duration='Quarterly';");
+		mysqli_query ($db, "INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 4 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 4 MONTH) AND duration='Quarterly'  AND verified=1 ;");
 		if ($errMsg = mysqli_error ($db))
 		{
 			mysqli_query ($db,'ROLLBACK;');
@@ -128,7 +128,7 @@ else
 			die ($errMsg);
 		}
 		mysqli_query ($db, "DELETE FROM student
-	WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 4 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 4 MONTH) AND duration='Quarterly';");
+	WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 4 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 4 MONTH) AND duration='Quarterly'  AND verified=1;");
 		if ($errMsg = mysqli_error ($db))
 		{
 			mysqli_query ($db,'ROLLBACK;');
@@ -172,8 +172,8 @@ else
 	 }/*end if mysqli_stmt*/
 	 
 if($db->errno){
-	$_SESSION['studenterror'] = "EMAIL EXISTS ALREADY!";		
-	header("location:studentsearch.php");
+	$_SESSION['studenterror'] = "EMAIL EXISTS ALREADY! <br> Your previous pass duration is not completed according to the database, please fill form again after pass expiration ";
+	header("location:error.php");
 	die(); 
 	}
 else{
