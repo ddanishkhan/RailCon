@@ -102,8 +102,10 @@ if (isset($_POST['email_id']) || isset($_SESSION['studentemail']) ) {
 							  <th style="background-color: #d9edf7;">Remarks</th> 
                             </tr>
                           </thead>
-						  <tbody>		
+						  <tbody>
+							
 </html>
+
 <?php
 
 		/* database connection*/

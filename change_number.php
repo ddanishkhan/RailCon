@@ -9,10 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['endnum']) || isset($_
 		
 	if( isset($_POST['endnumbutton']) && $_POST['endnum']!=NULL){
 		
-	$sql_update_status = "UPDATE `railcon`.`admin_controls` SET `end_entry` = '$endnum' WHERE `admin_controls`.`id_control` = 115617;" ;
+	$sql_update_status = "UPDATE `admin_controls` SET `end_entry` = '$endnum' WHERE `id_control` = 115617;" ;
 	}
 	elseif( isset($_POST['startnumbutton']) && $_POST['startnum']!=NULL){
-	$sql_update_status = "UPDATE `railcon`.`admin_controls` SET `start_entry` = '$startnum' WHERE `admin_controls`.`id_control` = 115617;";
+	$sql_update_status = "UPDATE `admin_controls` SET `start_entry` = '$startnum' WHERE `id_control` = 115617;";
 	}
 	else{
 	echo "Error";

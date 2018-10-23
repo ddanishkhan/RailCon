@@ -100,7 +100,7 @@ $('img').on('click', function () {
 });
 
 $('.rotate').on('click', function () {
-      rotation += 90;
+      rotation += 45;
       rotate(rotation)
 });
 
@@ -130,11 +130,11 @@ function rotate(deg) {
 			</form>
 			
 
-		<form action='delete.php' method='POST' onsubmit="return confirm('Are you sure you want to submit?');" >
-
-		<input type='hidden' name = 'id' value = "<?php echo $idd ?>">
+			<form action='delete.php' method='POST' onsubmit="return confirm('Are you sure you want to delete?');" >
+			<input type='hidden' name = 'id' value = "<?php echo $idd ?>">	
 			<input type = 'submit' class='bg-red' name= 'delete' value ='Delete Record'>
-			</form>	
+			</form>
+			
             <form action='editform.php' method='POST' >
 			<input type='hidden' name = 'id' value = "<?php echo $idd ?>">
 			<input type = 'submit' class='bg-green' name= 'edit_form' value ='Allow Edit'/>

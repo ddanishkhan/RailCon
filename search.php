@@ -5,8 +5,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 
 	// database connection
 	include ('database_connection.php');
-	
-	
 ?>
 
 <!DOCTYPE html>
@@ -146,7 +144,7 @@ WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') 
 		}
 		else {
 
-		while ($row = mysqli_fetch_array($raw_results)) {
+			while ($row = mysqli_fetch_array($raw_results)) {
 
 				echo "<tr><th scope='row'>". $idd=$row['id'] ;
 		echo '</th><td>';
@@ -216,14 +214,34 @@ modal.style.display = 'none';
 }
 </script>
 ";
-				echo "</td><td>";
-				echo '
-<form action="update.php" method="POST">
-<input type="hidden" name = "id" value = ' . $idd . '>
-<input type = "submit" name= "verify_it" value="Issue"><br/>
-<input type = "submit" name= "cancel_verify" value="Not Issue">
-</form>';
-				echo "</td><td>";
+		echo "</td><td>";
+
+			echo "<form action='update.php' method='POST'>
+			<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-green' name= 'verify_it' value='Issue'><br/>
+			<input type = 'submit' class='bg-red' name= 'cancel_verify' value='Not Issue'><br/>
+			</form></br>
+			
+			<form action='edit.php' method='POST'>
+			<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-blue' name= 'edit' value ='Edit Record'></br>
+			</form>
+			
+			<form action='editform.php' method='POST' >
+			<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-green' name= 'edit_form' value ='Allow Edit'/>
+			</form>
+			";
+		?>
+
+		<form action='delete.php' method='POST' onsubmit="return confirm('Are you sure you want to Delete?');" >
+
+		<?php
+		echo "<input type='hidden' name = 'id' value = ".$idd .">
+			<input type = 'submit' class='bg-red' name= 'delete' value ='Delete Record'>
+			</form>	";
+			
+		echo "</td><td>";
 				echo $row['remark'];
 				echo "</td></tr>";
 			} //end while			

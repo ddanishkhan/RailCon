@@ -2,7 +2,7 @@
 session_start();
 
 if(isset($_POST['delete']) && $_SESSION['loggedin'] == true ){
-	include('database_connection.php');
+	require 'database_connection.php' ;
 	mysqli_report(MYSQLI_REPORT_ALL);
 	$idd = $_POST['id'];
 	
@@ -14,12 +14,13 @@ if(isset($_POST['delete']) && $_SESSION['loggedin'] == true ){
     $sql_query->fetch();
 	$sql_query->free_result();
 	
-	$sql_query1 = $db->prepare("INSERT INTO oldstudent(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode, 
-	source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,img_loc,verified,dateofentry,datetodelete,Remark) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") OR die('query preparation failed');
-	
+	$sql_query1 = $db->prepare("INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode, source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,img_loc,verified,dateofentry,datetodelete,Remark) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") OR die('query preparation failed');
+
 	$sql_query1->bind_param("isiissiisisssssisssssssss",$idd, $fullname, $gender, $sem, $email, $DOB, $contact, $aadhar, $address, $pincode, $source, $destination, $passno, $pass_end, $voucher, $season, $classof, $duration, $branch, $year, $img_loc, $verified, $dateofentry, $datetodelete, $Remark);
 	$sql_query1->execute() OR die('query execution failed');
 	
+	echo "OK Again";
+	/*
 	$sql_query3 = $db->prepare("DELETE FROM student WHERE id=? LIMIT 1") OR die('query preparation failed');
 	$sql_query3->bind_param("i",$idd);
 	$sql_query3->execute() OR die('query execution failed');
@@ -34,5 +35,9 @@ if(isset($_POST['delete']) && $_SESSION['loggedin'] == true ){
 	else {
 		header("Location: admin.php");
 	}
+	*/
+}
+else{
+	echo "Error";
 }
 ?>

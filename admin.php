@@ -4,6 +4,18 @@ $_SESSION['dashboard'] = False;
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     include('database_connection.php');
+	
+	$check = "SELECT alertuser FROM members WHERE username = '".$_SESSION['user']."'";
+	$result = $db->query($check);
+	if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+			if ( $row['alertuser'] ){
+			include 'notification.php' ;
+			$sql_update_status = "UPDATE `members` SET `alertuser`=0 WHERE `username`='".$_SESSION['user']."' ";
+			$db->query($sql_update_status);
+			}
+		}
+	}
     
 	$size = 15;
 	if(isset($_GET['page'])){

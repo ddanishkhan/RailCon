@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127558734-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-127558734-1');
+</script>
+	<title>MHSSCE - Railway Concession Form for Degree Students</title>
     <meta charset="utf-8">
     <meta http-equiv="expires" content="0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Railway Concession Registration Form</title>
-    <meta name="description" content="">
+    <meta name="description" content="Railway Concession Form for Saboo Siddik College Of Engineering Students Degree">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name='author' content='Danish Ayub Khan'>
     <meta name="robots" content="all,follow">
@@ -67,7 +77,7 @@
             <div class="container-fluid">
 			<div class="line"></div>
 				<div class="row col-sm-12">
-				<a href="http://railcon.epizy.com/studentsearch.html" >Check if issued Click Here!</a>
+				<a href="studentsearch.html" >Check if issued Click Here!</a>
 				</div>
 				<div class="line"></div>
 				
@@ -104,7 +114,7 @@
 	</div>
 		
 		<div>If you have already submit the form you can check its status 
-			<a href="http://railcon.epizy.com/studentsearch.html" >here</a>
+			<a href="studentsearch.html" >here</a>
 		</div>
 </div>
 </div>

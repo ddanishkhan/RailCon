@@ -7,7 +7,7 @@
     $("document").ready( function () {
 		
 		swal({
-		  title: "New Updates by Danish!",
+		  title: "New Updates!",
 		  text: "Rotation of the Image now Possible",
 		  icon: "warning",
 		})
