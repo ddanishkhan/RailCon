@@ -1,4 +1,3 @@
-
 #redirectMatch 301 ^(.*)$ http://railcon.msparkgaming.com/index.php
 #ErrorDocument 400 http://msparkgaming.com/error/page-error-400.html
 #RewriteEngine On
