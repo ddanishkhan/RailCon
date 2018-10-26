@@ -77,7 +77,7 @@
             <div class="container-fluid">
 			<div class="line"></div>
 				<div class="row col-sm-12">
-				<a href="studentsearch.html" >Check if issued Click Here!</a>
+				<a href="studentsearch.php" >Check if issued Click Here!</a>
 				</div>
 				<div class="line"></div>
 				
@@ -114,7 +114,7 @@
 	</div>
 		
 		<div>If you have already submit the form you can check its status 
-			<a href="studentsearch.html" >here</a>
+			<a href="studentsearch.php" >here</a>
 		</div>
 </div>
 </div>
