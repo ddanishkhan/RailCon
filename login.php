@@ -15,6 +15,9 @@ if(isset($_POST['submit']))
 	$q->execute();
 	$q->bind_result($id,$dbuser,$dbpass);
 	$q->fetch();
+	$q->free_result();
+	$q->close();
+	
 
 	if($dbuser == $user && $dbpass == $pass){
 		$_SESSION['user'] = $dbuser;
@@ -47,7 +50,6 @@ if(isset($_POST['submit']))
 		$_SESSION['loggedin'] = False;
 		header("Refresh:1; url=login.html");
 	}
-	$q->close();
 	$q2->close();
 	$q3->close();
 	$db->close();
