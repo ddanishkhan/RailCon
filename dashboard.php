@@ -33,7 +33,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 	}
 
 	$sql_display = "SELECT id, fullname, gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-	FROM student LIMIT $start, $size";
+	FROM student LIMIT $start, $size
+	ORDER BY id";
 	$result = $db->query($sql_display);
 	
 ?>

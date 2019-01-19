@@ -5,7 +5,7 @@ if(!isset($_POST['submit'])){
 else
 {
 	session_start();
- 	include('database_connection.php');
+ 	require 'database_connection.php' ;
 	
 	$sql_display = "SELECT MAX(id) AS id FROM student";
 	$result = $db->query($sql_display);
@@ -91,8 +91,13 @@ else
 	else
 	{
 	/*   Query to check email exists if exists then check if it is one month/3 month old based on date of entry   */
-	$select = mysqli_query($db, "SELECT `email` FROM `student` WHERE `email` = '".$_POST['email']."'") or exit(mysqli_error($db));
-	if(mysqli_num_rows($select)) {	
+	$select = mysqli_query($db, "SELECT `email`, `img_loc` FROM `student` WHERE `email` = '".$_POST['email']."'") or exit(mysqli_error($db));
+	if(mysqli_num_rows($select)) {
+		
+		/*old image*/
+		$oldimg = mysqli_fetch_assoc($select);
+		echo $delimg = 'MyUploadImages/'.$oldimg['img_loc'];
+	
 		/**********     ACTION for email exists already     **************/
 		echo "Email Exists ALREADY<br>";
 		
@@ -114,13 +119,15 @@ else
 		echo "TRANSACTION 2 Error<br>";
 			die ($errMsg);
 		}
+		/*Delete Old Image when moving*/
+		unlink($delimg);
 		mysqli_query ($db, 'COMMIT');
 		/*****TRANSACTION FOR MONTHLY PASSES **/
 		
 		/*****TRANSACTION FOR Quarterly PASSES **/
 		mysqli_query ($db, 'BEGIN TRANSACTION;');
 		echo "Begin TRANSACTION<br>";
-		mysqli_query ($db, "INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 4 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 4 MONTH) AND duration='Quarterly'  AND verified=1 ;");
+		mysqli_query ($db, "INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 3 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 3 MONTH) AND duration='Quarterly'  AND verified=1 ;");
 		if ($errMsg = mysqli_error ($db))
 		{
 			mysqli_query ($db,'ROLLBACK;');
@@ -128,18 +135,21 @@ else
 			die ($errMsg);
 		}
 		mysqli_query ($db, "DELETE FROM student
-	WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 4 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 4 MONTH) AND duration='Quarterly'  AND verified=1;");
+	WHERE YEAR(dateofentry) = YEAR(CURRENT_DATE - INTERVAL 3 MONTH) AND MONTH(dateofentry) = MONTH(CURRENT_DATE - INTERVAL 3 MONTH) AND duration='Quarterly'  AND verified=1;");
 		if ($errMsg = mysqli_error ($db))
 		{
 			mysqli_query ($db,'ROLLBACK;');
 		echo "TRANSACTION 2 Error<br>";
 			die ($errMsg);
 		}
+		/*Delete Old Image when moving*/
+		unlink($delimg);
 		mysqli_query ($db, 'COMMIT');
 		/*****TRANSACTION FOR Quarterly PASSES **/
 	
 	}
-	 echo "UPLAODING";
+	 echo "UPLOADING";
+	 
 	 //create a folder MyUploadImages for storing images
 	 $upload_directory = "MyUploadImages/";
 	 

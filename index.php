@@ -200,6 +200,9 @@
                           </div>
 						  
 						<div class="line"></div>						
+						<small>Ad</small>
+						<a href="https://msparkgaming.com" target="_blank"><img src="img/admspark.jpg" style="max-height:500px" ></a>
+						<div class="line"></div>						
 						
                         <div class="row">
                           <label class="col-sm-3 form-control-label">PIN Code</label>
