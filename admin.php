@@ -3,7 +3,7 @@ session_start();
 $_SESSION['dashboard'] = False;
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    include('database_connection.php');
+    require 'database_connection.php';
 	
 	$check = "SELECT alertuser FROM members WHERE username = '".$_SESSION['user']."'";
 	$result = $db->query($check);
@@ -53,9 +53,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 	    if ($filter == "Issued") {
         $_SESSION['record_filter'] = 'Issued';
         //Set Query for Issued
-        $sql_display               = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified,voucher,season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
+        $sql_display = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified,voucher,season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
         FROM student WHERE verified=1
-ORDER BY id
+		ORDER BY id
         LIMIT $start, $size";
 		$sql_query_pages = "SELECT id FROM student WHERE verified=1";
     } //$filter == "Issued"

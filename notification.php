@@ -11,7 +11,7 @@
 		
 		swal({
 		  title: "New Updates!",
-		  text: "Rotation of the Image now Possible",
+		  text: "Delete Function Enabled",
 		  icon: "warning",
 		})
 		.then((willDelete) => {

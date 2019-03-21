@@ -59,7 +59,7 @@
             echo $row['duration'];
             echo "</td><td>";
             echo $row['date'];
-            echo "</td><td>";
+            echo "</td><td id=issue".$idd.">";
             if ($row['verified'] == "1")
                 echo "Issued";
             else
