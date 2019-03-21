@@ -33,8 +33,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
 	}
 
 	$sql_display = "SELECT id, fullname, gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-	FROM student LIMIT $start, $size
-	ORDER BY id";
+	FROM student ORDER BY 'id' LIMIT $start, $size
+	";
 	$result = $db->query($sql_display);
 	
 ?>
@@ -149,7 +149,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
                   <p> <a href="http://www.mhssce.ac.in" target="_blank">MHSSCOE &copy; 2018 </a> </p>
                 </div>
                 <div class="col-sm-6 text-right">
-				  <p>Developed by <a target="_blank" href="https://www.linkedin.com/in/danishayubkhan">Danish A. Khan </a> & <a target="_blank" href="https://www.linkedin.com/in/husain-amreliwala-121b5312b/">Husain Amrelivala</a></p>
+				  <p>Developed by <a target="_blank" href="https://www.linkedin.com/in/danishayubkhan">Danish A. Khan </a> & <a target="_blank" href="https://www.linkedin.com/in/husain-amreliwala-121b5312b/">Husain Amreliwala</a></p>
                   
                 </div>
               </div>

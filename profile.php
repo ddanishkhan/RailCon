@@ -64,7 +64,7 @@ else
 	$image_height = $image_info[1];
 	
 	if($cur_age>=25){
-		$_SESSION['studenterror'] = "Age limit is 25";
+		$_SESSION['studenterror'] = "Age limit is 25 Year";
 		header("location:error.php");
 		die();
 	}
@@ -100,6 +100,7 @@ else
 	
 		/**********     ACTION for email exists already     **************/
 		echo "Email Exists ALREADY<br>";
+		$_SESSION['studenterror'] = "Email Exists Already";	
 		
 		/*****TRANSACTION FOR MONTHLY PASSES **/
 		mysqli_query ($db, 'BEGIN TRANSACTION;');

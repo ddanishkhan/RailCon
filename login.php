@@ -44,14 +44,14 @@ if(isset($_POST['submit']))
 		else{	
 			header("Location:admin.php");
 			}
+	$q2->close();
+	$q3->close();
 	}
 	else{
 		echo "<script> alert('Incorrect Login Credentials'); </script>";
 		$_SESSION['loggedin'] = False;
 		header("Refresh:1; url=login.html");
 	}
-	$q2->close();
-	$q3->close();
 	$db->close();
 }
 else{
