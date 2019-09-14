@@ -3,12 +3,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<?php
+
+?>
 <script>
     $("document").ready( function () {
 		
 		swal({
 		  title: "New Updates!",
-		  text: "Rotation of the Image now Possible",
+		  text: "Delete Function Enabled",
 		  icon: "warning",
 		})
 		.then((willDelete) => {
@@ -22,6 +25,9 @@
 		});
     }); 
 </script>
+<?php
+
+?>
 
 <?php
 if(isset($_GET['updated'])){

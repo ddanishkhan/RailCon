@@ -14,7 +14,6 @@
     <meta charset="utf-8">
     <meta http-equiv="expires" content="0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Railway Concession Registration Form</title>
     <meta name="description" content="Railway Concession Form for Saboo Siddik College Of Engineering Students Degree">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name='author' content='Danish Ayub Khan'>
@@ -45,7 +44,7 @@
 		  <!-- Search Box-->
           <div class="search-box">
             <button class="dismiss"><i class="icon-close"></i></button>
-            <form id="searchForm" action="studentsearch.php" name="search_s" method="POST">
+            <form id="searchForm" action="studentsearch" name="search_s" method="POST">
               <input type="search" name="email_id" placeholder="Enter Email ID to check status...." class="form-control">
             </form>
           </div>
@@ -54,17 +53,18 @@
               <!-- Navbar Header-->
               <div class="navbar-header">
                 <!-- Navbar Brand -->
-				<a href="index.php" class="navbar-brand d-none d-sm-inline-block">
+				<a href="index" class="navbar-brand d-none d-sm-inline-block">
                   <div class="brand-text d-none d-lg-inline-block"><span>Railway </span><strong> Concession</strong></div>
                   <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>Concession Form</strong></div></a>
               </div>
-			  <!-- Navbar Menu -->
+			  <!-- Navbar Menu 
               <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
 				
-				<!-- Search-->
+				<!-- Search
                 <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
 
               </ul>
+			  -->
             </div>
           </div>
         </nav>
@@ -76,10 +76,12 @@
           <section class="forms"> 
             <div class="container-fluid">
 			<div class="line"></div>
-				<div class="row col-sm-12">
-				<a href="studentsearch.html" >Check if issued Click Here!</a>
+			<div onclick="location.href='studentsearch';"  class="card bg-info btn text-white">
+				<div class="card-body text-center">
+					To check your Form. Click Here!
 				</div>
-				<div class="line"></div>
+			</div>
+			<div class="line row"></div>
 				
 <?php 
 	include('database_connection.php');
@@ -114,7 +116,7 @@
 	</div>
 		
 		<div>If you have already submit the form you can check its status 
-			<a href="studentsearch.html" >here</a>
+			<a href="studentsearch" >here</a>
 		</div>
 </div>
 </div>
@@ -131,10 +133,16 @@
 				<iframe style="text-align:center;" width="100%" src="https://www.youtube.com/embed/xfNbu190YBA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
 				<a href="https://www.youtube.com/embed/xfNbu190YBA">Guide to Railcon</a>
 				</iframe>
+				
+                  <div class="card" id="noticeBoard">
+                    
+                    <img src="img/mhsccoe.jpg" alt="MHSSCOE Logo" align="middle" style="pointer-events: none; display:block; margin:0 auto;max-width:948px; width:100%; ">  
+					<img src="img/RailconNotice.jpeg" alt="MHSSCOE Notice" align="middle" style="pointer-events: none; display:block; margin:0 auto;max-width:948px; width:100%; ">
+				  </div>		
+					  
                   <div class="card">
                     
-                      <img src="img/mhsccoe.jpg" alt="MHSSCOE Logo" align="middle" style="pointer-events: none; display:block; margin:0 auto;max-width:948px; width:100%; ">
-                    
+					<img src="img/mhsccoe.jpg" alt="MHSSCOE Logo" align="middle" style="pointer-events: none; display:block; margin:0 auto; width:100%; ">
                     <div class="card-body">
 
                       <form action="profile.php" method="POST" enctype="multipart/form-data" class="form-horizontal">
@@ -200,6 +208,9 @@
                           </div>
 						  
 						<div class="line"></div>						
+						<small>Advert</small><br>
+						<a href="https://wa.me/917977137096?text=Hi%20I%27m%20interested%20in%20your%20GAMING%20MEMBERSHIP%0ARevert%20Back%20whenever%20possible%20\nCoupon:DKCoderOP6" target="_blank"><img src="img/admspark.jpg" style="max-height:500px" ></a>
+						<div class="line"></div>						
 						
                         <div class="row">
                           <label class="col-sm-3 form-control-label">PIN Code</label>
@@ -234,9 +245,9 @@
 						<div class="line"></div>
 						
                         <div class="form-group row">
-                          <label class="col-sm-3 form-control-label">Previous PassNo:<br/><small class="text-primary">(Optional)</small></label>
+                          <label class="col-sm-3 form-control-label">Previous Season/PassNo:<br/><small class="text-primary">(MANDATORY)</small></label>
                           <div class="col-sm-9">
-                            <input type="text" name="passno" class="form-control" id="passno" placeholder="" /></li>
+                            <input type="text" name="passno" class="form-control" id="passno" placeholder="Enter NO if New Pass" required /></li>
                           </div>
                         </div>
 						
@@ -247,7 +258,7 @@
 						<div class="line"></div>
 						
 						<div class="row">
-                          <label class="col-sm-3 form-control-label">Old Pass Expiry <br> <small class="text-primary">(Optional)</small></label>
+                          <label class="col-sm-3 form-control-label">Old Pass Expiry <br> <small class="text-primary">(MANDATORY)</small></label>
                           <div class="col-sm-9">
                             <div class="form-group-material">
                               <input type="date" name="pass_end"/>
@@ -258,7 +269,7 @@
 						<div class="line"></div>
 						
 						<div class="row">
-                          <label class="col-sm-3 form-control-label">Old Voucher No:<br><small class="text-primary">(Optional)</small> </label>
+                          <label class="col-sm-3 form-control-label">Old Voucher No:<br><small class="text-primary">(MANDATORY)</small> </label>
                           <div class="col-sm-9">
                             <div class="form-group-material">
                               <input type='text' name='voucher' placeholder='Enter Vch No.(Bottom Right)' class="form-control"/>
@@ -269,7 +280,7 @@
 						<div class="line"></div>
 						
 						<div class="row">
-                          <label class="col-sm-3 form-control-label">Old Season Ticket no. <br><small class="text-primary">(Optional)</small></label>
+                          <label class="col-sm-3 form-control-label">ReEnter Previous Season/PassNo:<br><small class="text-primary">(MANDATORY)</small></label>
                           <div class="col-sm-9">
                             <div class="form-group-material">
                               <input type='number' maxlength='4' name='season' placeholder='Enter Season Ticket No.(Top Right)' class="form-control" />
@@ -280,7 +291,7 @@
 						<div class="line"></div>
 						
 						<div class="form-group row">
-                          <label class="col-sm-3 form-control-label">Class of travel</label>
+                          <label class="col-sm-3 form-control-label">Class of Travel</label>
                           <div class="col-sm-9">
                             <div class="i-checks">
                               <input id="radioCustom1" type="radio"  checked="" value="First" name="classof" class="radio-template">
@@ -318,7 +329,7 @@
                               <option>Automobile</option>
                               <option>Civil</option>
                               <option>Computer Science</option>
-                              <option>Electronics Engineering</option>
+                              <option>Electronics</option>
 							  <option>Electronics & Telecommunications</option>
 							  <option>Information Technology</option>
 							  <option>Mechanical</option>

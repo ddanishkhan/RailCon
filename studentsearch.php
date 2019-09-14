@@ -267,6 +267,19 @@ modal.style.display = 'none';
 }
 else{
 	echo "Enter Email ID";
+		?>
+	<html>
+	<form action = "studentsearch.php" method="POST" class="form-inline">
+	<div class="form-group">
+	  <label for="email_search" class="sr-only">Email Address</label>
+	  <input id="email_search" type="email" name="email_id"  placeholder="Enter Email Address" class="mr-3 form-control" required>
+	</div>
+	<div class="form-group">
+	  <button type="submit" name="submit_email"  class="btn btn-primary">Submit</button>
+	</div>
+  </form>
+  </html>
+	<?php
 }
 
 ?>
