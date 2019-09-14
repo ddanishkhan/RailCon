@@ -1,36 +1,33 @@
-<?php
-if(isset($_POST['student_editrecord'])){
-	include('database_connection.php');
-	mysqli_report(MYSQLI_REPORT_ALL);
-	
-	$idd = $_POST['id'];
-	$fullname= $_POST['name'];
-	$gender = $_POST['gender'];
-	$semester    = $_POST['semester'];
-	$email   = trim($_POST['email'], " \t\n\r");
-	$contact = $_POST['contact']; 
-	$address = $_POST['address'];
-	$pincode = $_POST['pincode'];
-	$source  = $_POST['source'];
-	$destination = $_POST['destination'];
-	$passno  = $_POST['passno'];
-     $pass_end  = $_POST['pass_end'];
-     $voucher  = $_POST['voucher'];
-     $season  = $_POST['season'];	
-	$classof = $_POST['classof'];
-	$duration = $_POST['duration'];
-	$branch  =  $_POST['branch'];
-	$year    = $_POST['year'];
-	$DOB	= $_POST['dob'];
-	$edit = 0;
-	
-	//echo $idd,$fullname,$gender,$email,$semester,$address,$contact,$pincode,$source,$destination,$classof,$duration,$branch,$year,$DOB;
-	
-	$q = $db->prepare("UPDATE student SET fullname=?, gender=?, semester=?, email=?, DOB=?, contact=?, address=?, pincode=?, source=?, destination=?, passno=?, pass_end=?, voucher=?, season=?, classof=?, duration=?, branch=?, year=?, edit=?  WHERE id= ?") OR die("Query preparation failed");
-	$q->bind_param("sisssisissssssssssii",$fullname,$gender,$semester,$email,$DOB,$contact,$address,$pincode,$source,$destination,$passno,$pass_end,$voucher,$season,$classof,$duration,$branch,$year,$edit,$idd);
-	if($q->execute()){
-		header("Refresh:1; url=index.html");
-	    echo "<script> alert('Record Edited Successfully'); </script>";
-	} 	
-}
+<?php
+if(isset($_POST['student_editrecord'])){
+	include('database_connection.php');
+	//mysqli_report(MYSQLI_REPORT_ALL);
+	$idd = $_POST['id'];
+	$fullname= $_POST['name'];
+	$gender = $_POST['gender'];
+	$semester    = $_POST['semester'];
+	$email   = trim($_POST['email'], " \t\n\r");
+	$contact = $_POST['contact']; 
+	$address = $_POST['address'];
+	$pincode = $_POST['pincode'];
+	$source  = $_POST['source'];
+	$destination = $_POST['destination'];
+	$passno  = $_POST['passno'];
+     $pass_end  = $_POST['pass_end'];
+     $voucher  = $_POST['voucher'];
+     $season  = $_POST['season'];	
+	$classof = $_POST['classof'];
+	$duration = $_POST['duration'];
+	$branch  =  $_POST['branch'];
+	$year    = $_POST['year'];
+	$DOB	= $_POST['dob'];
+	$edit = 0;	$dateofentry = date("Y-m-d");	extract($_POST);	$UploadedFileName=$_FILES['UploadImage']['name'];		/*error = 4 means image is not changed*/	/*size = 0 means image is not uploaded*/		if( !($_FILES['UploadImage']['error']==4 || $_FILES['UploadImage']['size']==0) )	{	$image_info = getimagesize($_FILES["UploadImage"]["tmp_name"]);		if(($_FILES["UploadImage"]["size"] > 1000000)){			$_SESSION['studenterror'] = "MAX 1.0MB image allowed!";					header("location:error.php");			die();		}		elseif(!exif_read_data($_FILES['UploadImage']['tmp_name']) ){		$_SESSION['studenterror'] = "Only JPEG/JPG Allowed";		header("location:error.php");		die();		}		//create a folder MyUploadImages for storing images		$upload_directory = "MyUploadImages/";		$TargetPath=time()."id.".pathinfo($UploadedFileName, PATHINFO_EXTENSION);				$q = mysqli_prepare($db,"UPDATE student SET fullname=?, gender=?, semester=?, email=?, DOB=?, contact=?, address=?, pincode=?, source=?, destination=?, passno=?, pass_end=?, voucher=?, season=?, classof=?, duration=?, branch=?, year=?, edit=?, img_loc=?  WHERE id= ?") OR die($q->error);			 mysqli_stmt_bind_param($q,"sisssisissssssssssisi",$fullname,$gender,$sem,$email,$age,$contact,$address,$pincode,$source,$destination,$passno,$pass_end,$voucher,$season,$classof,$duration,$branch,$year, $edit,$TargetPath, $idd);		 if(mysqli_stmt_execute($q))	 {		/* echo "\nInserted into Table\n"; */		if(move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory.$TargetPath) ){						if($duration=="Monthly"){			  $set_del = "UPDATE student SET datetodelete = DATE_ADD(dateofentry , INTERVAL 30 DAY) WHERE email = '$email'" ;			  echo "<strong> File and Details Uploaded  </n> </strong>";			  $db->query($set_del);	}			elseif($duration=="Quarterly"){			  $set_del = "UPDATE student SET datetodelete = DATE_ADD(dateofentry , INTERVAL 90 DAY) WHERE email = '$email'" ;			echo "<strong> File and Details Uploaded  </n> </strong>";			    $db->query($set_del);		}						}/*ok*/		else{			$del_q = "DELETE FROM student WHERE email='$email' LIMIT 1";			mysqli_stmt_execute($del_q); //execute stmt			 echo "Error Email Exists" ;		}/*ok*/			 }/*end if mysqli_stmt*/		} //if image uploaded	else{	
+	//echo $idd,$fullname,$gender,$email,$semester,$address,$contact,$pincode,$source,$destination,$classof,$duration,$branch,$year,$DOB;
+	$q = $db->prepare("UPDATE student SET fullname=?, gender=?, semester=?, email=?, DOB=?, contact=?, address=?, pincode=?, source=?, destination=?, passno=?, pass_end=?, voucher=?, season=?, classof=?, duration=?, branch=?, year=?, edit=?  WHERE id= ?") OR die("Query preparation failed");
+	$q->bind_param("sisssisissssssssssii",$fullname,$gender,$semester,$email,$DOB,$contact,$address,$pincode,$source,$destination,$passno,$pass_end,$voucher,$season,$classof,$duration,$branch,$year,$edit,$idd);
+	if($q->execute()){
+	    echo "<script> alert('Record Edited Successfully'); </script>";		header("Refresh:1; url=index.php");
+	} 		}//else without image
+
+}
 ?>

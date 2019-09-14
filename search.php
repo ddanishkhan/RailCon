@@ -5,6 +5,26 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 
 	// database connection
 	include ('database_connection.php');
+	
+	$query = $_GET['query'];
+
+	// gets value sent over search form
+	$min_length = 3;
+
+	// you can set minimum length of the query if you want
+	if (strlen($query) >= $min_length) { 
+	
+	// if query length is more or equal minimum length then
+		$query = htmlspecialchars($query);
+
+	// changes characters used in html to their equivalents, for example: < to &gt;
+		$query = mysqli_real_escape_string($db, $query);
+
+	// makes sure nobody uses SQL injection
+		$sql_display = "SELECT id, fullname, gender,DOB,DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date, remark FROM student
+WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') LIMIT 10" ;
+
+	$result = $db->query($sql_display);
 ?>
 
 <!DOCTYPE html>
@@ -34,10 +54,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-	<link rel='stylesheet' type='text/css' href='modal.css'>
-	<style>
-	
-	</style>
   </head>
   <body>
     <div class="page">
@@ -95,181 +111,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                     <div class="card-header d-flex align-items-center">
                       <!--<h3 class="h4">Compact Table</h3>-->
                     </div>
-                    <div class="card-body">
-                      <div class="table-responsive">   
-                        <table class="table table-striped table-sm">
-                          <thead>
-                            <tr>
-                              <th>#</th>
-                              <th>Name</th>
-                              <th>Gender</th>
-                              <th>Age</th>
-							  <th>Source</th>
-							  <th>Destination</th>
-							  <th>Passno</th>
-							  <th>Class</th> 
-							  <th>Duration</th> 
-							  <th>DateOfEntry</th> 
-							  <th>Status</th> 
-							  <th>ID Card</th> 
-							  <th>Issue</th> 
-							  <th>Remarks</th> 
-                            </tr>
-                          </thead>
-						  <tbody>
-							
-</html>
-
-<?php
-	$query = $_GET['query'];
-
-	// gets value sent over search form
-	$min_length = 3;
-
-	// you can set minimum length of the query if you want
-	if (strlen($query) >= $min_length) { 
-	
-	// if query length is more or equal minimum length then
-		$query = htmlspecialchars($query);
-
-	// changes characters used in html to their equivalents, for example: < to &gt;
-		$query = mysqli_real_escape_string($db, $query);
-
-	// makes sure nobody uses SQL injection
-		$raw_results = mysqli_query($db, "SELECT id, fullname, gender,DOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date, remark FROM student
-WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') LIMIT 10") or die(mysqli_error());
-
-		if(!mysqli_num_rows($raw_results) > 0){
-			echo "No Records Found";
-		}
-		else {
-
-			while ($row = mysqli_fetch_array($raw_results)) {
-
-				echo "<tr><th scope='row'>". $idd=$row['id'] ;
-		echo '</th><td>';
-			echo $row['fullname'];
-		echo "</td><td>";
-			if( $row['gender']=='1' )
-				echo "Female";
-			else
-				echo "Male";	
-		echo "</td><td>";
-				$diff = date_diff(date_create(), date_create($row['DOB']) );
-				echo $diff->format("%Y Yrs <br/> %M Mnth");
-		echo "</td><td>";
-			echo $row['source'];
-		echo "</td><td>";
-			echo $row['destination'];
-		echo "</td><td>";
-			echo $row['passno']."<br/>";
-			echo $row['pass_end']."<br/>";
-			echo $row['voucher']."<br/>";
-			echo $row['season']."<br/>";
-		echo "</td><td>";
-			echo $row['classof'];
-		echo "</td><td>";
-			echo $row['duration'];
-		echo "</td><td>";
-		    echo $row['date'];
-		echo "</td><td>";	
-			if($row['verified']=="1" )
-				echo "Issued";
-			else
-				echo "Not Issued";
-				echo "</td><td>";
-				$MyPhoto = $row['img_loc'];
-				echo "<img id='" . $idd . "' src = 'MyUploadImages/" . $MyPhoto . "'  height='100'/>
-<!-- The Modal -->
-<!-- Be very careful editing this -->
-<div id='myModal" . $idd . "' class='modal'>
-<span class='close" . $idd . "' 
-style='position: absolute;
-top: 15px;
-right: 35px;
-color: #f1f1f1;
-font-size: 40px;
-font-weight: bold;
-transition: 0.3s;'
->&times;</span>
-<img class='modal-content' id='img1" . $idd . "'>
-</div>
-<script>
-
-// Get the modal
-var modal = document.getElementById('myModal" . $idd . "');
-
-// Get the image and insert it inside the modal
-var img = document.getElementById('" . $idd . "');
-var modalImg = document.getElementById('img1" . $idd . "');
-img.onclick = function(){
-modal.style.display = 'block';
-modalImg.src = this.src;
-}
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName('close" . $idd . "')[0];
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() { 
-modal.style.display = 'none';
-}
-</script>
-";
-		echo "</td><td>";
-
-			echo "<form action='update.php' method='POST'>
-			<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-green' name= 'verify_it' value='Issue'><br/>
-			<input type = 'submit' class='bg-red' name= 'cancel_verify' value='Not Issue'><br/>
-			</form></br>
-			
-			<form action='edit.php' method='POST'>
-			<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-blue' name= 'edit' value ='Edit Record'></br>
-			</form>
-			
-			<form action='editform.php' method='POST' >
-			<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-green' name= 'edit_form' value ='Allow Edit'/>
-			</form>
-			";
-		?>
-
-		<form action='delete.php' method='POST' onsubmit="return confirm('Are you sure you want to Delete?');" >
-
-		<?php
-		echo "<input type='hidden' name = 'id' value = ".$idd .">
-			<input type = 'submit' class='bg-red' name= 'delete' value ='Delete Record'>
-			</form>	";
-			
-		echo "</td><td>";
-				echo $row['remark'];
-				echo "</td></tr>";
-			} //end while			
-		}
-		
-?>
-						 
-<html>						  
-                            <tr>
-                              <th scope="row">-</th>
-                              <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-							  <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-							  <td>---</td>
-                              <td>---</td>
-                              <td>---</td>
-							  <td>---</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+                    <?php
+					require_once 'admin_table.php';
+					?>
                   </div>
                
               </div>
@@ -310,5 +154,4 @@ else {
 	echo "<script> alert('Log In First'); </script>";
 	header("Refresh:1; url=index.php");
 }
-
 ?>
