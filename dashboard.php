@@ -117,9 +117,13 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
           </div>
           <section class="tables">   
             <div class="container-fluid">
+			<!--Filter Bar -->
+			<?php require 'filter_bar.php' ?>
+			<!--Filter Bar End-->
               <div class="row">
                 <div class="col-lg-12">
                   <div class="card">
+					
                     <div class="card-header d-flex align-items-center" style="overflow:auto;">
 					<!--Pagination -->
 					<?php 
