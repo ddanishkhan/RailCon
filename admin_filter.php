@@ -21,7 +21,7 @@ unset( $_SESSION['adminpage'] );
 	<ul class='form-style-1'>	
 	<h1>Admin Panel</h1>
 	<fieldset>
-	
+	<!--
 	<form action='admin.php' name='filter_form' method='POST'>
 		<li>
 		<label>Select records to display:</label>  
@@ -33,8 +33,8 @@ unset( $_SESSION['adminpage'] );
 		</select><br/>
 		<input type='submit' name='filter_submit' value='Show Records'/>
 		</li>
-    </form>
-	<?php
+    </form>-->
+	<?php/*
 	$sql_display = "SELECT DISTINCT DATE_FORMAT(dateofentry, '%d/%m/%Y') as date FROM student";
 	$result = $db->query($sql_display);
 	if($result->num_rows > 0)
@@ -56,7 +56,7 @@ unset( $_SESSION['adminpage'] );
 				</li>
 			</form>";
 	}		
-	
+	*/
 ?>
 
 <form action='search.php' name='search_s' method='GET'>
@@ -79,11 +79,13 @@ unset( $_SESSION['adminpage'] );
 		<input type='number' name='endnum' /><br/>
 		<input type='submit' name='endnumbutton' value='Change End' />
 	</li>
+	
+	<li class='a_align'><a href='dashboard.php' class='button' > View All Records</a></li>			
+	
 	</form>
 	
 	</ul>			
 	</fieldset>
-	<li class='a_align'><a href='dashboard.php' class='button' > View All Records</a></li>			
 	
 	</body>
 </html>

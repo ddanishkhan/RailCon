@@ -5,6 +5,7 @@ $_SESSION['dashboard'] = False;
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     require 'database_connection.php';
 	
+	
 	$check = "SELECT alertuser FROM members WHERE username = '".$_SESSION['user']."'";
 	$result = $db->query($check);
 	if ($result->num_rows > 0) {
@@ -31,80 +32,88 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 		$start=0;
 		$currpage = 0;
 	}
+
+	/*start 1stFeb2020*/
 	
-	$filter = "Not_Issued";
+	$sql_display = "SELECT id, fullname, gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
+	FROM student";
 	
-    if (isset($_POST['date_submit'])) {
-        $dateofentry             = $_POST['date_filter'];
-        $filter                  = "Dates";
-        $_SESSION['actual_date'] = $dateofentry;
-		$_SESSION['record_filter'] = $filter;
-    } 
-    elseif (isset($_POST['filter_submit'])) {
-        $filter = $_POST['filter'];
-    }
-    elseif (isset($_SESSION['record_filter'])) {
-        $filter = $_SESSION['record_filter'];
-    }
-    else {
-        $_SESSION['filter'] = "Not_Issued";
-    }	
+	if(isset($_POST['status'])){
+		
+		if($_POST['status']=='I'){
+			$sql_display.=" WHERE verified=1 ";
+		}
+		else if($_POST['status']=='NI'){
+			$sql_display.=" WHERE verified=0 ";
+		}
+		else{
+			$sql_display.=" WHERE verified IN (0, 1) ";
+		}
+		
+	}
+	if(isset($_POST['gender']) && $_POST['gender']!='def'){
+		if($_POST['gender']=='M'){
+			$sql_display .= ' AND gender=0 ';
+		}
+		else{
+			$sql_display .= ' AND gender=1 ';	
+		}
+	}
+	if(isset($_POST['dept']) && $_POST['dept']!='def'){
+		if($_POST['dept']=='A'){
+			$sql_display .= 'AND branch = "Automobile" ';
+		}else if($_POST['dept']=='IT'){
+			$sql_display .= 'AND branch = "Information Technology" ';
+		}else if($_POST['dept']=='CS'){
+			$sql_display .= 'AND branch = "Computer Science" ';
+		}else if($_POST['dept']=='C'){
+			$sql_display .= 'AND branch = "Civil" ';
+		}else if($_POST['dept']=='M'){
+			$sql_display .= 'AND branch = "Mechanical" ';
+		}else if($_POST['dept']=='EXTC'){
+			$sql_display .= 'AND branch = "Electronics & Telecommunications" ';
+		}else if($_POST['dept']=='EX'){
+			$sql_display .= 'AND branch = "Electronics" ';
+		}
+		
+	}
+	if(isset($_POST['train_class']) && $_POST['train_class']!='def'){
+		if($_POST['train_class']=='F'){
+			$sql_display .= ' AND classof = "First" ';
+		}
+		else if($_POST['train_class']=='S'){
+			$sql_display .= ' AND classof = "Second" ';
+		}
+	}
+	//Where clause for duration
+	if(isset($_POST['duration']) && $_POST['duration']!='def'){
+		if($_POST['duration']=='Q'){
+			$sql_display .= ' AND duration = "Quarterly" ';
+		}
+		else if($_POST['duration']=='M'){
+			$sql_display .= ' AND duration = "Monthly" ';
+		}
+	}
+	//Where clause for given date
+	if(isset($_POST['date_filter']) && $_POST['date_filter']!='def'){
+		$date_filter = $_POST['date_filter'];
+		$sql_display .= " AND DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$date_filter'";
+	}
 	
-	    if ($filter == "Issued") {
-        $_SESSION['record_filter'] = 'Issued';
-        //Set Query for Issued
-        $sql_display = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified,voucher,season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-        FROM student WHERE verified=1
-		ORDER BY id
-        LIMIT $start, $size";
-		$sql_query_pages = "SELECT id FROM student WHERE verified=1";
-    } //$filter == "Issued"
-    elseif ($filter == "Not_Issued") {
-        $_SESSION['record_filter'] = 'Not_Issued';
-        // set Query for Not_Issued
-        $sql_display               = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified,voucher,
-        season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-        FROM student WHERE verified=0 ORDER BY id
-        LIMIT $start, $size";
-		$sql_query_pages = "SELECT id FROM student WHERE verified=0";
-    } //$filter == "Not_Issued"
-        elseif ($filter == "Males") {
-        $_SESSION['record_filter'] = 'Males';
-        //set Query for Males non-issued
-        $sql_display               = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,verified, voucher,
-        season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-        FROM student WHERE gender=0 AND verified=0 ORDER BY id
-        LIMIT $start, $size";
-		
-		$sql_query_pages = "SELECT id FROM student WHERE gender=0 AND verified=0 ";
-		
-    } //$filter == "Males"
-        elseif ($filter == "Females") {
-        $_SESSION['record_filter'] = 'Females';
-        //Set Query for Females Not-Issued
-        $sql_display               = "SELECT id, fullname,gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,verified, DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,
-        season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-        FROM student WHERE gender=1 AND verified=0 ORDER BY id
-        LIMIT $start, $size";
-		
-		$sql_query_pages = "SELECT id FROM student WHERE gender=1 AND verified=0 ";
-		
-    } //$filter == "Females"
-        
-    //raw text filter for dates
-        elseif ($filter == "Dates") {
-        $_SESSION['record_filter'] = "Dates";
-        $dateofentry               = $_SESSION['actual_date'];
-        //Set Query for Dates
-        $sql_display               = "SELECT id, fullname, gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,verified, DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,
-        season, classof, duration, img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-        FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0 ORDER BY id
-        LIMIT $start, $size";
-		
-		$sql_query_pages = "SELECT id FROM student WHERE DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$dateofentry' AND verified=0 ";
-		
-    } //$filter == "Dates"
+	/*store the query from search bar into session for further session use*/
+	if( isset($_POST['filter_submit']) ){
+		$_SESSION['query'] = $sql_display;
+	}
+	/* Check if query is stored in Session for pagination if yes assign that as query*/
+	if(isset($_SESSION['query'])){
+		$sql_display = $_SESSION['query'];
+	}
 	
+	$sql_query_pages = $sql_display; /*QUERY for pagination*/
+	
+	$sql_display .= " ORDER BY id LIMIT $start, $size";	
+	/** End 1stFeb2020**/
+
 	/*QUERY MAIN*/
 	$result = $db->query($sql_display);
 
@@ -187,11 +196,14 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="admin_filter.php">Filter</a></li>
               <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a>
-			  <li class="breadcrumb-item active"></html><?php echo $_SESSION['record_filter']?></li>
+			  <!--<li class="breadcrumb-item active"></html><?php //echo $_SESSION['record_filter']?></li>-->
             </ul>
           </div>
           <section class="tables">   
             <div class="container-fluid">
+			<!--Filter Bar-->				  
+			<?php require 'filter_bar.php' ?>
+			<!--Filter Bar End-->
               <div class="row">
                 <div class="col-lg-12">
                   <div class="card">
@@ -217,7 +229,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             <div class="container-fluid">
               <div class="row">
                 <div class="col-sm-12">
-                  <p>MHSSCOE &copy; 2018</p>
+                  <p>MHSSCOE &copy; 2018-20</p>
                 </div>
               </div>
             </div>
