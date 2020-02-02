@@ -5,9 +5,11 @@
 	$deptSelected = 'def';
 	$train_classSelected = '';
 	$durationSelected='';
+	$train_dest_selected='';
 	$dates=[];
+	$sources=[];
 	
-	$sql_date = "SELECT DISTINCT DATE_FORMAT(dateofentry, '%d/%m/%Y') as date FROM student ORDER BY dateofentry DESC";
+	$sql_date = "SELECT DISTINCT SOURCE ,DATE_FORMAT(dateofentry, '%d/%m/%Y') as date FROM student ORDER BY dateofentry DESC";
 	$sql_date_rs = $db->query($sql_date);
 	if($sql_date_rs->num_rows > 0){
 		while($rw = $sql_date_rs->fetch_assoc()){
@@ -15,6 +17,15 @@
 		}
 	}
 	
+	/*$sql_source = "SELECT DISTINCT LOWER(SOURCE) as SOURCE FROM student ";
+	$sql_source_rs = $db->query($sql_source);
+	if($sql_source_rs->num_rows > 0){
+		while($rw = $sql_source_rs->fetch_assoc()){
+			array_push($sources, $rw['SOURCE']);
+		}
+	}*/
+	
+/*Retain the value of dropdown*/
 if(isset($_SESSION['query'] )){
 	$queryFound = $_SESSION['query'] ;
 	
@@ -59,6 +70,16 @@ if(isset($_SESSION['query'] )){
 		$durationSelected= 'M';
 	}
 	
+	if( preg_match('/destination = "B/', $queryFound)){
+		$train_dest_selected= 'B';
+	}else if( preg_match('/destination = "D/', $queryFound)){
+		$train_dest_selected= 'D';
+	}else if( preg_match('/destination = "S/', $queryFound)){
+		$train_dest_selected= 'S';
+	}else if( preg_match('/destination = "M/', $queryFound)){
+		$train_dest_selected= 'M';
+	}
+	
 }
 
 ?>
@@ -70,14 +91,14 @@ if(isset($_SESSION['query'] )){
 	  
 		<select class="form-control" name='status'>
 		<option value='def'>Status</option>
-		<option <?php if($statusSelected=='notIssued') echo 'selected' ?> value='NI'>Not Issued Forms</option>
-		<option <?php if($statusSelected=='issued') echo 'selected' ?> value='I'>Issued Forms</option>
+		<option <?php if($statusSelected=='notIssued') echo 'selected' ?> value='NI'>Not Issued</option>
+		<option <?php if($statusSelected=='issued') echo 'selected' ?> value='I'>Issued</option>
 		</select>
 		
 		<select class='form-control' name='gender'>
 		<option value='def'>Gender</option>
-		<option <?php if($genderSelected=='M') echo 'selected' ?> value='M'>Male Student Forms</option>
-		<option <?php if($genderSelected=='F') echo 'selected' ?> value='F'>Female Student Forms</option>
+		<option <?php if($genderSelected=='M') echo 'selected' ?> value='M'>Male</option>
+		<option <?php if($genderSelected=='F') echo 'selected' ?> value='F'>Female</option>
 		</select>
 	  
 		<select class='form-control' name="dept">
@@ -86,10 +107,22 @@ if(isset($_SESSION['query'] )){
 		<option <?php if($deptSelected=='IT') echo 'selected' ?> value='IT'>Information Technology</option>
 		<option <?php if($deptSelected=='C') echo 'selected' ?> value='C'>Civil</option>
 		<option <?php if($deptSelected=='M') echo 'selected' ?> value='M'>Mechanical</option>
-		<option <?php if($deptSelected=='EXTC') echo 'selected' ?> value='EXTC'>Electronics & Telecommunications</option>
+		<option <?php if($deptSelected=='EXTC') echo 'selected' ?> value='EXTC'>Elex & Telecomn</option>
 		<option <?php if($deptSelected=='CS') echo 'selected' ?> value='CS'>Computer Science</option>
 		<option <?php if($deptSelected=='EX') echo 'selected' ?> value='EX'>Electronics Engineer</option>
 		<br/>
+		</select>
+		
+		<!--select class='form-control' name='train_src'>
+		<option value='def'>Source</option>
+		</select-->
+		
+		<select class='form-control' name='train_dest'>
+		<option value='def'>Destination</option>
+		<option value='B' <?php if($train_dest_selected=='B') echo 'selected'?> >Byculla Station</option>
+		<option value='D' <?php if($train_dest_selected=='D') echo 'selected'?> >Dockyard Road</option>
+		<option value='S' <?php if($train_dest_selected=='S') echo 'selected'?> >Sandhurst Road</option>
+		<option value='M' <?php if($train_dest_selected=='M') echo 'selected'?> >Mumbai Central</option>
 		</select>
 		
 		<select class='form-control' name='train_class'>
