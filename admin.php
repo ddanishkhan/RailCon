@@ -77,6 +77,20 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 		}
 		
 	}
+	
+	if(isset($_POST['train_dest']) && $_POST['train_dest']!='def'){
+		if( $_POST['train_dest'] =='B' ){
+			$sql_display .= 'AND destination = "Byculla Station" ';
+		} else if( $_POST['train_dest'] =='S' ){
+			$sql_display .= 'AND destination = "Sandhurst Road Station" ';
+		} else if( $_POST['train_dest'] =='D' ){
+			$sql_display .= 'AND destination = "Dockyard Road" ';
+		} else if( $_POST['train_dest'] =='M' ){
+			$sql_display .= 'AND destination = "Mumbai Central" ';
+		} 
+	}
+	
+	//train class
 	if(isset($_POST['train_class']) && $_POST['train_class']!='def'){
 		if($_POST['train_class']=='F'){
 			$sql_display .= ' AND classof = "First" ';
