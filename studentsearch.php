@@ -84,7 +84,10 @@ if (isset($_POST['email_id']) || isset($_SESSION['studentemail']) ) {
 
                     <div class="card-header d-flex align-items-center">
                       <!--<h3 class="h4">Compact Table</h3>-->
-                    </div>
+                    <strong>
+					<?php echo $_SESSION['studenterror']; ?>
+					</strong>
+					</div>
                     <div class="card-body">
                       <div class="table-responsive">   
                         <table class="table table-striped table-sm">

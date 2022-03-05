@@ -18,7 +18,7 @@ function checkIfPassExpiredForExistingEmail($select, $db){
      * ******** ACTION for email exists already *************
      */
     echo "<br>Email Exists ALREADY - Checking if earlier pass expired.<br>";
-    
+
     /* old image */
     $row = mysqli_fetch_assoc($select);
     echo $delimg = 'MyUploadImages/' . $row['img_loc'];
@@ -184,12 +184,12 @@ else
         
         if($proceed){
             echo "Executing";
-            
+
             // create a folder MyUploadImages for storing images
             $upload_directory = "MyUploadImages/";
-            
+
             $TargetPath = time() . "id." . pathinfo($UploadedFileName, PATHINFO_EXTENSION);
-            
+
             $empty = 0;
             $q = mysqli_prepare($db, "INSERT INTO student(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,
 	 source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,img_loc,dateofentry) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or die($q->error);
@@ -197,7 +197,7 @@ else
             if (mysqli_stmt_execute($q)) {
                 /* echo "\nInserted into Table\n"; */
                 if (move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory . $TargetPath)) {
-                    
+
                     if ($duration == "Monthly") {
                         $set_del = "UPDATE student SET datetodelete = DATE_ADD(dateofentry , INTERVAL 28 DAY) WHERE email = '$email'";
                         echo "<strong> File and Details Uploaded  </n> </strong>";
@@ -213,8 +213,8 @@ else
                     mysqli_stmt_execute($del_q); // execute stmt
                 } /* ok */
             } /* end if mysqli_stmt */
-            
-            
+
+
             if ($db->errno) {
                 profile_error(false, $email);
                 header("location:studentsearch.php");

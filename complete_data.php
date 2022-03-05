@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
 	header('location:login.html');
 }
 elseif(! isset($_GET['student']) ){
@@ -84,7 +84,6 @@ else{
 	
 ?>
 	<div class="page-content align-items-stretch"> 
-        <div class="content-inner" style="width:100%">
           <!-- Breadcrumb-->
           <div class="breadcrumb-holder container-fluid">
             <ul class="breadcrumb">
@@ -180,21 +179,21 @@ else{
             </div>
 		</div>
         </section>
+	</div>
+	</div>
+	<footer class="main-footer" style='position:relative'>
+	<div class="container-fluid">
+	  <div class="row">
+		<div class="col-sm-6">
+		  <p> <a href="http://mhssce.ac.in">MHSSCOE &copy; 2018 -<?php echo $year=date("Y"); ?></a> </p>
 		</div>
+		<div class="col-sm-6 text-right">
+		  <p>Developed by <a href="http://www.linkedin.com/in/danishayubkhan">Danish A. Khan </a>& <a href="https://www.linkedin.com/in/husain-amreliwala-121b5312b/">Husain Amrelivala</a></p>
 		</div>
-          <footer class="main-footer">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-sm-6">
-                  <p> <a href="http://mhssce.ac.in">MHSSCOE &copy; 2018 </a> </p>
-                </div>
-                <div class="col-sm-6 text-right">
-				  <p>Developed by <a href="http://www.linkedin.com/in/danishayubkhan">Danish A. Khan </a>& <a href="https://www.linkedin.com/in/husain-amreliwala-121b5312b/">Husain Amrelivala</a></p>
-                </div>
-              </div>
-            </div>
-          </footer>
-
+	  </div>
+	</div>
+	</footer>
+	</body>
 <?php
 		}
 	}

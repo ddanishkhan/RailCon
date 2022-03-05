@@ -50,16 +50,18 @@
             echo $row['destination'];
             echo "</td><td>";
             echo $row['passno'] . "<br/>";
-            echo $row['pass_end'] . "<br/>";
-            echo $row['voucher'] . "<br/>";
-            echo $row['season'] . "<br/>";
+			if(strcasecmp($row['passno'],'NO')!=0){
+				echo $row['pass_end'] . "<br/>";
+				echo $row['voucher'] . "<br/>";
+				echo $row['season'] . "<br/>";
+			}
             echo "</td><td>";
             echo $row['classof'];
             echo "</td><td>";
             echo $row['duration'];
             echo "</td><td>";
             echo $row['date'];
-            echo "</td><td id=issue".$idd.">";
+            echo "</td><td>";
             if ($row['verified'] == "1")
                 echo "Issued";
             else

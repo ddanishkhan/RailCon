@@ -79,7 +79,6 @@ if(isset($_SESSION['query'] )){
 	}else if( preg_match('/destination = "M/', $queryFound)){
 		$train_dest_selected= 'M';
 	}
-	
 }
 
 ?>

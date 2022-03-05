@@ -266,7 +266,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 <?php	
 } //Authentication
 else {
-    echo "<script> alert('Log In First'); </script>";
-    header("Refresh:1; url=login.html");
+	echo "Redirecting to Login.";
+	header("location:login.html");
 }
 ?>		
