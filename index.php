@@ -305,7 +305,7 @@ if ($student_id >= $admin_end_id) {
 													<small class="text-primary">(MANDATORY)</small></label>
 												<div class="col-sm-9">
 													<div class="form-group-material">
-														<input type="date" name="pass_end" />
+														<input id="pass_end" type="date" name="pass_end" />
 													</div>
 												</div>
 											</div>
@@ -555,6 +555,8 @@ if ($student_id >= $admin_end_id) {
             reader.readAsDataURL(input.files[0]);
         }
     }
+    //default pass_end date
+	document.getElementById('pass_end').valueAsDate = new Date("0");
 </script>
 	<!-- Main File-->
 	<script src="js/front.js"></script>
