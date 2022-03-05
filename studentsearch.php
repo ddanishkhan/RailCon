@@ -1,6 +1,7 @@
 <?php
 session_start();
-if (isset($_POST['email_id']) || isset($_SESSION['studentemail']) ) {
+if ((isset($_POST['email_id']) || isset($_SESSION['studentemail'])) && isset($_SESSION['SearchRequest']) ) {
+    unset($_SESSION['SearchRequest']);
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +86,9 @@ if (isset($_POST['email_id']) || isset($_SESSION['studentemail']) ) {
                     <div class="card-header d-flex align-items-center">
                       <!--<h3 class="h4">Compact Table</h3>-->
                     <strong>
-					<?php echo $_SESSION['studenterror']; ?>
+					<?php 
+					   if(isset($_SESSION['studenterror'])){ echo $_SESSION['studenterror']; }
+					?>
 					</strong>
 					</div>
                     <div class="card-body">
@@ -270,6 +273,9 @@ modal.style.display = 'none';
 }
 else{
 	echo "Enter Email ID";
+	$_SESSION['SearchRequest'] = true;
+	unset ($_SESSION['studenterror']);
+	unset ($_SESSION['studentemail']);
 		?>
 	<html>
 	<form action = "studentsearch.php" method="POST" class="form-inline">
