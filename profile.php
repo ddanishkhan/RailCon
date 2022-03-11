@@ -128,7 +128,7 @@ else
     $source  = $_POST['source'];
     $destination = $_POST['destination'];
     $passno  = $_POST['passno'];
-    $pass_end  = $_POST['pass_end'];
+    $passEnd  = $_POST['pass_end'];
     $voucher  = $_POST['voucher'];
     $season  = $_POST['season'];
     $classof = $_POST['classof'];
@@ -193,7 +193,7 @@ else
             $empty = 0;
             $q = mysqli_prepare($db, "INSERT INTO student(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,
 	 source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,img_loc,dateofentry) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or die($q->error);
-            mysqli_stmt_bind_param($q, "isiissiisisssssissssss", $empty, $fullname, $gender, $sem, $email, $age, $contact, $aadhar, $address, $pincode, $source, $destination, $passno, $pass_end, $voucher, $season, $classof, $duration, $branch, $year, $TargetPath, $dateofentry);
+            mysqli_stmt_bind_param($q, "isiissiisisssssissssss", $empty, $fullname, $gender, $sem, $email, $age, $contact, $aadhar, $address, $pincode, $source, $destination, $passno, $passEnd, $voucher, $season, $classof, $duration, $branch, $year, $TargetPath, $dateofentry);
             if (mysqli_stmt_execute($q)) {
                 /* echo "\nInserted into Table\n"; */
                 if (move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory . $TargetPath)) {

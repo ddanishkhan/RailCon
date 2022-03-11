@@ -151,7 +151,7 @@ WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') 
 	}
 } //Authentication
 else {
-	echo "<script> alert('Log In First'); </script>";
+	echo "<script> alert('Session time out. Log In First'); </script>";
 	header("Refresh:1; url=index.php");
 }
 ?>

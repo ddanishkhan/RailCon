@@ -15,10 +15,6 @@ if (isset($_POST['student_editrecord'])) {
     $source = $_POST['source'];
     $destination = $_POST['destination'];
     $passno = $_POST['passno'];
-    $pass_end = NULL;
-    if(!empty($_POST['pass_end'])){
-        $pass_end = $_POST['pass_end'];
-    }
     $voucher = $_POST['voucher'];
     $season = $_POST['season'];
     $classof = $_POST['classof'];
@@ -26,7 +22,7 @@ if (isset($_POST['student_editrecord'])) {
     $branch = $_POST['branch'];
     $year = $_POST['year'];
     $DOB = $_POST['dob'];
-    
+	$passEnd = $_POST['pass_end'];
     $edit = 0;
     extract($_POST);
     $UploadedFileName = $_FILES['UploadImage']['name']; /* error = 4 means image is not changed */ /* size = 0 means image is not uploaded */
@@ -45,7 +41,7 @@ if (isset($_POST['student_editrecord'])) {
         $upload_directory = "MyUploadImages/";
         $TargetPath=time()."id.".pathinfo($UploadedFileName, PATHINFO_EXTENSION);
         $q = mysqli_prepare($db,"UPDATE student SET fullname=?, gender=?, semester=?, email=?, DOB=?, contact=?, address=?, pincode=?, source=?, destination=?, passno=?, pass_end=?, voucher=?, season=?, classof=?, duration=?, branch=?, year=?, edit=?, img_loc=? WHERE id= ?") OR die($q->error);
-        mysqli_stmt_bind_param($q,"sisssisissssssssssisi",$fullname,$gender,$semester,$email,$DOB,$contact,$address,$pincode,$source,$destination,$passno,$pass_end,$voucher,$season,$classof,$duration,$branch,$year, $edit,$TargetPath, $idd);
+        mysqli_stmt_bind_param($q,"sisssisissssssssssisi",$fullname,$gender,$semester,$email,$DOB,$contact,$address,$pincode,$source,$destination,$passno,$passEnd,$voucher,$season,$classof,$duration,$branch,$year, $edit,$TargetPath, $idd);
         if(mysqli_stmt_execute($q))
         {
             if(move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory.$TargetPath) )
@@ -69,11 +65,13 @@ if (isset($_POST['student_editrecord'])) {
     }
     else{
         /*if image uploaded successfully.*/
-        $q = $db->prepare("UPDATE student SET fullname=?, gender=?, semester=?, email=?, DOB=?, contact=?, address=?, pincode=?, source=?, destination=?, passno=?, pass_end=?, voucher=?, season=?, classof=?, duration=?, branch=?, year=?, edit=?  WHERE id= ?") or die("Query preparation failed");
-        $q->bind_param("sisssisissssssssssii", $fullname, $gender, $semester, $email, $DOB, $contact, $address, $pincode, $source, $destination, $passno, $pass_end, $voucher, $season, $classof, $duration, $branch, $year, $edit, $idd);
+        echo $passEnd;
+		
+		$q = $db->prepare("UPDATE student SET fullname=?, gender=?, semester=?, email=?, DOB=?, contact=?, address=?, pincode=?, source=?, destination=?, passno=?, pass_end=?, voucher=?, season=?, classof=?, duration=?, branch=?, year=?, edit=?  WHERE id= ?") or die("Query preparation failed");
+        $q->bind_param("sisssisissssssssssii", $fullname, $gender, $semester, $email, $DOB, $contact, $address, $pincode, $source, $destination, $passno, $passEnd, $voucher, $season, $classof, $duration, $branch, $year, $edit, $idd);
         if ($q->execute()) {
             echo "<script> alert('Record Edited Successfully'); </script>";
-            header("Refresh:1; url=index.php");
+            header("location:studentsearch.php");
         }
     } /*else without image*/
 }
