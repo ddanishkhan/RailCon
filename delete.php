@@ -29,7 +29,7 @@ if(isset($_POST['delete']) && $_SESSION['loggedin'] == true ){
 	{
 		die(mysql_error());
 	}
-	elseif ($_SESSION['dashboard'] == "true") {
+	elseif ($_SESSION['dashboard'] == true) {
 		header("Location: dashboard.php");
 	}
 	else {
