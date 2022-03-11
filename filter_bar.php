@@ -46,8 +46,10 @@ if(isset($_SESSION['query'] )){
 		$deptSelected = 'A';
 	}else if( preg_match('/branch = "Information Technology"/', $queryFound)){
 		$deptSelected = 'IT';
-	}else if( preg_match('/branch = "Computer/', $queryFound)){
+	}else if( preg_match('/branch = "Computer Science/', $queryFound)){
 		$deptSelected = 'CS';
+	}else if( preg_match('/branch = "Computer Engineering/', $queryFound)){
+	    $deptSelected = 'CSE';
 	}else if( preg_match('/branch = "Civil"/', $queryFound)){
 		$deptSelected = 'C';
 	}else if( preg_match('/branch = "Electronics"/', $queryFound)){
@@ -108,8 +110,8 @@ if(isset($_SESSION['query'] )){
 		<option <?php if($deptSelected=='M') echo 'selected' ?> value='M'>Mechanical</option>
 		<option <?php if($deptSelected=='EXTC') echo 'selected' ?> value='EXTC'>Elex & Telecomn</option>
 		<option <?php if($deptSelected=='CS') echo 'selected' ?> value='CS'>Computer Science</option>
+		<option <?php if($deptSelected=='CSE') echo 'selected' ?> value='CSE'>Computer Engineer</option>
 		<option <?php if($deptSelected=='EX') echo 'selected' ?> value='EX'>Electronics Engineer</option>
-		<br/>
 		</select>
 		
 		<!--select class='form-control' name='train_src'>

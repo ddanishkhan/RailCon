@@ -326,6 +326,7 @@
                             <select name="branch" class="form-control" required>
                               <option>Automobile</option>
                               <option>Civil</option>
+                              <option>Computer Engineering</option>
                               <option>Computer Science</option>
                               <option>Electronics</option>
 							  <option>Electronics & Telecommunications</option>
@@ -364,17 +365,23 @@
 						<div class="form-group row">
                           <label class="col-sm-3 form-control-label">Semester</label>
                           <div class="col-sm-9 select">
-                            <select name="semester" class="form-control" required>
-	<option>1</option> <option>2</option>	<option>3</option>	<option>4</option>
-	<option>5</option> 	<option>6</option>	<option>7</option>	<option>8</option>
-                            </select>
-                          </div>
+							<select name="semester" class="form-control" required>
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+								<option>6</option>
+								<option>7</option>
+								<option>8</option>
+							</select>
+						   </div>
 						</div>
 						
 						<div class="line"></div>
 						
                         <div class="form-group row">
-                          <label for="fileInput" class="col-sm-3 form-control-label">Upload <strong><strong>I-Kit</strong> Image with <strong><strong>Address Visible</strong></label><br>
+                          <label for="fileInput" class="col-sm-3 form-control-label">Upload <strong>I-Kit</strong> Image with <strong>Address Visible</strong></label><br>
 						  <small>
 						  <br>*MAX SIZE 1 MB 
 						  <br>*Minimum Resolution: 100x100 

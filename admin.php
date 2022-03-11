@@ -1,10 +1,11 @@
 <?php
 session_start();
-$_SESSION['dashboard'] = False;
+$_SESSION['dashboard'] = false;
+include 'logs/LOGGER.php';
+logger::log("INFO", "|Session Logged In =".$_SESSION['loggedin'] . "|USER=" .$_SESSION['user'] );
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    require 'database_connection.php';
-	
+    require 'database_connection.php';	
 	
 	$check = "SELECT alertuser FROM members WHERE username = '".$_SESSION['user']."'";
 	$result = $db->query($check);
@@ -66,6 +67,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 			$sql_display .= 'AND branch = "Information Technology" ';
 		}else if($_POST['dept']=='CS'){
 			$sql_display .= 'AND branch = "Computer Science" ';
+		}else if($_POST['dept']=='CSE'){
+		    $sql_display .= 'AND branch = "Computer Engineering" ';
 		}else if($_POST['dept']=='C'){
 			$sql_display .= 'AND branch = "Civil" ';
 		}else if($_POST['dept']=='M'){
@@ -266,7 +269,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 <?php	
 } //Authentication
 else {
+    logger::log("INFO", "Redirecting to Login");
 	echo "Redirecting to Login.";
-	header("location:login.html");
+	header("location:login.php");
 }
 ?>		

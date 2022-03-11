@@ -1,5 +1,12 @@
                     <div class="card-body">
                       <div class="table-responsive">   
+                        <!-- BULK UPDATE FEATURE START-->
+                        <form action='bulkUpdate.php' method='POST'>
+                        	<input type = 'text' id = 'bulkIssueIdsDislay' name = 'bulkIssueIds' value = "" disabled>
+                        	<input type = 'text' id = 'bulkIssueIds' name = 'bulkIssueIds' value = "" hidden=true>
+                        	<input type = 'submit' class='bg-green' name= 'bulkIssueSubmit' value='Bulk Issue'>
+                        </form>
+                        <!-- BULK UPDATE FEATURE END-->
                         <table class="table table-striped table-sm">
                           <thead>
                             <tr>
@@ -16,6 +23,7 @@
 							  <th>Status</th> 
 							  <th>ID Card</th> 
 							  <th>Issue</th> 
+							  <th>BulkIssue</th>
 							  <th>Remarks</th> 
                             </tr>
                           </thead>
@@ -114,6 +122,13 @@ function rotate(deg) {
       'transform' : 'rotate('+ deg +'deg)'
   });
 }
+
+function checkCheckboxBulkIssue(){
+	var ids = $('input[type="checkbox"]:checked').map(function() { return this.value; }).get();
+	console.log(ids);
+ 	$('#bulkIssueIdsDislay').val(ids);
+ 	$('#bulkIssueIds').val(ids);
+}
 	
 </script>
 
@@ -122,13 +137,13 @@ function rotate(deg) {
 			
 			<form action='update.php' method='POST'>
 			<input type='hidden' name = 'id' value = "<?php echo $idd ?>">
-			<input type = 'submit' class='bg-green' name= 'verify_it' value='Issue'><br/>
+			<input type = 'submit' class='bg-green' name= 'verify_it' value='Issue'>
 			<input type = 'submit' class='bg-red' name= 'cancel_verify' value='Not Issue'><br/>
-			</form></br>
+			</form><br/>
 			
 			<form action='edit.php' method='POST'>
 			<input type='hidden' name = 'id' value = "<?php echo $idd ?>">
-			<input type = 'submit' class='bg-blue' name= 'edit' value ='Edit Record'></br>
+			<input type = 'submit' class='bg-blue' name= 'edit' value ='Edit Record'><br/>
 			</form>
 			
 
@@ -142,8 +157,13 @@ function rotate(deg) {
 			<input type = 'submit' class='bg-green' name= 'edit_form' value ='Allow Edit'/>
 			</form>
             
-		</td><td>
+		</td>
 		
+		<td>
+		   <input type = 'checkbox' onclick="checkCheckboxBulkIssue()" name = 'Bulk Issue' value = "<?php echo $idd ?>">
+		</td>
+		
+		<td>
 		<form id='Remarks' method='POST' action='update_remark.php'>
 		<input type='text' name='remark' placeholder='Enter Remarks' style='width:90%'/>
 		<input type='hidden' name = 'id' value = "<?php echo $idd ?>"></input>
