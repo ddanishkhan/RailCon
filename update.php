@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	
 	//checking which button clicked
     if (isset($_POST['verify_it'])) {
-        
+        logger::log("INFO", "VERIFY IT");
         if ($s_value['verified'] == "0") {
 
             $sql_update_status = "UPDATE student SET verified = 1 WHERE id='$var_id' ";
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             include ('PHPMailer/sendmail.php');
 
             logger::log("INFO", "Session Logged In [".$_SESSION['loggedin'] . "]|USER=[" .$_SESSION['user'] . "]" );
-            if ($_SESSION['dashboard'] == true) {
+            if ($_SESSION['dashboard']) {
                 logger::log("INFO", "Redirected to dashboard.php");
                 header("Location: dashboard.php");
             } else {
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             echo "<script>alert('Already Issued')</script>";
-            if ($_SESSION['dashboard'] == true) {
+            if ($_SESSION['dashboard']) {
                 header("Refresh:0.5, url:dashboard.php");
             } else {
                 header("Refresh:0.5, url:admin.php");
@@ -44,13 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 	elseif(isset($_POST['cancel_verify'])) {
-
+	    logger::log("INFO", "CANCEL VERIFY");
 		$s_check = $db->query($status_check);
 		$s_value = $row = $s_check->fetch_assoc();
 
 		$_SESSION['fullnameemail'] = $s_value['fullname'];
 		$_SESSION['emailid'] = $s_value['email'];
-
 		try {
 		    include ('PHPMailer/senderrormail.php');
 		}
@@ -64,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     		$db->query($sql_update_status);
 		}
 		//header to redirect previous page
-		if($_SESSION['dashboard']==true){
+		if($_SESSION['dashboard']){
 		  header("Location: dashboard.php");
 		}
 		else{
