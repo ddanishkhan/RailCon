@@ -2,7 +2,7 @@
 // Connection 
 session_start();
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
-$conn=mysql_connect("sql309.epizy.com","epiz_22379380","aAkuiKlsSmqPO7","epiz_22379380_railcon");
+$conn = require('database_connection.php')
 //database name
 $db=mysql_select_db('epiz_22379380_railcon',$conn);
 $filename = "RailwayConcession.xls"; // File Name
