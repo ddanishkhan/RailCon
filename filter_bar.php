@@ -1,4 +1,6 @@
 <?php
+include_once 'logs/LOGGER.php';
+include_once 'constants/departments.php';
 
 	$statusSelected = 'def';
 	$genderSelected = 'def';
@@ -28,7 +30,7 @@
 /*Retain the value of dropdown*/
 if(isset($_SESSION['query'] )){
 	$queryFound = $_SESSION['query'] ;
-	
+	logger::log("INFO", $queryFound);
 	if( preg_match("/verified=1/", $queryFound) ){		
 		$statusSelected = 'issued';
 	}
@@ -46,10 +48,13 @@ if(isset($_SESSION['query'] )){
 		$deptSelected = 'A';
 	}else if( preg_match('/branch = "Information Technology"/', $queryFound)){
 		$deptSelected = 'IT';
-	}else if( preg_match('/branch = "Computer Science/', $queryFound)){
+	}else if( preg_match('/branch = "Computer Science"/', $queryFound)){
 		$deptSelected = 'CS';
-	}else if( preg_match('/branch = "Computer Engineering/', $queryFound)){
+	}else if( preg_match('/branch = "Computer Engineering"/', $queryFound)){
 	    $deptSelected = 'CSE';
+	}else if( preg_match('/branch = "Computer Science & Engineering - AI & ML"/', $queryFound)){
+		logger::log("INFO", "preg_matched");
+		$deptSelected = 'CSEAIML';
 	}else if( preg_match('/branch = "Civil"/', $queryFound)){
 		$deptSelected = 'C';
 	}else if( preg_match('/branch = "Electronics"/', $queryFound)){
@@ -109,8 +114,9 @@ if(isset($_SESSION['query'] )){
 		<option <?php if($deptSelected=='C') echo 'selected' ?> value='C'>Civil</option>
 		<option <?php if($deptSelected=='M') echo 'selected' ?> value='M'>Mechanical</option>
 		<option <?php if($deptSelected=='EXTC') echo 'selected' ?> value='EXTC'>Elex & Telecomn</option>
-		<option <?php if($deptSelected=='CS') echo 'selected' ?> value='CS'>Computer Science</option>
+		<option <?php if($deptSelected=='CS') echo 'selected' ?> value='CS'>Computer Science</option>		
 		<option <?php if($deptSelected=='CSE') echo 'selected' ?> value='CSE'>Computer Engineer</option>
+		<option <?php if($deptSelected=='CSEAIML') echo 'selected' ?> value='CSEAIML'><?php echo CSE_AI_ML;?></option>
 		<option <?php if($deptSelected=='EX') echo 'selected' ?> value='EX'>Electronics Engineer</option>
 		</select>
 		

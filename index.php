@@ -85,6 +85,7 @@
 			<div class="line row"></div>
 				
 <?php 
+  include_once 'constants/departments.php';
 	require 'database_connection.php';
 	$sql_display = "SELECT MAX(id) AS id FROM student";
 	$result = $db->query($sql_display);
@@ -328,6 +329,7 @@
                               <option>Civil</option>
                               <option>Computer Engineering</option>
                               <option>Computer Science</option>
+                              <option><?php echo CSE_AI_ML ?></option>
                               <option>Electronics</option>
 							  <option>Electronics & Telecommunications</option>
 							  <option>Information Technology</option>

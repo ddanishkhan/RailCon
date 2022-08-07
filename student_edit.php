@@ -285,6 +285,7 @@ if (isset($_POST['student_edit'])) {
 														<option>Automobile</option>
 														<option>Civil</option>
 														<option>Computer Science</option>
+														<option>Computer Science & Engineering - AI & ML</option>
 														<option>Electronics Engineering</option>
 														<option>Electronics & Telecommunications</option>
 														<option>Information Technology</option>

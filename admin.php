@@ -2,6 +2,8 @@
 session_start();
 $_SESSION['dashboard'] = false;
 include 'logs/LOGGER.php';
+include_once 'constants/departments.php';
+
 logger::log("INFO", "|Session Logged In =".$_SESSION['loggedin'] . "|USER=" .$_SESSION['user'] );
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
@@ -69,6 +71,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 			$sql_display .= 'AND branch = "Computer Science" ';
 		}else if($_POST['dept']=='CSE'){
 		    $sql_display .= 'AND branch = "Computer Engineering" ';
+		}else if($_POST['dept']=='CSEAIML'){
+		    $sql_display .= 'AND branch = "'. CSE_AI_ML .'"';
 		}else if($_POST['dept']=='C'){
 			$sql_display .= 'AND branch = "Civil" ';
 		}else if($_POST['dept']=='M'){
