@@ -88,7 +88,8 @@ if ($result->num_rows > 0) {
                                 <img id="img<?= $idd ?>"
                                      src="MyUploadImages/<?= htmlspecialchars($row['img_loc']) ?>"
                                      data-toggle="modal" data-target="#imgModal"
-                                     height="60" style="cursor:pointer;border-radius:3px">
+                                     data-student="<?= htmlspecialchars($row['fullname']) ?>"
+                                     style="width:70px;height:70px;object-fit:cover;cursor:pointer;border-radius:4px;border:1px solid #dee2e6;display:block">
                               </td>
                               <td style="min-width:110px">
                                 <form action="update.php" method="POST" class="mb-1">
@@ -143,16 +144,41 @@ if ($result->num_rows > 0) {
 
 <!-- Image preview modal (single instance, shared across all rows) -->
 <div id="imgModal" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="max-width:90%">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-body">
-        <div class="image-wrapper">
-          <img class="showimage img-responsive" src="" style="max-width:90%;max-height:700px">
-        </div>
+      <div class="modal-header py-2">
+        <h5 class="modal-title">
+          <i class="fa fa-picture-o mr-2"></i>ID Card &mdash; <span id="imgModalName" class="font-weight-bold"></span>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-outline-secondary" id="rotateBtn">Rotate</button>
+      <div class="modal-body text-center py-4" style="background:#f1f3f5;min-height:300px">
+        <img class="showimage" src=""
+             style="max-width:100%;max-height:70vh;transition:transform .25s ease;border-radius:4px">
+      </div>
+      <div class="modal-footer flex-wrap justify-content-between py-2">
+        <div class="btn-group mr-2 mb-1">
+          <button type="button" class="btn btn-outline-secondary" id="rotateLeftBtn" title="Rotate Left">
+            <i class="fa fa-rotate-left"></i> Rotate Left
+          </button>
+          <button type="button" class="btn btn-outline-secondary" id="rotateRightBtn" title="Rotate Right">
+            <i class="fa fa-rotate-right"></i> Rotate Right
+          </button>
+        </div>
+        <div class="btn-group mr-2 mb-1">
+          <button type="button" class="btn btn-outline-secondary" id="flipHBtn" title="Flip Horizontal">
+            <i class="fa fa-arrows-h"></i> Flip H
+          </button>
+          <button type="button" class="btn btn-outline-secondary" id="flipVBtn" title="Flip Vertical">
+            &#8597; Flip V
+          </button>
+        </div>
+        <div class="btn-group mb-1">
+          <button type="button" class="btn btn-outline-secondary" id="resetImgBtn">
+            <i class="fa fa-undo"></i> Reset
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -162,19 +188,36 @@ if ($result->num_rows > 0) {
 $(function () {
 
   /* ---- Image modal ---- */
-  var rotation = 0;
+  var imgState = { deg: 0, flipH: false, flipV: false };
+
+  function applyImgTransform() {
+    var hScale = imgState.flipH ? -1 : 1;
+    var vScale = imgState.flipV ? -1 : 1;
+    // Apply flip in screen space (after rotation) by listing scale before rotate
+    $('.showimage').css('transform',
+      'scaleX(' + hScale + ') scaleY(' + vScale + ') rotate(' + imgState.deg + 'deg)');
+  }
+
+  function resetImgState() {
+    imgState = { deg: 0, flipH: false, flipV: false };
+    applyImgTransform();
+  }
+
   $(document).on('click', 'img[data-target="#imgModal"]', function () {
     $('.showimage').attr('src', $(this).attr('src'));
-    rotation = 0;
-    rotateImage(0);
+    $('#imgModalName').text($(this).data('student') || '');
+    resetImgState();
   });
-  $('#rotateBtn').on('click', function () {
-    rotation += 45;
-    rotateImage(rotation);
+
+  $('#imgModal').on('hidden.bs.modal', function () {
+    resetImgState();
   });
-  function rotateImage(deg) {
-    $('.showimage').css('transform', 'rotate(' + deg + 'deg)');
-  }
+
+  $('#rotateLeftBtn').on('click',  function () { imgState.deg = (imgState.deg - 90 + 360) % 360; applyImgTransform(); });
+  $('#rotateRightBtn').on('click', function () { imgState.deg = (imgState.deg + 90) % 360;        applyImgTransform(); });
+  $('#flipHBtn').on('click',       function () { imgState.flipH = !imgState.flipH;                 applyImgTransform(); });
+  $('#flipVBtn').on('click',       function () { imgState.flipV = !imgState.flipV;                 applyImgTransform(); });
+  $('#resetImgBtn').on('click', resetImgState);
 
   /* ---- Bulk issue ---- */
   function updateBulkBar() {
