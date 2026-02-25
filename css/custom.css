@@ -7,31 +7,10 @@
 .filter-bar-card {
   border-color: #e3e6f0;
 }
-.filter-bar-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: .375rem;
-}
-.filter-bar-icon {
-  font-size: .85rem;
-}
-.filter-select {
-  flex: 1 1 90px;
-  min-width: 80px;
-  max-width: 130px;
+.filter-bar-card .form-control-sm {
   font-size: .82rem;
 }
-.filter-select-dept {
-  flex: 1.5 1 130px;
-  max-width: 175px;
-}
-.filter-bar-card .btn-sm {
-  flex-shrink: 0;
-  font-size: .8rem;
-}
 .filter-record-count {
-  margin-left: auto;
   font-size: .8rem;
   color: #858796;
   white-space: nowrap;
