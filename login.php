@@ -18,10 +18,22 @@ if(isset($_POST['submit']))
 	$q->free_result();
 	$q->close();
 
-	// password_verify() requires bcrypt hash in DB.
-	// Run tools/generate_hash.php once to get your hash, then:
-	// UPDATE members SET password = '<hash>' WHERE username = '<user>';
-	if ($dbuser == $user && password_verify($plainPassword, $dbpass)) {
+	// Verify password — supports both bcrypt (new) and MD5 (legacy).
+	// On first login with an MD5 hash, it auto-upgrades to bcrypt in the DB.
+	$passwordValid = false;
+	if (password_verify($plainPassword, $dbpass)) {
+		$passwordValid = true;
+	} elseif ($dbpass === md5($plainPassword)) {
+		// MD5 hash found — upgrade to bcrypt transparently
+		$newHash = password_hash($plainPassword, PASSWORD_DEFAULT);
+		$upg = $db->prepare("UPDATE members SET password = ? WHERE username = ?");
+		$upg->bind_param("ss", $newHash, $user);
+		$upg->execute();
+		$upg->close();
+		$passwordValid = true;
+	}
+
+	if ($dbuser == $user && $passwordValid) {
 		$_SESSION['user'] = $dbuser;
 		$_SESSION['loggedin'] = TRUE;
 		
