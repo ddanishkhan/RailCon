@@ -10,3 +10,6 @@ db_backup/
 
 # Dev backup files
 *_bkup*.php
+
+# Local dev tools (not for deployment)
+tools/

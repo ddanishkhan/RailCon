@@ -1,19 +1,25 @@
 <?php
 session_start();
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
-	include 'database_connection.php' ;
-	
-	$check = "SELECT alertuser FROM members WHERE username = '".$_SESSION['user']."'";
-	$result = $db->query($check);
-	if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-			if ( $row['alertuser'] ){
-			include 'notification.php' ;
-			$sql_update_status = "UPDATE `members` SET `alertuser`=0 WHERE `username`='".$_SESSION['user']."' ";
-			$db->query($sql_update_status);
-			}
-		}
-	}
+require_once __DIR__ . '/includes/auth.php';
+require_login();
+require_once __DIR__ . '/database_connection.php';
+
+$stmt_alert = $db->prepare("SELECT alertuser FROM members WHERE username = ?");
+$stmt_alert->bind_param("s", $_SESSION['user']);
+$stmt_alert->execute();
+$result = $stmt_alert->get_result();
+$stmt_alert->close();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        if ($row['alertuser']) {
+            include 'notification.php';
+            $stmt_reset = $db->prepare("UPDATE members SET alertuser = 0 WHERE username = ?");
+            $stmt_reset->bind_param("s", $_SESSION['user']);
+            $stmt_reset->execute();
+            $stmt_reset->close();
+        }
+    }
+}
 	
 	$_SESSION['dashboard'] = true;
 	
@@ -175,10 +181,5 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
   </body>
 </html>
 
-<?php	
-}
-else{
-	header("Refresh:1; url=login.html");
-	echo "<script> alert('Log In First'); </script>";
-}
+<?php
 ?>

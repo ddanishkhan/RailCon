@@ -1,9 +1,10 @@
 <?php
-include('database_connection.php');
-mysqli_report(MYSQLI_REPORT_ALL);
 session_start();
+require_once __DIR__ . '/includes/auth.php';
+require_login();
+require_once __DIR__ . '/database_connection.php';
+mysqli_report(MYSQLI_REPORT_ALL);
 
-if( isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true ){
 	
 $idd = $_POST['id'];
 
@@ -64,7 +65,3 @@ elseif(isset($_POST['edit_duration'])){
 		}
 	}
 
-}/*if part parent*/
-else{
-	header("location:login.html");
-}

@@ -6,20 +6,22 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == TRUE ){
 }
 if(isset($_POST['submit']))
 {
-	require 'database_connection.php' ;
+	require_once __DIR__ . '/database_connection.php';
 	$user = $_POST['loginUsername'];
-	$pass = md5($_POST['loginPassword']) ;
+	$plainPassword = $_POST['loginPassword'];
 
 	$q = $db->prepare("SELECT id, username, password FROM members WHERE username=?") OR die('query preparation failed');
-	$q->bind_param('s',$user);
+	$q->bind_param('s', $user);
 	$q->execute();
-	$q->bind_result($id,$dbuser,$dbpass);
+	$q->bind_result($id, $dbuser, $dbpass);
 	$q->fetch();
 	$q->free_result();
 	$q->close();
-	
 
-	if($dbuser == $user && $dbpass == $pass){
+	// password_verify() requires bcrypt hash in DB.
+	// Run tools/generate_hash.php once to get your hash, then:
+	// UPDATE members SET password = '<hash>' WHERE username = '<user>';
+	if ($dbuser == $user && password_verify($plainPassword, $dbpass)) {
 		$_SESSION['user'] = $dbuser;
 		$_SESSION['loggedin'] = TRUE;
 		

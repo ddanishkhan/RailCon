@@ -1,63 +1,49 @@
 <?php
 session_start();
+require_once __DIR__ . '/includes/auth.php';
+require_login();
 error_reporting(E_ERROR | E_PARSE);
 include 'logs/LOGGER.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    //database connection
-    include('database_connection.php');
-    
-    //checking which button clicked
+
+    require_once __DIR__ . '/database_connection.php';
+
     if (isset($_POST['bulkIssueSubmit'])) {
         logger::log("INFO", "inside bulkIssueIds");
-        print_r($_POST['bulkIssueIds']);        
-        
-        $multipleStudentIds = $_POST['bulkIssueIds'];
-        
-        if(!empty($multipleStudentIds)){
-            $sql_update_status = "UPDATE student SET verified = 1 WHERE id IN ( $multipleStudentIds )";
 
-            logger::log("QUERY", $sql_update_status);
+        $raw = $_POST['bulkIssueIds'] ?? '';
+        $ids = array_filter(array_map('intval', explode(',', $raw)));
 
-            $db1 = OpenDatabaseConnection();
-            $db1->query($sql_update_status);
-            CloseDatabaseCon($db1);
+        if (!empty($ids)) {
+            $placeholders = implode(',', array_fill(0, count($ids), '?'));
+            $stmt = $db->prepare("UPDATE student SET verified = 1 WHERE id IN ($placeholders)");
+            $stmt->bind_param(str_repeat('i', count($ids)), ...$ids);
+            $stmt->execute();
+            logger::log("INFO", "Bulk updated IDs: $raw");
+            $stmt->close();
+        } else {
+            logger::log("ERROR", "EMPTY IDS: $raw");
         }
-        else{
-            logger::log("ERROR", "EMPTY IDS". $multipleStudentIds);
-        }
-        
-         quickRedirect();
+
+        adminRedirect();
     }
-    
-    waitAndRedirect();
-}
-else{
-    quickRedirect();
+
+    adminRefreshRedirect();
+
+} else {
+    adminRedirect();
 }
 
-function quickRedirect(){
-    logger::log("INFO", "Session Logged In [".$_SESSION['loggedin'] . "]|USER=[" .$_SESSION['user'] . "]" );
-    
-    if ($_SESSION['dashboard'] == true) {
-        logger::log("INFO", "Redirected to dashboard.php");
-        header("Location: dashboard.php");
-    } else {
-        logger::log("INFO", "Redirected to admin.php");
-        header("Location: admin.php");
-    }
+function adminRedirect(): void {
+    logger::log("INFO", "Session Logged In [".$_SESSION['loggedin'] . "]|USER=[" .$_SESSION['user'] . "]");
+    header($_SESSION['dashboard'] ? "Location: dashboard.php" : "Location: admin.php");
+    exit;
 }
 
-function waitAndRedirect(){
-    logger::log("INFO", "Session Logged In [".$_SESSION['loggedin'] . "]|USER=[" .$_SESSION['user'] . "]" );
-    
-    if ($_SESSION['dashboard'] == true) {
-        logger::log("INFO", "Redirecting to dashboard.php");
-        header("Refresh:0.5, url:dashboard.php");
-    } else {
-        logger::log("INFO", "Redirecting to admin.php");
-        header("Refresh:0.5, url:admin.php");
-    }
+function adminRefreshRedirect(): void {
+    logger::log("INFO", "Session Logged In [".$_SESSION['loggedin'] . "]|USER=[" .$_SESSION['user'] . "]");
+    header($_SESSION['dashboard'] ? "Refresh:0.5, url:dashboard.php" : "Refresh:0.5, url:admin.php");
+    exit;
 }
-
 ?>

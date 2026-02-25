@@ -1,22 +1,28 @@
 <?php
 session_start();
+require_once __DIR__ . '/includes/auth.php';
+require_login();
 $_SESSION['dashboard'] = false;
 include 'logs/LOGGER.php';
 include_once 'constants/departments.php';
 
 logger::log("INFO", "|Session Logged In =".$_SESSION['loggedin'] . "|USER=" .$_SESSION['user'] );
 
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    require 'database_connection.php';	
+require_once __DIR__ . '/database_connection.php';
 	
-	$check = "SELECT alertuser FROM members WHERE username = '".$_SESSION['user']."'";
-	$result = $db->query($check);
+	$stmt_alert = $db->prepare("SELECT alertuser FROM members WHERE username = ?");
+	$stmt_alert->bind_param("s", $_SESSION['user']);
+	$stmt_alert->execute();
+	$result = $stmt_alert->get_result();
+	$stmt_alert->close();
 	if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-			if ( $row['alertuser'] ){
-			include 'notification.php' ;
-			$sql_update_status = "UPDATE `members` SET `alertuser`=0 WHERE `username`='".$_SESSION['user']."' ";
-			$db->query($sql_update_status);
+			if ($row['alertuser']) {
+				include 'notification.php';
+				$stmt_reset = $db->prepare("UPDATE members SET alertuser = 0 WHERE username = ?");
+				$stmt_reset->bind_param("s", $_SESSION['user']);
+				$stmt_reset->execute();
+				$stmt_reset->close();
 			}
 		}
 	}
@@ -117,7 +123,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 	}
 	//Where clause for given date
 	if(isset($_POST['date_filter']) && $_POST['date_filter']!='def'){
-		$date_filter = $_POST['date_filter'];
+		$date_filter = $db->real_escape_string($_POST['date_filter']);
 		$sql_display .= " AND DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$date_filter'";
 	}
 	
@@ -271,11 +277,5 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     <script src="js/front.js"></script>
   </body>
 </html>
-<?php	
-} //Authentication
-else {
-    logger::log("INFO", "Redirecting to Login");
-	echo "Redirecting to Login.";
-	header("location:login.php");
-}
+<?php
 ?>		

@@ -1,9 +1,9 @@
 <?php
 session_start();
-
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
-include('database_connection.php');
-unset( $_SESSION['adminpage'] );
+require_once __DIR__ . '/includes/auth.php';
+require_login();
+require_once __DIR__ . '/database_connection.php';
+unset($_SESSION['adminpage']);
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -53,10 +53,3 @@ unset( $_SESSION['adminpage'] );
 	
 	</body>
 </html>
-<?php
-}//Authentication
-else{
-	echo "<script> alert('Log In First'); </script>";
-	header("Refresh:1; url=login.html");
-}
-?>

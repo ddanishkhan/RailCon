@@ -1,14 +1,14 @@
 <?php
 session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
-	header('location:login.html');
+require_once __DIR__ . '/includes/auth.php';
+require_login();
+
+if (!isset($_GET['student'])) {
+    echo "No Student Selected";
+    exit;
 }
-elseif(! isset($_GET['student']) ){
-	echo "No Student Selected";
-}
-else{
-	
-	include('database_connection.php');
+
+require_once __DIR__ . '/database_connection.php';
 ?>
 <html>
   <head>

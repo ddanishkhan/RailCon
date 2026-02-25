@@ -1,10 +1,9 @@
 <?php
 session_start();
+require_once __DIR__ . '/includes/auth.php';
+require_login();
+require_once __DIR__ . '/database_connection.php';
 
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-
-	// database connection
-	include ('database_connection.php');
 	
 	$query = $_GET['query'];
 
@@ -149,9 +148,4 @@ WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') 
 	else { // if query length is less than minimum
 		echo "<script>alert('Minimum Length is 3')</script>";
 	}
-} //Authentication
-else {
-	echo "<script> alert('Session time out. Log In First'); </script>";
-	header("Refresh:1; url=index.php");
-}
 ?>

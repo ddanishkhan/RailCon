@@ -37,24 +37,32 @@ function checkIfPassExpiredForExistingEmail($select, $db){
     echo "START TRANSACTION<br>";
     
     mysqli_query($db, 'START TRANSACTION;');
-    $query = "INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,  destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE dateofentry <= subdate(current_date, $days) AND duration='$duration'; ";
-    echo "Query[$query]";
-    mysqli_query($db, $query);
-    if ($errCode = mysqli_error($db) || mysqli_affected_rows($db) <= 0) {
+
+    $stmt_ins = $db->prepare("INSERT INTO oldstudent(oldid,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark) SELECT id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,verified,dateofentry,datetodelete,Remark FROM student WHERE dateofentry <= subdate(current_date, ?) AND duration = ?");
+    $stmt_ins->bind_param("is", $days, $duration);
+    $stmt_ins->execute();
+    if (mysqli_error($db) || $stmt_ins->affected_rows <= 0) {
+        $stmt_ins->close();
         mysqli_query($db, 'ROLLBACK;');
-        echo "1. Error[$errCode] OR No records could be moved to oldstudent table <br>";
+        echo "1. Error OR No records could be moved to oldstudent table <br>";
         return false;
     } else {
         echo "1. Details Moved to oldstudent table<br>";
     }
-    mysqli_query($db, "DELETE FROM student WHERE dateofentry <= subdate(current_date, $days) AND duration='$duration';");
-    if ($errCode = mysqli_error($db) || mysqli_affected_rows($db) <= 0) {
+    $stmt_ins->close();
+
+    $stmt_del = $db->prepare("DELETE FROM student WHERE dateofentry <= subdate(current_date, ?) AND duration = ?");
+    $stmt_del->bind_param("is", $days, $duration);
+    $stmt_del->execute();
+    if (mysqli_error($db) || $stmt_del->affected_rows <= 0) {
+        $stmt_del->close();
         mysqli_query($db, 'ROLLBACK;');
-        echo "2. Error[$errCode] OR No records deleted from existing table. Rollback.<br>";
+        echo "2. Error OR No records deleted from existing table. Rollback.<br>";
         return false;
     } else {
         echo "2. OK<br>";
     }
+    $stmt_del->close();
     /* Delete Old Image when moving */
     deleteImage($delimg);
     mysqli_query($db, 'COMMIT');
@@ -79,8 +87,7 @@ if(!isset($_POST['submit'])){
 else
 {
     session_start();
-    require 'database_connection.php' ;
-    $db = OpenDatabaseConnection();
+    require_once __DIR__ . '/database_connection.php';
     
     $sql_display = "SELECT MAX(id) AS id FROM student";
     $result = $db->query($sql_display);
@@ -177,7 +184,11 @@ else
     {
         $proceed = true;
         /*   Query to check email exists if exists then check if it is one month/3 month old based on date of entry   */
-        $select = mysqli_query($db, "SELECT `email`, `img_loc`, `duration` FROM `student` WHERE `email` = '".$_POST['email']."'") or exit(mysqli_error($db));
+        $stmt_sel = $db->prepare("SELECT email, img_loc, duration FROM student WHERE email = ?");
+        $stmt_sel->bind_param("s", $email);
+        $stmt_sel->execute();
+        $select = $stmt_sel->get_result();
+        $stmt_sel->close();
         if(mysqli_num_rows($select)) {
             $proceed = checkIfPassExpiredForExistingEmail($select, $db);
         }
@@ -199,18 +210,24 @@ else
                 if (move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory . $TargetPath)) {
 
                     if ($duration == "Monthly") {
-                        $set_del = "UPDATE student SET datetodelete = DATE_ADD(dateofentry , INTERVAL 28 DAY) WHERE email = '$email'";
-                        echo "<strong> File and Details Uploaded  </n> </strong>";
-                        $db->query($set_del);
+                        $stmt_date = $db->prepare("UPDATE student SET datetodelete = DATE_ADD(dateofentry, INTERVAL 28 DAY) WHERE email = ?");
+                        $stmt_date->bind_param("s", $email);
+                        $stmt_date->execute();
+                        $stmt_date->close();
+                        echo "<strong> File and Details Uploaded </strong>";
                     } elseif ($duration == "Quarterly") {
-                        $set_del = "UPDATE student SET datetodelete = DATE_ADD(dateofentry , INTERVAL 87 DAY) WHERE email = '$email'";
-                        echo "<strong> File and Details Uploaded  </n> </strong>";
-                        $db->query($set_del);
+                        $stmt_date = $db->prepare("UPDATE student SET datetodelete = DATE_ADD(dateofentry, INTERVAL 87 DAY) WHERE email = ?");
+                        $stmt_date->bind_param("s", $email);
+                        $stmt_date->execute();
+                        $stmt_date->close();
+                        echo "<strong> File and Details Uploaded </strong>";
                     }
                 } /* ok */
                 else {
-                    $del_q = "DELETE FROM student WHERE email='$email' LIMIT 1";
-                    mysqli_stmt_execute($del_q); // execute stmt
+                    $stmt_del_fail = $db->prepare("DELETE FROM student WHERE email = ? LIMIT 1");
+                    $stmt_del_fail->bind_param("s", $email);
+                    $stmt_del_fail->execute();
+                    $stmt_del_fail->close();
                 } /* ok */
             } /* end if mysqli_stmt */
 
@@ -220,9 +237,11 @@ else
                 header("location:studentsearch.php");
                 die();
             } else {
-                $sql_id = "SELECT id FROM student WHERE email='$email' LIMIT 1";
-                $result = $db->query($sql_id);
-                $row = $result->fetch_assoc();
+                $stmt_id = $db->prepare("SELECT id FROM student WHERE email = ? LIMIT 1");
+                $stmt_id->bind_param("s", $email);
+                $stmt_id->execute();
+                $row = $stmt_id->get_result()->fetch_assoc();
+                $stmt_id->close();
                 $_SESSION['enroll_id'] = $row['id'];
                 $db->close();
                 header("location:enrollmentid.php");
