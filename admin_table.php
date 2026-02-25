@@ -6,6 +6,7 @@
                         <div id="bulkActionBar" class="mb-3 px-3 py-2 bg-light border rounded align-items-center" style="display:none">
                           <i class="fa fa-check-square-o text-success mr-2"></i>
                           <span id="selectedCount" class="mr-3"><strong>0</strong> selected</span>
+                          <span class="text-muted small mr-3">IDs: <span id="selectedIds">—</span></span>
                           <button type="submit" name="bulkIssueSubmit"
                                   class="btn btn-success btn-sm mr-2"
                                   onclick="return confirm('Issue passes for all selected students?')">
@@ -184,6 +185,7 @@ $(function () {
 
     $('#bulkIssueIds').val(ids.join(','));
     $('#selectedCount strong').text(count);
+    $('#selectedIds').text(count > 0 ? ids.join(', ') : '—');
     $('#bulkActionBar').css('display', count > 0 ? 'flex' : 'none');
 
     // Subtle row highlight for selected rows
