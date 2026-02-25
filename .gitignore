@@ -1,1 +1,12 @@
+# User uploads
 MyUploadImages/
+
+# Secret configuration — NEVER commit this
+config.php
+
+# Generated / server-only
+logs/
+db_backup/
+
+# Dev backup files
+*_bkup*.php
