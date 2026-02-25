@@ -7,50 +7,32 @@
 .filter-bar-card {
   border-color: #e3e6f0;
 }
-.filter-bar-card .card-header {
-  background: #f8f9fc;
-  border-bottom: 1px solid #e3e6f0;
+.filter-bar-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .375rem;
 }
-.filter-bar-title {
+.filter-bar-icon {
   font-size: .85rem;
-  font-weight: 600;
-  color: #5a5c69;
-  letter-spacing: .03em;
-  text-transform: uppercase;
 }
-.filter-label {
-  display: block;
-  font-size: .7rem;
-  font-weight: 600;
-  color: #858796;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  margin-bottom: .25rem;
-}
-.filter-bar-card .form-control-sm {
+.filter-select {
+  flex: 1 1 90px;
+  min-width: 80px;
+  max-width: 130px;
   font-size: .82rem;
 }
+.filter-select-dept {
+  flex: 1.5 1 130px;
+  max-width: 175px;
+}
 .filter-bar-card .btn-sm {
+  flex-shrink: 0;
   font-size: .8rem;
 }
-/* One-line flex layout */
-.filter-bar-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: .5rem;
-}
-.filter-group {
-  flex: 1 1 100px;
-  min-width: 90px;
-}
-.filter-group-dept {
-  flex: 1.5 1 140px;
-  min-width: 130px;
-}
-.filter-group select {
-  width: 100%;
-}
-.filter-actions {
-  flex-shrink: 0;
+.filter-record-count {
+  margin-left: auto;
+  font-size: .8rem;
+  color: #858796;
+  white-space: nowrap;
 }
