@@ -4,28 +4,28 @@ require_once __DIR__ . '/includes/auth.php';
 require_login();
 require_once __DIR__ . '/database_connection.php';
 
-	
-	$query = $_GET['query'];
+$raw_query = $_GET['query'] ?? '';
+$min_length = 3;
+$result = null;
+$too_short = false;
 
-	// gets value sent over search form
-	$min_length = 3;
-
-	// you can set minimum length of the query if you want
-	if (strlen($query) >= $min_length) { 
-	
-	// if query length is more or equal minimum length then
-		$query = htmlspecialchars($query);
-
-	// changes characters used in html to their equivalents, for example: < to &gt;
-		$query = mysqli_real_escape_string($db, $query);
-
-	// makes sure nobody uses SQL injection
-		$sql_display = "SELECT id, fullname, gender,DOB,DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date, remark FROM student
-WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') LIMIT 10" ;
-
-	$result = $db->query($sql_display);
+if (strlen($raw_query) >= $min_length) {
+    $search = '%' . $raw_query . '%';
+    $stmt = $db->prepare(
+        "SELECT id, fullname, gender, DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB,
+         source, destination, passno, DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,
+         voucher, season, classof, duration, verified, img_loc,
+         DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date, remark
+         FROM student WHERE (fullname LIKE ?) OR (email LIKE ?) LIMIT 10"
+    );
+    $stmt->bind_param("ss", $search, $search);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+} else {
+    $too_short = true;
+}
 ?>
-
 <?php $page_title = 'RailCon Admin Panel'; ?>
 <!DOCTYPE html>
 <html>
@@ -34,8 +34,7 @@ WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') 
     <div class="page">
       <!-- Main Navbar-->
       <?php require __DIR__ . '/includes/navbar_admin.php'; ?>
-      <div class="page-content align-items-stretch"> 
-
+      <div class="page-content align-items-stretch">
         <div class="content-inner" style="width:100%">
           <!-- Breadcrumb-->
           <div class="breadcrumb-holder container-fluid">
@@ -44,19 +43,19 @@ WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') 
               <li class="breadcrumb-item active">Search</li>
             </ul>
           </div>
-          <section class="tables">   
+          <section class="tables">
             <div class="container-fluid">
               <div class="row">
                 <div class="col-lg-12">
                   <div class="card">
                     <div class="card-header d-flex align-items-center">
-                      <!--<h3 class="h4">Compact Table</h3>-->
+                      <?php if ($too_short): ?>
+                        <div class="alert alert-warning mb-0">Minimum search length is 3 characters.</div>
+                      <?php endif; ?>
                     </div>
-                    <?php
-					require_once 'admin_table.php';
-					?>
+                    <?php if ($result): require_once 'admin_table.php'; endif; ?>
                   </div>
-               
+                </div>
               </div>
             </div>
           </section>
@@ -68,10 +67,3 @@ WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') 
     <?php require __DIR__ . '/includes/scripts.php'; ?>
   </body>
 </html>
-
-<?php	
-	}
-	else { // if query length is less than minimum
-		echo "<script>alert('Minimum Length is 3')</script>";
-	}
-?>

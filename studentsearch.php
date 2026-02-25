@@ -92,35 +92,27 @@ if ((isset($_POST['email_id']) || isset($_SESSION['studentemail'])) && isset($_S
 <?php
 
 		/* database connection*/
-		include 'database_connection.php' ;
+		require_once __DIR__ . '/database_connection.php';
 		$min_length = 3;
-		
-		if( isset($_POST['email_id']) ){
-			$query = $_POST['email_id'];
-		}
-		else{
-			$query = $_SESSION['studentemail'];
-		}
-		
-		
-		if (strlen($query) >= $min_length) { 
-	
-	// if query length is more or equal minimum length then
-		$query = htmlspecialchars($query);
 
-	// changes characters used in html to their equivalents, for example: < to &gt;
-		$query = mysqli_real_escape_string($db, $query);
+		$raw_query = isset($_POST['email_id']) ? $_POST['email_id'] : $_SESSION['studentemail'];
 
-	// makes sure nobody uses SQL injection
-		$raw_results = mysqli_query($db, "SELECT id, fullname, source, destination, passno,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date, remark, edit FROM student
-WHERE (`email` LIKE '%" . $query . "%') LIMIT 3" );
-		
-		if(!mysqli_num_rows($raw_results) > 0){
-			echo "No Records Found";
-		}
-		else {
+		if (strlen($raw_query) >= $min_length) {
+			$search = '%' . $raw_query . '%';
+			$stmt = $db->prepare(
+				"SELECT id, fullname, source, destination, passno, classof, duration, verified, img_loc,
+				 DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date, remark, edit
+				 FROM student WHERE email LIKE ? LIMIT 3"
+			);
+			$stmt->bind_param("s", $search);
+			$stmt->execute();
+			$raw_results = $stmt->get_result();
+			$stmt->close();
 
-			while ($row = mysqli_fetch_array($raw_results)) {
+			if ($raw_results->num_rows === 0) {
+				echo "No Records Found";
+			} else {
+			while ($row = $raw_results->fetch_assoc()) {
 
 				echo "<tr><th scope='row'>". $idd=$row['id'] ;
 		echo '</th><td>';
@@ -191,9 +183,10 @@ modal.style.display = 'none';
 				</form>";
 		}
 				echo "</td></tr>";
-			} //end while			
+			} //end while
+		} //end else (results found)
 		}
-		
+
 ?>
 <html>						  
                             <tr>

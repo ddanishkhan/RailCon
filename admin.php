@@ -121,10 +121,12 @@ require_once __DIR__ . '/database_connection.php';
 			$sql_display .= ' AND duration = "Monthly" ';
 		}
 	}
-	//Where clause for given date
+	//Where clause for given date — validate strict dd/mm/yyyy format before interpolating
 	if(isset($_POST['date_filter']) && $_POST['date_filter']!='def'){
-		$date_filter = $db->real_escape_string($_POST['date_filter']);
-		$sql_display .= " AND DATE_FORMAT(dateofentry, '%d/%m/%Y') = '$date_filter'";
+		$date_filter = $_POST['date_filter'];
+		if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date_filter)) {
+			$sql_display .= " AND DATE_FORMAT(dateofentry, '%d/%m/%Y') = '" . $db->real_escape_string($date_filter) . "'";
+		}
 	}
 	
 	/*store the query from search bar into session for further session use*/
