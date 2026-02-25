@@ -144,7 +144,7 @@ if ($result->num_rows > 0) {
 
 <!-- Image preview modal (single instance, shared across all rows) -->
 <div id="imgModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header py-2">
         <h5 class="modal-title">
