@@ -11,7 +11,7 @@
       <div class="navbar-holder d-flex align-items-center justify-content-between">
         <!-- Navbar Header-->
         <div class="navbar-header">
-          <a href="#" class="navbar-brand d-none d-sm-inline-block">
+          <a href="admin_filter.php" class="navbar-brand d-none d-sm-inline-block">
             <div class="brand-text d-none d-lg-inline-block"><span>RailCon </span><strong>Dashboard</strong></div>
             <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>Railway Concession</strong></div>
           </a>

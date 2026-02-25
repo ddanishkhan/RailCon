@@ -39,7 +39,7 @@ if (strlen($raw_query) >= $min_length) {
           <!-- Breadcrumb-->
           <div class="breadcrumb-holder container-fluid">
             <ul class="breadcrumb">
-              <li class="breadcrumb-item"><a href="admin_filter.php">Filter</a></li>
+              <li class="breadcrumb-item"><a href="admin_filter.php">Admin Panel</a></li>
               <li class="breadcrumb-item active">Search</li>
             </ul>
           </div>

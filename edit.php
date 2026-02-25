@@ -31,8 +31,13 @@ if (isset($_POST['edit'])) {
           <!-- Breadcrumb-->
           <div class="breadcrumb-holder container-fluid">
             <ul class="breadcrumb">
-              <li class="breadcrumb-item"><a href="admin_filter.php">Filter</a></li>
-              <li class="breadcrumb-item active">Dashboard - All Entries</li>
+              <li class="breadcrumb-item"><a href="admin_filter.php">Admin Panel</a></li>
+              <?php if (!empty($_SESSION['dashboard'])): ?>
+                <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+              <?php else: ?>
+                <li class="breadcrumb-item"><a href="admin.php">Records</a></li>
+              <?php endif; ?>
+              <li class="breadcrumb-item active">Edit Record</li>
             </ul>
           </div>
           <div class="card-body" style="background:white;">
