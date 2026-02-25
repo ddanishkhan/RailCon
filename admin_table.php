@@ -10,7 +10,7 @@
                           <button type="submit" name="bulkIssueSubmit"
                                   class="btn btn-success btn-sm mr-2"
                                   onclick="return confirm('Issue passes for all selected students?')">
-                            <i class="fa fa-check mr-1"></i>Issue Selected
+                            <i class="fa fa-check mr-1"></i>Bulk Issue
                           </button>
                           <button type="button" class="btn btn-outline-secondary btn-sm" id="clearSelectionBtn">
                             <i class="fa fa-times mr-1"></i>Clear
