@@ -17,6 +17,9 @@ while ($row = mysqli_fetch_assoc($user_query)) {
         echo implode("\t", array_keys($row)) . "\r\n";
         $flag = true;
     }
-    echo implode("\t", array_values($row)) . "\r\n";
+    $clean = array_map(function ($val) {
+        return str_replace(["\r\n", "\r", "\n", "\t"], ' ', $val ?? '');
+    }, array_values($row));
+    echo implode("\t", $clean) . "\r\n";
 }
 ?>
