@@ -33,3 +33,24 @@
 .filter-bar-card .btn-sm {
   font-size: .8rem;
 }
+/* One-line flex layout */
+.filter-bar-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: .5rem;
+}
+.filter-group {
+  flex: 1 1 100px;
+  min-width: 90px;
+}
+.filter-group-dept {
+  flex: 1.5 1 140px;
+  min-width: 130px;
+}
+.filter-group select {
+  width: 100%;
+}
+.filter-actions {
+  flex-shrink: 0;
+}

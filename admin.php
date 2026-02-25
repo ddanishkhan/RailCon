@@ -146,8 +146,12 @@ require_once __DIR__ . '/database_connection.php';
 	}
 	
 	$sql_query_pages = $sql_display; /*QUERY for pagination*/
-	
-	$sql_display .= " ORDER BY id LIMIT $start, $size";	
+
+	$count_result    = $db->query($sql_query_pages);
+	$total_filtered  = $count_result ? $count_result->num_rows : 0;
+	if ($count_result) $count_result->free();
+
+	$sql_display .= " ORDER BY id LIMIT $start, $size";
 	/** End 1stFeb2020**/
 
 	/*QUERY MAIN*/
