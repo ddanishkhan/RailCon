@@ -2,3 +2,34 @@
 .image-wrapper{
 	text-align:center;
 }
+
+/* Filter bar */
+.filter-bar-card {
+  border-color: #e3e6f0;
+}
+.filter-bar-card .card-header {
+  background: #f8f9fc;
+  border-bottom: 1px solid #e3e6f0;
+}
+.filter-bar-title {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #5a5c69;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.filter-label {
+  display: block;
+  font-size: .7rem;
+  font-weight: 600;
+  color: #858796;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: .25rem;
+}
+.filter-bar-card .form-control-sm {
+  font-size: .82rem;
+}
+.filter-bar-card .btn-sm {
+  font-size: .8rem;
+}

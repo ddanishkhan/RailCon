@@ -2,7 +2,14 @@
 session_start();
 require_once __DIR__ . '/includes/auth.php';
 require_login();
-$_SESSION['dashboard'] = false;
+
+if (isset($_GET['clear'])) {
+	unset($_SESSION['query']);
+	unset($_SESSION['adminpage']);
+	header("Location: admin.php");
+	exit;
+}
+
 include 'logs/LOGGER.php';
 include_once 'constants/departments.php';
 

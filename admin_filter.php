@@ -128,7 +128,7 @@ $updated   = isset($_GET['updated']);
                     </div>
                     <div class="card-body p-0">
                       <div class="list-group list-group-flush">
-                        <a href="dashboard.php" class="list-group-item list-group-item-action">
+                        <a href="admin.php?clear=1" class="list-group-item list-group-item-action">
                           <i class="fa fa-table fa-fw mr-2 text-primary"></i>
                           View All Records
                           <span class="badge badge-secondary float-right"><?= $total_records ?> total</span>
