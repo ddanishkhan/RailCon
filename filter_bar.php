@@ -83,7 +83,7 @@ $totalCount    = $total_filtered ?? 0;
 $countText     = $totalCount . ' record' . ($totalCount !== 1 ? 's' : '') . ($filtersActive ? ' found' : ' total');
 ?>
 
-<div class="card mb-3 filter-bar-card">
+<div class="card mb-3">
   <div class="card-body py-2 px-3">
     <form class="form-inline" action='admin.php' name='filter_form' method='POST'>
 
@@ -151,7 +151,7 @@ $countText     = $totalCount . ' record' . ($totalCount !== 1 ? 's' : '') . ($fi
         <i class="fa fa-times"></i>
       </a>
 
-      <span class="filter-record-count ml-auto mb-1">
+      <span class="small text-muted text-nowrap ml-auto mb-1">
         <?= $filtersActive ? '<span class="badge badge-primary badge-pill mr-1">Filtered</span>' : '' ?>
         <?= htmlspecialchars($countText) ?>
       </span>

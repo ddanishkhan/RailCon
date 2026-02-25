@@ -2,16 +2,3 @@
 .image-wrapper{
 	text-align:center;
 }
-
-/* Filter bar */
-.filter-bar-card {
-  border-color: #e3e6f0;
-}
-.filter-bar-card .form-control-sm {
-  font-size: .82rem;
-}
-.filter-record-count {
-  font-size: .8rem;
-  color: #858796;
-  white-space: nowrap;
-}
