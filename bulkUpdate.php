@@ -37,13 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 function adminRedirect(): void {
     logger::log("INFO", "Session Logged In [".$_SESSION['loggedin'] . "]|USER=[" .$_SESSION['user'] . "]");
-    header($_SESSION['dashboard'] ? "Location: dashboard.php" : "Location: admin.php");
+    header("Location: admin.php");
     exit;
 }
 
 function adminRefreshRedirect(): void {
     logger::log("INFO", "Session Logged In [".$_SESSION['loggedin'] . "]|USER=[" .$_SESSION['user'] . "]");
-    header($_SESSION['dashboard'] ? "Refresh:0.5, url:dashboard.php" : "Refresh:0.5, url:admin.php");
+    header("Refresh:0.5, url:admin.php");
     exit;
 }
 ?>
