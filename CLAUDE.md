@@ -6,6 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 RailCon is a PHP web application for managing railway concession pass applications for engineering college students (MHSSCOE). Students submit forms; admins verify and issue passes; emails are sent on status changes.
 
+## Admin User Profile
+
+The primary admin user is an older person with **vision difficulties and carpal tunnel syndrome**. Keep this in mind for all UI decisions on admin-facing pages:
+
+- **Large, well-spaced click targets** — buttons should be easy to hit without precise mouse movement; avoid small or tightly packed controls
+- **High contrast and readable text** — prefer clear labels over icons alone; don't rely solely on colour to convey meaning
+- **Minimal repetitive actions** — features like Bulk Issue exist specifically to reduce the number of clicks/keystrokes required
+- **Familiar, consistent labels** — don't rename buttons users already know (e.g. "Bulk Issue" not "Issue Selected"); muscle memory matters
+- **No hover-only interactions** — actions must be reachable without sustained hover or precise cursor positioning
+
 ## Local Development
 
 No build step. PHP files are served directly.
