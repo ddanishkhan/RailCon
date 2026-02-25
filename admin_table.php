@@ -97,37 +97,37 @@
     </div>
 </div>
 			
-<script src="http://code.jquery.com/jquery.min.js"></script>
 <script>
-var rotation = 0
+var rotation = 0;
 
-$('img').on('click', function () {
-    var image = $(this).attr('src');
-    $('.showimage').attr('src', image);
-    rotation = 0;
-    rotate(0)
-    $('#myModal').modal('show');
-});
+$(function () {
+    $('img').on('click', function () {
+        var image = $(this).attr('src');
+        $('.showimage').attr('src', image);
+        rotation = 0;
+        rotate(0);
+        $('#myModal').modal('show');
+    });
 
-$('.rotate').on('click', function () {
-      rotation += 45;
-      rotate(rotation)
+    $('.rotate').on('click', function () {
+        rotation += 45;
+        rotate(rotation);
+    });
 });
 
 function rotate(deg) {
-  $('.showimage').css({
-      '-webkit-transform' : 'rotate('+ deg +'deg)',
-      '-moz-transform' : 'rotate('+ deg +'deg)',
-      '-ms-transform' : 'rotate('+ deg +'deg)',
-      'transform' : 'rotate('+ deg +'deg)'
-  });
+    $('.showimage').css({
+        '-webkit-transform': 'rotate(' + deg + 'deg)',
+        '-moz-transform':    'rotate(' + deg + 'deg)',
+        '-ms-transform':     'rotate(' + deg + 'deg)',
+        'transform':         'rotate(' + deg + 'deg)'
+    });
 }
 
-function checkCheckboxBulkIssue(){
-	var ids = $('input[type="checkbox"]:checked').map(function() { return this.value; }).get();
-	console.log(ids);
- 	$('#bulkIssueIdsDislay').val(ids);
- 	$('#bulkIssueIds').val(ids);
+function checkCheckboxBulkIssue() {
+    var ids = $('input[type="checkbox"]:checked').map(function () { return this.value; }).get();
+    $('#bulkIssueIdsDislay').val(ids);
+    $('#bulkIssueIds').val(ids);
 }
 	
 </script>
