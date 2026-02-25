@@ -1,41 +1,10 @@
+<?php $page_title = 'MHSSCE - Railway Concession Form for Degree Students'; ?>
 <!DOCTYPE html>
-<html lang="en">
 <html>
   <head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127558734-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-127558734-1');
-</script>
-	<title>MHSSCE - Railway Concession Form for Degree Students</title>
-    <meta charset="utf-8">
+    <?php require __DIR__ . '/includes/head.php'; ?>
     <meta http-equiv="expires" content="0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Railway Concession Form for Saboo Siddik College Of Engineering Students Degree">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name='author' content='Danish Ayub Khan'>
-    <meta name="robots" content="all,follow">
-    <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-    <!-- Fontastic Custom icon font-->
-    <link rel="stylesheet" href="css/fontastic.css">
-    <!-- Google fonts - Poppins -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
-    <!-- theme stylesheet-->
-    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
-    <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="css/custom.css">
-    <!-- Favicon-->
-    <link rel="shortcut icon" href="img/favicon.ico">
-    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
   </head>
   <body>
     <div class="page">
@@ -419,29 +388,11 @@
             </div>
           </section>
           <!-- Page Footer-->
-          <footer class="main-footer">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-sm-6">
-                  <p> <a href="http://www.mhssce.ac.in" target="_blank">MHSSCOE &copy; 2018 </a> </p>
-                </div>
-                <div class="col-sm-6 text-right">
-				  <p>Developed by <a target="_blank" href="https://www.linkedin.com/in/danishayubkhan">Danish A. Khan </a> & <a target="_blank" href="https://www.linkedin.com/in/husain-amreliwala-121b5312b/">Husain Amrelivala</a></p>
-                  
-                </div>
-              </div>
-            </div>
-          </footer>
+          <?php require __DIR__ . '/includes/footer.php'; ?>
         </div>
       </div>
     </div>
-    <!-- JavaScript files-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper.js/umd/popper.min.js"> </script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <?php require __DIR__ . '/includes/scripts.php'; ?>
 	<script>
 	$('button[type="submit"]').prop("disabled", true);
 	var a=0;
@@ -489,9 +440,7 @@
    document.getElementById('pass_end').valueAsDate = new Date();
 
 </script>
-    <!-- Main File-->
-    <script src="js/front.js"></script>
-	<?php 
+	<?php
 	} //*//end else
 	?>
 											

@@ -1,28 +1,7 @@
+<?php $page_title = 'Enrollment Number'; ?>
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Enrollment Number</title>
-    <meta name="author" content="Danish Ayub Khan">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="robots" content="all,follow">
-    <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-    <!-- Fontastic Custom icon font-->
-    <link rel="stylesheet" href="css/fontastic.css">
-    <!-- Google fonts - Poppins -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
-    <!-- theme stylesheet-->
-    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
-    <!-- Favicon-->
-    <link rel="shortcut icon" href="img/favicon.ico">
-    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-  </head>
+  <head><?php require __DIR__ . '/includes/head.php'; ?></head>
   <body>
     <div class="page">
       <!-- Main Navbar-->
@@ -108,19 +87,7 @@
           </section>
           
           <!-- Page Footer-->
-          <footer class="main-footer">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-sm-6">
-                  <p>MHSSCOE &copy; 2018</p>
-                </div>
-                <div class="col-sm-6 text-right">
-				  <p>Developed by <a href="www.linkedin.com/in/danishayubkhan">Danish A. Khan </a>& <a href="https://www.linkedin.com/in/husain-amreliwala-121b5312b/">Husain Amrelivala</a></p>
-                  <!--<p>Powered <a href="http://psychocodes.in" class="external">Psychocodes.in</a></p>-->
-                </div>
-              </div>
-            </div>
-          </footer>
+          <?php require __DIR__ . '/includes/footer.php'; ?>
         </div>
       </div>
     </div>

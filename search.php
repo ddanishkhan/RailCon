@@ -26,74 +26,14 @@ WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') 
 	$result = $db->query($sql_display);
 ?>
 
+<?php $page_title = 'RailCon Admin Panel'; ?>
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name='author' content='TEIT-17-18 Students'>
-    <title>RailCon Admin Panel</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="robots" content="all,follow">
-    <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-    <!-- Fontastic Custom icon font-->
-    <link rel="stylesheet" href="css/fontastic.css">
-    <!-- Google fonts - Poppins -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
-    <!-- theme stylesheet-->
-    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
-    <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="css/custom.css">
-    <!-- Favicon-->
-    <link rel="shortcut icon" href="img/favicon.ico">
-    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-    <!-- jQuery loaded in head so inline scripts in included files can use $ -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-  </head>
+  <head><?php require __DIR__ . '/includes/head.php'; ?></head>
   <body>
     <div class="page">
       <!-- Main Navbar-->
-      <header class="header">
-        <nav class="navbar">
-          <!-- Search Box-->
-          <div class="search-box">
-            <button class="dismiss"><i class="icon-close"></i></button>
-            <form id="searchForm" action="search.php" name="search_s" method="GET">
-              <input type="search" name="query" placeholder="Who are you looking for..." class="form-control">
-            </form>
-          </div>
-          <div class="container-fluid">
-            <div class="navbar-holder d-flex align-items-center justify-content-between">
-              <!-- Navbar Header-->
-              <div class="navbar-header">
-                <!-- Navbar Brand --><a href="#" class="navbar-brand d-none d-sm-inline-block">
-                  <div class="brand-text d-none d-lg-inline-block"><span>RailCon </span><strong>Dashboard</strong></div>
-                  <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>Railway Concession</strong></div></a>
-                
-              </div>
-              <!-- Navbar Menu -->
-              <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-			  
-                <!--Download as Excel File-->
-				<li class="nav-link"><a href="export_to_csv.php"><i class="fa fa-file-text"></i><span class="d-none d-sm-inline">Download  
-				</span></a></li>
-				
-				<!-- Search-->
-                <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
-
-                <!-- Logout    -->
-                <li class="nav-item"><a href="logout.php" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </header>
+      <?php require __DIR__ . '/includes/navbar_admin.php'; ?>
       <div class="page-content align-items-stretch"> 
 
         <div class="content-inner" style="width:100%">
@@ -121,26 +61,11 @@ WHERE (`fullname` LIKE '%" . $query . "%') OR (`email` LIKE '%" . $query . "%') 
             </div>
           </section>
           <!-- Page Footer-->
-          <footer class="main-footer">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-sm-6">
-                  <p>MHSSCOE &copy; 2018</p>
-                </div>
-              </div>
-            </div>
-          </footer>
+          <?php require __DIR__ . '/includes/footer.php'; ?>
         </div>
       </div>
     </div>
-    <!-- JavaScript files-->
-    <script src="vendor/popper.js/umd/popper.min.js"> </script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
-    <!-- Main File-->
-    <script src="js/front.js"></script>
+    <?php require __DIR__ . '/includes/scripts.php'; ?>
   </body>
 </html>
 
