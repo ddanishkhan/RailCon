@@ -139,6 +139,10 @@ require_once __DIR__ . '/database_connection.php';
 	/*store the query from search bar into session for further session use*/
 	if( isset($_POST['filter_submit']) ){
 		$_SESSION['query'] = $sql_display;
+		/* Reset to page 0 so a stale page offset doesn't skip all filtered results */
+		$start    = 0;
+		$currpage = 0;
+		$_SESSION['adminpage'] = 0;
 	}
 	/* Check if query is stored in Session for pagination if yes assign that as query*/
 	if(isset($_SESSION['query'])){
