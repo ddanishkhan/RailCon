@@ -1,29 +1,25 @@
 <?php
-// Connection 
 session_start();
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
-$conn = require('database_connection.php')
-//database name
-$db=mysql_select_db('epiz_22379380_railcon',$conn);
-$filename = "RailwayConcession.xls"; // File Name
-// Download file
-header("Content-Disposition: attachment; filename=\"$filename\"");
-header("Content-Type: application/vnd.ms-excel");
-$user_query = mysql_query('select id,fullname,semester,email,DOB,contact,aadhar,address,pincode,
-	source,destination,passno,classof,duration,branch,year from student');
-// Write data to file
-$flag = false;
-while ($row = mysql_fetch_assoc($user_query)) {
-    if (!$flag) {
-        // display field/column names as first row
-        echo implode("\t", array_keys($row)) . "\r\n";
-        $flag = true;
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    require_once __DIR__ . '/database_connection.php'; // provides $db via config.php
+
+    $filename = "RailwayConcession.xls";
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    header("Content-Type: application/vnd.ms-excel");
+
+    $user_query = mysqli_query($db, 'SELECT id,fullname,semester,email,DOB,contact,aadhar,address,pincode,
+        source,destination,passno,classof,duration,branch,year FROM student');
+
+    $flag = false;
+    while ($row = mysqli_fetch_assoc($user_query)) {
+        if (!$flag) {
+            echo implode("\t", array_keys($row)) . "\r\n";
+            $flag = true;
+        }
+        echo implode("\t", array_values($row)) . "\r\n";
     }
-    echo implode("\t", array_values($row)) . "\r\n";
-}
-}//Authentication
-else{
-	echo "<script> alert('Log In First'); </script>";
-	header("Refresh:1; url=login.html");
+} else {
+    echo "<script> alert('Log In First'); </script>";
+    header("Refresh:1; url=login.html");
 }
 ?>
