@@ -39,7 +39,7 @@ if ($result->num_rows > 0) {
 	}
 
 	$sql_display = "SELECT id, fullname, gender,DOB, DATE_FORMAT(DOB, '%d/%m/%Y') AS dateOB, source, destination, passno,DATE_FORMAT(pass_end, '%d/%m/%y') AS pass_end,voucher,season,classof, duration, verified,img_loc, DATE_FORMAT(dateofentry, '%d/%m/%Y') AS date 
-	FROM student ORDER BY 'id' LIMIT $start, $size
+	FROM student ORDER BY id LIMIT $start, $size
 	";
 	$result = $db->query($sql_display);
 	
