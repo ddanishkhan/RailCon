@@ -32,7 +32,7 @@
 					<?php
 					session_start();
 					if (!isset($_SESSION['enroll_id'])){
-						echo '<a href="http://railcon.epizy.com/studentsearch.html"> Form Status</a>';
+						echo '<a href="studentsearch.php"> Form Status</a>';
 					}
 					else{
 					echo '#'.$_SESSION['enroll_id'];
@@ -72,13 +72,13 @@
                   <div class="left-col col-lg-6 d-flex align-items-center justify-content-between">
                     <div class="project-title d-flex align-items-center">
                       <div class="text">
-                        <h3 class="h4">Check Status of you form at <a href="http://railcon.epizy.com/studentsearch.html"> Form Status</a></h3>
+                        <h3 class="h4">Check Status of you form at <a href="studentsearch.php"> Form Status</a></h3>
 						<small>Alternatively you will recieve a Mail when concession is prepared</small>
                       </div>
                     </div>
                   </div>
                   <div class="right-col col-lg-6 d-flex align-items-center">
-                    <div class="time"><i class="fa fa-clock-o"></i>Keep checking Remark on <a href="http://railcon.epizy.com/studentsearch.html">Form Status</a> in case there are any isuues</div>
+                    <div class="time"><i class="fa fa-clock-o"></i>Keep checking Remark on <a href="studentsearch.php">Form Status</a> in case there are any isuues</div>
                     <div class="comments"></div>
                   </div>
                 </div>
