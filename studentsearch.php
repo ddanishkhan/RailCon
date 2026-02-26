@@ -1,7 +1,18 @@
 <?php
 session_start();
-if ((isset($_POST['email_id']) || isset($_SESSION['studentemail'])) && isset($_SESSION['SearchRequest']) ) {
-    unset($_SESSION['SearchRequest']);
+
+if (isset($_POST['action_override'])) {
+    $_SESSION['override_email_check'] = true;
+    unset($_SESSION['allow_override']);
+    header('location:index.php');
+    die();
+}
+
+if (((isset($_POST['email_id']) || isset($_SESSION['studentemail'])) && isset($_SESSION['SearchRequest']))
+    || isset($_SESSION['allow_override'])) {
+    if (isset($_SESSION['SearchRequest'])) {
+        unset($_SESSION['SearchRequest']);
+    }
 ?>
 
 <?php $page_title = 'RailCon Form Status'; ?>
@@ -69,7 +80,13 @@ if ((isset($_POST['email_id']) || isset($_SESSION['studentemail'])) && isset($_S
 					</strong>
 					</div>
                     <div class="card-body">
-                      <div class="table-responsive">   
+                      <?php if (isset($_SESSION['allow_override'])): unset($_SESSION['allow_override']); ?>
+                      <form method="POST" action="studentsearch.php" class="mb-3">
+                        <input type="hidden" name="action_override" value="1">
+                        <button type="submit" class="btn btn-warning btn-lg">Proceed Anyway</button>
+                      </form>
+                      <?php endif; ?>
+                      <div class="table-responsive">
                         <table class="table table-striped table-sm">
                           <thead>
                             <tr>
