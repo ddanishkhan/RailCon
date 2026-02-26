@@ -196,41 +196,41 @@ else
         if($proceed){
             echo "Executing";
 
-            // create a folder MyUploadImages for storing images
             $upload_directory = "MyUploadImages/";
-
             $TargetPath = time() . "id." . pathinfo($UploadedFileName, PATHINFO_EXTENSION);
+
+            // Save image FIRST — if upload fails, no INSERT happens and no ID is consumed
+            if (!move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory . $TargetPath)) {
+                $_SESSION['studenterror'] = "Image upload failed. Please try again.";
+                header("location:error.php");
+                die();
+            }
 
             $empty = 0;
             $q = mysqli_prepare($db, "INSERT INTO student(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,
 	 source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,img_loc,dateofentry) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or die($q->error);
             mysqli_stmt_bind_param($q, "isiissiisisssssissssss", $empty, $fullname, $gender, $sem, $email, $age, $contact, $aadhar, $address, $pincode, $source, $destination, $passno, $passEnd, $voucher, $season, $classof, $duration, $branch, $year, $TargetPath, $dateofentry);
-            if (mysqli_stmt_execute($q)) {
-                /* echo "\nInserted into Table\n"; */
-                if (move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory . $TargetPath)) {
+            if (!mysqli_stmt_execute($q)) {
+                // INSERT failed — remove the image we already saved so nothing is orphaned
+                @unlink($upload_directory . $TargetPath);
+                profile_error(false, $email);
+                header("location:studentsearch.php");
+                die();
+            }
 
-                    if ($duration == "Monthly") {
-                        $stmt_date = $db->prepare("UPDATE student SET datetodelete = DATE_ADD(dateofentry, INTERVAL 28 DAY) WHERE email = ?");
-                        $stmt_date->bind_param("s", $email);
-                        $stmt_date->execute();
-                        $stmt_date->close();
-                        echo "<strong> File and Details Uploaded </strong>";
-                    } elseif ($duration == "Quarterly") {
-                        $stmt_date = $db->prepare("UPDATE student SET datetodelete = DATE_ADD(dateofentry, INTERVAL 87 DAY) WHERE email = ?");
-                        $stmt_date->bind_param("s", $email);
-                        $stmt_date->execute();
-                        $stmt_date->close();
-                        echo "<strong> File and Details Uploaded </strong>";
-                    }
-                } /* ok */
-                else {
-                    $stmt_del_fail = $db->prepare("DELETE FROM student WHERE email = ? LIMIT 1");
-                    $stmt_del_fail->bind_param("s", $email);
-                    $stmt_del_fail->execute();
-                    $stmt_del_fail->close();
-                } /* ok */
-            } /* end if mysqli_stmt */
-
+            if ($duration == "Monthly") {
+                $stmt_date = $db->prepare("UPDATE student SET datetodelete = DATE_ADD(dateofentry, INTERVAL 28 DAY) WHERE email = ?");
+                $stmt_date->bind_param("s", $email);
+                $stmt_date->execute();
+                $stmt_date->close();
+                echo "<strong> File and Details Uploaded </strong>";
+            } elseif ($duration == "Quarterly") {
+                $stmt_date = $db->prepare("UPDATE student SET datetodelete = DATE_ADD(dateofentry, INTERVAL 87 DAY) WHERE email = ?");
+                $stmt_date->bind_param("s", $email);
+                $stmt_date->execute();
+                $stmt_date->close();
+                echo "<strong> File and Details Uploaded </strong>";
+            }
 
             if ($db->errno) {
                 profile_error(false, $email);
@@ -245,7 +245,7 @@ else
                 $_SESSION['enroll_id'] = $row['id'];
                 $db->close();
                 header("location:enrollmentid.php");
-            } // ok end
+            }
         }
         else{
             //Email Already exists & record was not deleted. Send error
