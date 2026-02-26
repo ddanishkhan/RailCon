@@ -202,7 +202,6 @@ modal.style.display = 'none';
 				echo "</td></tr>";
 			} //end while
 		} //end else (results found)
-		}
 
 ?>
 <html>						  
