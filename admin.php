@@ -36,7 +36,7 @@ require_once __DIR__ . '/database_connection.php';
     
 	$size = 15;
 	if(isset($_GET['page'])){
-		$start = $_GET['page']*$size;
+		$start = (int)$_GET['page']*$size;
 		$_SESSION['adminpage'] = $_GET['page']; 
 		$currpage = $_GET['page'];
 	}

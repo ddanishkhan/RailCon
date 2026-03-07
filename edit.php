@@ -3,6 +3,7 @@ session_start();
 require_once __DIR__ . '/includes/auth.php';
 require_login();
 require_once __DIR__ . '/database_connection.php';
+require_once __DIR__ . '/includes/csrf.php';
 
 if (isset($_POST['edit'])) {
     $idd = (int) $_POST['id'];
@@ -53,88 +54,95 @@ if (isset($_POST['edit'])) {
                   </tr>
                 </thead>
                 <tbody>
-<?php
-        echo "<tr><th scope='row'>" . $idd;
-        echo '</th><td>';
-        echo htmlspecialchars($fullname);
-        echo "<br><br>";
-        echo "<form action='edit_record.php' method='POST'>
-                <input type='hidden' name='id' value=" . $idd . ">
-                <input type='text' name='fullname' placeholder='Enter name'><br><br>
-                <input type='submit' class='bg-blue' name='edit_fullname' value='Edit' style='margin-top:6.5%;'>
-              </form>";
-        echo "</td><td>";
-        echo $gender == '1' ? 'Female' : 'Male';
-        echo "<br><br>";
-        echo "<form action='edit_record.php' method='POST'>
-                <input type='hidden' name='id' value=" . $idd . ">
-                <select name='gender' style='height:2em;'>
-                  <option value=0>Male</option>
-                  <option value=1>Female</option>
-                </select><br><br>
-                <input type='submit' class='bg-blue' name='edit_gender' value='Edit' style='margin-top:27%;'>
-              </form>";
-        echo "</td><td>";
-        echo htmlspecialchars($dateOB);
-        echo "<br><br>";
-        echo "<form action='edit_record.php' method='POST'>
-                <input type='hidden' name='id' value=" . $idd . ">
-                <input type='date' name='DOB'><br><br>
-                <input type='submit' class='bg-blue' name='edit_DOB' value='Edit' style='margin-top:7.5%;'>
-              </form>";
-        echo "</td><td>";
-        echo htmlspecialchars($email);
-        echo "<br><br>";
-        echo "<form action='edit_record.php' method='POST'>
-                <input type='hidden' name='id' value=" . $idd . ">
-                <input type='email' name='email' style='width:12em;'><br><br>
-                <input type='submit' class='bg-blue' name='edit_email' value='Edit' style='margin-top:6.3%;'>
-              </form>";
-        echo "</td><td>";
-        echo htmlspecialchars($source);
-        echo "<br><br>";
-        echo "<form action='edit_record.php' method='POST'>
-                <input type='hidden' name='id' value=" . $idd . ">
-                <input type='text' name='source'><br><br>
-                <input type='submit' class='bg-blue' name='edit_source' value='Edit' style='margin-top:6.5%;'>
-              </form>";
-        echo "</td><td>";
-        echo htmlspecialchars($destination);
-        echo "<br><br>";
-        echo "<form action='edit_record.php' method='POST'>
-                <input type='hidden' name='id' value=" . $idd . ">
-                <select name='destination' style='height:2em;'>
-                  <option>Byculla Station</option>
-                  <option>Dockyard Road</option>
-                  <option>Sandhurst Road</option>
-                  <option>Mumbai Central</option>
-                </select><br><br>
-                <input type='submit' class='bg-blue' name='edit_destination' value='Edit'>
-              </form>";
-        echo "</td><td>";
-        echo htmlspecialchars($classof);
-        echo "<br><br>";
-        echo "<form action='edit_record.php' method='POST'>
-                <input type='hidden' name='id' value=" . $idd . ">
-                <select name='classof' style='height:2em;'>
-                  <option>First Class</option>
-                  <option>Second Class</option>
-                </select><br><br>
-                <input type='submit' class='bg-blue' name='edit_classof' value='Edit'>
-              </form>";
-        echo "</td><td>";
-        echo htmlspecialchars($duration);
-        echo "<br><br>";
-        echo "<form action='edit_record.php' method='POST'>
-                <input type='hidden' name='id' value=" . $idd . ">
-                <select name='duration' style='height:2em;'>
-                  <option>Monthly</option>
-                  <option>Quarterly</option>
-                </select><br><br>
-                <input type='submit' class='bg-blue' name='edit_duration' value='Edit'>
-              </form>";
-        echo "</td></tr>";
-?>
+                  <tr>
+                    <th scope="row"><?= htmlspecialchars($idd) ?></th>
+                    <td>
+                      <div class="mb-2"><?= htmlspecialchars($fullname) ?></div>
+                      <form action="edit_record.php" method="POST">
+                        <?= csrf_input() ?>
+                        <input type="hidden" name="id" value="<?= $idd ?>">
+                        <input type="text" name="fullname" class="form-control form-control-sm mb-1" placeholder="New name">
+                        <button type="submit" class="btn btn-primary" name="edit_fullname">Save Name</button>
+                      </form>
+                    </td>
+                    <td>
+                      <div class="mb-2"><?= $gender == '1' ? 'Female' : 'Male' ?></div>
+                      <form action="edit_record.php" method="POST">
+                        <?= csrf_input() ?>
+                        <input type="hidden" name="id" value="<?= $idd ?>">
+                        <select name="gender" class="form-control form-control-sm mb-1">
+                          <option value="0">Male</option>
+                          <option value="1">Female</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary" name="edit_gender">Save Gender</button>
+                      </form>
+                    </td>
+                    <td>
+                      <div class="mb-2"><?= htmlspecialchars($dateOB) ?></div>
+                      <form action="edit_record.php" method="POST">
+                        <?= csrf_input() ?>
+                        <input type="hidden" name="id" value="<?= $idd ?>">
+                        <input type="date" name="DOB" class="form-control form-control-sm mb-1">
+                        <button type="submit" class="btn btn-primary" name="edit_DOB">Save DOB</button>
+                      </form>
+                    </td>
+                    <td>
+                      <div class="mb-2"><?= htmlspecialchars($email) ?></div>
+                      <form action="edit_record.php" method="POST">
+                        <?= csrf_input() ?>
+                        <input type="hidden" name="id" value="<?= $idd ?>">
+                        <input type="email" name="email" class="form-control form-control-sm mb-1">
+                        <button type="submit" class="btn btn-primary" name="edit_email">Save Email</button>
+                      </form>
+                    </td>
+                    <td>
+                      <div class="mb-2"><?= htmlspecialchars($source) ?></div>
+                      <form action="edit_record.php" method="POST">
+                        <?= csrf_input() ?>
+                        <input type="hidden" name="id" value="<?= $idd ?>">
+                        <input type="text" name="source" class="form-control form-control-sm mb-1">
+                        <button type="submit" class="btn btn-primary" name="edit_source">Save Source</button>
+                      </form>
+                    </td>
+                    <td>
+                      <div class="mb-2"><?= htmlspecialchars($destination) ?></div>
+                      <form action="edit_record.php" method="POST">
+                        <?= csrf_input() ?>
+                        <input type="hidden" name="id" value="<?= $idd ?>">
+                        <select name="destination" class="form-control form-control-sm mb-1">
+                          <option>Byculla Station</option>
+                          <option>Dockyard Road</option>
+                          <option>Sandhurst Road Station</option>
+                          <option>Mumbai Central</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary" name="edit_destination">Save Destination</button>
+                      </form>
+                    </td>
+                    <td>
+                      <div class="mb-2"><?= htmlspecialchars($classof) ?></div>
+                      <form action="edit_record.php" method="POST">
+                        <?= csrf_input() ?>
+                        <input type="hidden" name="id" value="<?= $idd ?>">
+                        <select name="classof" class="form-control form-control-sm mb-1">
+                          <option>First Class</option>
+                          <option>Second Class</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary" name="edit_classof">Save Class</button>
+                      </form>
+                    </td>
+                    <td>
+                      <div class="mb-2"><?= htmlspecialchars($duration) ?></div>
+                      <form action="edit_record.php" method="POST">
+                        <?= csrf_input() ?>
+                        <input type="hidden" name="id" value="<?= $idd ?>">
+                        <select name="duration" class="form-control form-control-sm mb-1">
+                          <option>Monthly</option>
+                          <option>Quarterly</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary" name="edit_duration">Save Duration</button>
+                      </form>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -149,8 +157,9 @@ if (isset($_POST['edit'])) {
 </html>
 <?php
     } else {
-        header("Refresh:1; url=dashboard.php");
-        echo "<script> alert('Record Already Issued, cannot be edited'); </script>";
+        $_SESSION['flash'] = 'Record already issued — cannot be edited.';
+        header("Location: dashboard.php");
+        exit;
     }
 }
 ?>

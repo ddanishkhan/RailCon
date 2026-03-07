@@ -148,7 +148,7 @@ $countText     = $totalCount . ' record' . ($totalCount !== 1 ? 's' : '') . ($fi
       <a href="admin.php?clear=1"
          class="btn btn-sm btn-outline-secondary mb-1 <?= $filtersActive ? '' : 'disabled' ?>"
          title="Clear filters">
-        <i class="fa fa-times"></i>
+        <i class="fa fa-times mr-1"></i>Clear
       </a>
 
       <span class="small text-muted text-nowrap ml-auto mb-1">

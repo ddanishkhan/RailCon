@@ -2,9 +2,13 @@
 session_start();
 require_once __DIR__ . '/includes/auth.php';
 require_login();
+require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/includes/redirect.php';
 error_reporting(E_ERROR | E_PARSE);
 include 'logs/LOGGER.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    validate_csrf_token($_POST['csrf_token'] ?? '');
 
     //database connection
     require_once __DIR__ . '/database_connection.php';
@@ -32,20 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             include ('PHPMailer/sendmail.php');
 
             logger::log("INFO", "Session Logged In [".$_SESSION['loggedin'] . "]|USER=[" .$_SESSION['user'] . "]" );
-            if ($_SESSION['dashboard']) {
-                logger::log("INFO", "Redirected to dashboard.php");
-                header("Location: dashboard.php");
-            } else {
-                logger::log("INFO", "Redirected to admin.php");
-                header("Location: admin.php");
-            }
+            redirect_to_panel();
         } else {
-            echo "<script>alert('Already Issued')</script>";
-            if ($_SESSION['dashboard']) {
-                header("Refresh:0.5, url:dashboard.php");
-            } else {
-                header("Refresh:0.5, url:admin.php");
-            }
+            $_SESSION['flash'] = 'Already Issued';
+            redirect_to_panel();
         }
     }
 
@@ -67,12 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt_upd->close();
         }
 
-        if ($_SESSION['dashboard']) {
-            header("Location: dashboard.php");
-        } else {
-            echo "PRESS BACK BUTTON.";
-            header("Location: admin.php");
-        }
+        redirect_to_panel();
     }
 } else {
     header("Location: login.php");

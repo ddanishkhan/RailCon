@@ -2,10 +2,13 @@
 session_start();
 require_once __DIR__ . '/includes/auth.php';
 require_login();
+require_once __DIR__ . '/includes/csrf.php';
 error_reporting(E_ERROR | E_PARSE);
 include 'logs/LOGGER.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    validate_csrf_token($_POST['csrf_token'] ?? '');
 
     require_once __DIR__ . '/database_connection.php';
 

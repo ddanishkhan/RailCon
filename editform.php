@@ -2,8 +2,12 @@
 session_start();
 require_once __DIR__ . '/includes/auth.php';
 require_login();
+require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/includes/redirect.php';
 
 if (isset($_POST['edit_form'])) {
+    validate_csrf_token($_POST['csrf_token'] ?? '');
+
     require_once __DIR__ . '/database_connection.php';
     mysqli_report(MYSQLI_REPORT_ALL);
     $idd = (int) $_POST['id'];
@@ -20,17 +24,15 @@ if (isset($_POST['edit_form'])) {
         if ($edit == 0) {
             $q = $db->prepare("UPDATE student SET edit = ? WHERE id = ?") OR die("Query preparation failed");
             $q->bind_param("ii", $bool, $idd);
-            if ($q->execute()) {
-                header("Refresh:1; url=dashboard.php");
-                echo "<script> alert('Record Edit Permission Granted Successfully'); </script>";
-            }
+            $q->execute();
+            $_SESSION['flash'] = 'Edit permission granted successfully.';
         } else {
-            header("Refresh:1; url=dashboard.php");
-            echo "<script> alert('Record Edit Permission Granted Already'); </script>";
+            $_SESSION['flash'] = 'Edit permission already granted.';
         }
     } else {
-        header("Refresh:1; url=dashboard.php");
-        echo "<script> alert('Record Already Issued, Edit Permission Cannot be granted!'); </script>";
+        $_SESSION['flash'] = 'Record already issued — edit permission cannot be granted.';
     }
+
+    redirect_to_panel();
 }
 ?>

@@ -2,6 +2,7 @@
 
   <!-- Bulk action bar: visible only when rows are selected -->
   <form action="bulkUpdate.php" method="POST" id="bulkIssueForm">
+    <?php require_once __DIR__ . '/includes/csrf.php'; echo csrf_input(); ?>
     <input type="hidden" id="bulkIssueIds" name="bulkIssueIds" value="">
     <div id="bulkActionBar" class="mb-3 px-3 py-2 bg-light border rounded align-items-center" style="display:none">
       <i class="fa fa-check-square-o text-success mr-2"></i>
@@ -90,19 +91,23 @@
               </td>
               <td style="min-width:110px">
                 <form action="update.php" method="POST" class="mb-1">
+                  <?= csrf_input() ?>
                   <input type="hidden" name="id" value="<?= $idd ?>">
                   <button type="submit" class="btn btn-success btn-sm btn-block" name="verify_it">Issue</button>
                   <button type="submit" class="btn btn-danger btn-sm btn-block mt-1" name="cancel_verify">Unissue</button>
                 </form>
                 <form action="edit.php" method="POST" class="mb-1">
+                  <?= csrf_input() ?>
                   <input type="hidden" name="id" value="<?= $idd ?>">
                   <button type="submit" class="btn btn-info btn-sm btn-block" name="edit">Edit</button>
                 </form>
                 <form action="delete.php" method="POST" class="mb-1" onsubmit="return confirm('Delete this record?')">
+                  <?= csrf_input() ?>
                   <input type="hidden" name="id" value="<?= $idd ?>">
                   <button type="submit" class="btn btn-outline-danger btn-sm btn-block" name="delete">Delete</button>
                 </form>
                 <form action="editform.php" method="POST">
+                  <?= csrf_input() ?>
                   <input type="hidden" name="id" value="<?= $idd ?>">
                   <button type="submit" class="btn btn-outline-secondary btn-sm btn-block" name="edit_form">Allow
                     Edit</button>
@@ -117,6 +122,7 @@
               </td>
               <td style="min-width:160px">
                 <form method="POST" action="update_remark.php">
+                  <?= csrf_input() ?>
                   <input type="hidden" name="id" value="<?= $idd ?>">
                   <div class="input-group input-group-sm">
                     <input type="text" class="form-control" name="remark" placeholder="Remarks">

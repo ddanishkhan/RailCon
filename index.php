@@ -53,6 +53,7 @@
 
 <?php
   include_once 'constants/departments.php';
+  include_once 'constants/admin_controls.php';
 	require 'database_connection.php';
 	$sql_display = "SELECT MAX(id) AS id FROM student";
 	$result = $db->query($sql_display);
@@ -63,7 +64,7 @@
 		}
 	}
 
-	$sql_display1 = "SELECT end_entry FROM admin_controls WHERE id_control = '115617' LIMIT 1";
+	$sql_display1 = "SELECT end_entry FROM admin_controls WHERE id_control = '" . ADMIN_CONTROL_ID . "' LIMIT 1";
 	$result1 = $db->query($sql_display1);
 	if ($result1->num_rows > 0) {
 		while($row = $result1->fetch_assoc()) {

@@ -1,6 +1,7 @@
 <?php
 
-session_start(); 
+session_start();
+require_once __DIR__ . '/constants/admin_controls.php';
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == TRUE ){
 	header("Location: admin.php");
 }
@@ -45,7 +46,8 @@ if(isset($_POST['submit']))
 
 		$q2->free_result();
 		
-		$q3 = $db->prepare("SELECT end_entry FROM admin_controls WHERE id_control = '115617' LIMIT 1") OR die($db->error);
+		$q3 = $db->prepare("SELECT end_entry FROM admin_controls WHERE id_control = ? LIMIT 1") OR die($db->error);
+		$q3->bind_param("i", ADMIN_CONTROL_ID);
 		$q3->execute();
 		$q3->bind_result($admin_end_id);
 		$q3->fetch();
@@ -62,9 +64,9 @@ if(isset($_POST['submit']))
 	$q3->close();
 	}
 	else{
-		echo "<script> alert('Incorrect Login Credentials'); </script>";
-		$_SESSION['loggedin'] = False;
-		header("Refresh:1; url=login.html");
+		$_SESSION['loggedin'] = false;
+		header("Location: login.html?err=1");
+		exit;
 	}
 	$db->close();
 }

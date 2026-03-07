@@ -7,7 +7,9 @@ unset($_SESSION['adminpage']);
 unset($_SESSION['dashpage']);
 
 // Current end number
-$stmt = $db->prepare("SELECT end_entry FROM admin_controls WHERE id_control = 115617 LIMIT 1");
+require_once __DIR__ . '/constants/admin_controls.php';
+$stmt = $db->prepare("SELECT end_entry FROM admin_controls WHERE id_control = ? LIMIT 1");
+$stmt->bind_param("i", ADMIN_CONTROL_ID);
 $stmt->execute();
 $end_entry = (int) $stmt->get_result()->fetch_assoc()['end_entry'];
 $stmt->close();

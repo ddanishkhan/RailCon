@@ -12,6 +12,9 @@ jobs:
       - name: Check PHP syntax
         run: find . -name "*.php" -not -path "./.git/*" | xargs php -l
 
+      - name: Run tests
+        run: php tests/run_all.php
+
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
