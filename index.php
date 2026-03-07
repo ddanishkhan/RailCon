@@ -1,82 +1,91 @@
 <?php $page_title = 'MHSSCE - Railway Concession Form for Degree Students'; ?>
 <!DOCTYPE html>
 <html>
-  <head>
-    <?php require __DIR__ . '/includes/head.php'; ?>
-    <meta http-equiv="expires" content="0">
-    <meta name="description" content="Railway Concession Form for Saboo Siddik College Of Engineering Students Degree">
-  </head>
-  <body>
-    <div class="page">
-      <header class="header">
-        <nav class="navbar">
-          <div class="search-box">
-            <button class="dismiss"><i class="icon-close"></i></button>
-            <form id="searchForm" action="studentsearch.php" name="search_s" method="POST">
-              <input type="search" name="email_id" placeholder="Enter Email ID to check status...." class="form-control">
-            </form>
-          </div>
-          <div class="container-fluid">
-            <div class="navbar-holder d-flex align-items-center justify-content-between">
-              <div class="navbar-header">
-                <a href="index" class="navbar-brand d-none d-sm-inline-block">
-                  <div class="brand-text d-none d-lg-inline-block"><span>Railway </span><strong> Concession</strong></div>
-                  <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>Concession Form</strong></div>
-                </a>
-              </div>
+
+<head>
+  <?php require __DIR__ . '/includes/head.php'; ?>
+  <meta http-equiv="expires" content="0">
+  <meta name="description" content="Railway Concession Form for Saboo Siddik College Of Engineering Students Degree">
+</head>
+
+<body>
+  <div class="page">
+    <header class="header">
+      <nav class="navbar">
+        <div class="search-box">
+          <button class="dismiss"><i class="icon-close"></i></button>
+          <form id="searchForm" action="studentsearch.php" name="search_s" method="POST">
+            <input type="search" name="email_id" placeholder="Enter Email ID to check status...." class="form-control">
+          </form>
+        </div>
+        <div class="container-fluid">
+          <div class="navbar-holder d-flex align-items-center justify-content-between">
+            <div class="navbar-header">
+              <a href="index" class="navbar-brand d-none d-sm-inline-block">
+                <div class="brand-text d-none d-lg-inline-block"><span>Railway </span><strong>Concession</strong></div>
+                <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>Concession Form</strong></div>
+              </a>
             </div>
           </div>
-        </nav>
-      </header>
+        </div>
+      </nav>
+    </header>
 
-      <div class="page-content d-flex align-items-stretch">
-        <div class="content-inner">
-          <section class="forms">
-            <div class="container-fluid">
-              <div onclick="location.href='studentsearch';" class="card bg-info btn text-white">
-                <div class="card-body text-center">To check your Form. Click Here!</div>
-              </div>
+    <div class="page-content d-flex align-items-stretch">
+      <div class="content-inner">
+        <section class="forms">
+          <div class="container-fluid">
 
-<?php
-  include_once 'constants/departments.php';
-  include_once 'constants/admin_controls.php';
-  require 'database_connection.php';
+            <?php
+            include_once 'constants/departments.php';
+            include_once 'constants/admin_controls.php';
+            require 'database_connection.php';
 
-  $result     = $db->query("SELECT MAX(id) AS id FROM student");
-  $student_id = $result->fetch_assoc()['id'] ?? 0;
+            $result = $db->query("SELECT MAX(id) AS id FROM student");
+            $student_id = $result->fetch_assoc()['id'] ?? 0;
 
-  $stmt_ctrl    = $db->prepare("SELECT end_entry FROM admin_controls WHERE id_control = ? LIMIT 1");
-  $stmt_ctrl->bind_param("i", ADMIN_CONTROL_ID);
-  $stmt_ctrl->execute();
-  $admin_end_id = $stmt_ctrl->get_result()->fetch_assoc()['end_entry'] ?? 0;
-  $stmt_ctrl->close();
+            $stmt_ctrl = $db->prepare("SELECT end_entry FROM admin_controls WHERE id_control = ? LIMIT 1");
+            $ctrl_id = ADMIN_CONTROL_ID;
+            $stmt_ctrl->bind_param("i", $ctrl_id);
+            $stmt_ctrl->execute();
+            $admin_end_id = $stmt_ctrl->get_result()->fetch_assoc()['end_entry'] ?? 0;
+            $stmt_ctrl->close();
 
-  if ($student_id >= $admin_end_id):
-?>
+            if ($student_id >= $admin_end_id):
+              ?>
 
               <div class="card">
                 <div class="card-body">
                   <h1>Railway Concession Form On Hold Until Further Notice</h1>
                   <p>This happens because the Railway Pass Book issued from the Railway Authority gets finished.</p>
                   <p>Please keep checking this page for submitting the form</p>
-                  <div>If you have already submitted the form you can check its status <a href="studentsearch">here</a></div>
+                  <div>If you have already submitted the form you can check its status <a href="studentsearch">here</a>
+                  </div>
                 </div>
               </div>
 
-<?php else: ?>
+            <?php else: ?>
 
               <div class="row">
                 <div class="col-lg-12">
 
+                  <!-- College header -->
+                  <div
+                    style="background:#fff;border-top:4px solid #2e7d32;border-radius:6px;padding:.75rem 1.25rem;margin-bottom:1.25rem">
+                    <img src="img/AnjumanIslamMHSSCOE.png" alt="M. H. Saboo Siddik College of Engineering"
+                      style="height:90px;width:auto;display:block">
+                  </div>
+
                   <!-- Video guide (lazy iframe) -->
                   <p class="mb-2">
-                    <a class="btn btn-sm btn-outline-secondary" data-toggle="collapse" href="#videoGuide" role="button">
+                    <a class="btn btn-outline-secondary" data-toggle="collapse" href="#videoGuide" role="button">
                       Watch Video Guide
                     </a>
                   </p>
                   <div class="collapse mb-3" id="videoGuide">
                     <div class="embed-responsive embed-responsive-16by9">
-                      <iframe id="videoFrame" class="embed-responsive-item" data-src="https://www.youtube.com/embed/xfNbu190YBA" allowfullscreen></iframe>
+                      <iframe id="videoFrame" class="embed-responsive-item"
+                        data-src="https://www.youtube.com/embed/xfNbu190YBA" allowfullscreen></iframe>
                     </div>
                   </div>
 
@@ -84,7 +93,7 @@
                   <div class="progress mb-2" style="height:6px">
                     <div id="form-progress" class="progress-bar" style="width:20%"></div>
                   </div>
-                  <p id="step-label" class="text-muted small mb-3">Step 1 of 5</p>
+                  <p id="step-label" class="text-muted mb-3">Step 1 of 5</p>
 
                   <div class="card">
                     <div class="card-body">
@@ -96,28 +105,32 @@
                           <div class="form-group row mb-3">
                             <label class="col-md-3 col-form-label" for="email">Email ID</label>
                             <div class="col-md-9">
-                              <input type="email" name="email" id="email" class="form-control" placeholder="Email Address" required>
+                              <input type="email" name="email" id="email" class="form-control" placeholder="Email Address"
+                                required>
                             </div>
                           </div>
-                          <div id="email-status-card" class="d-none mb-3"></div>
                           <div id="email-error" class="alert alert-danger d-none"></div>
-                          <div class="mt-3">
+                          <div class="mt-3 mb-3">
                             <button type="button" id="btn-check-email" class="btn btn-primary">Continue</button>
                           </div>
+                          <div id="email-status-card" class="d-none mb-3"></div>
                         </div>
 
                         <!-- ═══ STEP 2: Personal Details ═══ -->
                         <div class="form-step d-none" id="step-2">
                           <!-- Notice board images: lazy, inside step-2 so below the fold on load -->
                           <div class="card mb-3" id="noticeBoard">
-                            <img src="img/mhsccoe.jpg" loading="lazy" alt="MHSSCOE Logo" style="pointer-events:none;display:block;margin:0 auto;max-width:948px;width:100%">
-                            <img src="img/RailconNotice.jpeg" loading="lazy" alt="MHSSCOE Notice" style="pointer-events:none;display:block;margin:0 auto;max-width:948px;width:100%">
+                            <img src="img/mhsccoe.jpg" loading="lazy" alt="MHSSCOE Logo"
+                              style="pointer-events:none;display:block;margin:0 auto;max-width:948px;width:100%">
+                            <img src="img/RailconNotice.jpeg" loading="lazy" alt="MHSSCOE Notice"
+                              style="pointer-events:none;display:block;margin:0 auto;max-width:948px;width:100%">
                           </div>
 
                           <div class="form-group row mb-2">
                             <label class="col-md-3 col-form-label" for="name">Full Name</label>
                             <div class="col-md-9">
-                              <input type="text" name="name" class="form-control" id="name" placeholder="Last First Middle Name" required>
+                              <input type="text" name="name" class="form-control" id="name"
+                                placeholder="Last First Middle Name" required>
                             </div>
                           </div>
 
@@ -125,7 +138,8 @@
                             <label class="col-md-3 col-form-label">Gender</label>
                             <div class="col-md-9">
                               <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="gender-male" value="0" checked>
+                                <input class="form-check-input" type="radio" name="gender" id="gender-male" value="0"
+                                  checked>
                                 <label class="form-check-label" for="gender-male">Male</label>
                               </div>
                               <div class="form-check form-check-inline">
@@ -136,30 +150,37 @@
                           </div>
 
                           <div class="form-group row mb-2">
-                            <label class="col-md-3 col-form-label" for="dob">Date of Birth</label>
+                            <label class="col-md-3 col-form-label" for="dob">Date of Birth<br><span class="text-muted">Age
+                                limit: 25</span></label>
                             <div class="col-md-9">
                               <input type="date" name="dob" id="dob" class="form-control" required>
+                              <div id="dob-error" class="alert alert-danger mt-2" style="display:none"><strong>Age limit
+                                  exceeded.</strong> Your age is <span id="dob-age"></span> — applicants must be under 25
+                                years old.</div>
                             </div>
                           </div>
 
                           <div class="form-group row mb-2">
                             <label class="col-md-3 col-form-label" for="contact">Contact No.</label>
                             <div class="col-md-9">
-                              <input type="number" name="contact" id="contact" placeholder="Enter Your Contact No." maxlength="10" class="form-control" required>
+                              <input type="number" name="contact" id="contact" placeholder="Enter Your Contact No."
+                                maxlength="10" class="form-control" required>
                             </div>
                           </div>
 
                           <div class="form-group row mb-2">
                             <label class="col-md-3 col-form-label" for="address">Address</label>
                             <div class="col-md-9">
-                              <textarea name="address" id="address" class="form-control" placeholder="Enter Your Postal Address" required></textarea>
+                              <textarea name="address" id="address" class="form-control"
+                                placeholder="Enter Your Postal Address" required></textarea>
                             </div>
                           </div>
 
                           <div class="form-group row mb-2">
                             <label class="col-md-3 col-form-label" for="pincode">PIN Code</label>
                             <div class="col-md-9">
-                              <input type="number" name="pincode" id="pincode" maxlength="6" placeholder="Enter Pincode" class="form-control" required>
+                              <input type="number" name="pincode" id="pincode" maxlength="6" placeholder="Enter Pincode"
+                                class="form-control" required>
                             </div>
                           </div>
 
@@ -237,7 +258,8 @@
                           <div class="form-group row mb-2">
                             <label class="col-md-3 col-form-label" for="source">Source Station</label>
                             <div class="col-md-9">
-                              <input type="text" name="source" id="source" maxlength="30" placeholder="Enter Source Station" class="form-control" required>
+                              <input type="text" name="source" id="source" maxlength="30"
+                                placeholder="Enter Source Station" class="form-control" required>
                             </div>
                           </div>
 
@@ -257,11 +279,13 @@
                             <label class="col-md-3 col-form-label">Class of Travel</label>
                             <div class="col-md-9">
                               <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="classof" id="class-first" value="First" checked>
+                                <input class="form-check-input" type="radio" name="classof" id="class-first" value="First"
+                                  checked>
                                 <label class="form-check-label" for="class-first">First Class</label>
                               </div>
                               <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="classof" id="class-second" value="Second">
+                                <input class="form-check-input" type="radio" name="classof" id="class-second"
+                                  value="Second">
                                 <label class="form-check-label" for="class-second">Second Class</label>
                               </div>
                             </div>
@@ -271,11 +295,13 @@
                             <label class="col-md-3 col-form-label">Duration of Pass</label>
                             <div class="col-md-9">
                               <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="duration" id="duration-monthly" value="Monthly" checked>
+                                <input class="form-check-input" type="radio" name="duration" id="duration-monthly"
+                                  value="Monthly" checked>
                                 <label class="form-check-label" for="duration-monthly">Monthly</label>
                               </div>
                               <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="duration" id="duration-quarterly" value="Quarterly">
+                                <input class="form-check-input" type="radio" name="duration" id="duration-quarterly"
+                                  value="Quarterly">
                                 <label class="form-check-label" for="duration-quarterly">Quarterly</label>
                               </div>
                             </div>
@@ -285,7 +311,8 @@
                             <label class="col-md-3 col-form-label">Do you have a previous pass?</label>
                             <div class="col-md-9">
                               <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="has_prev_pass" id="prev-yes" value="yes" checked>
+                                <input class="form-check-input" type="radio" name="has_prev_pass" id="prev-yes"
+                                  value="yes" checked>
                                 <label class="form-check-label" for="prev-yes">Yes</label>
                               </div>
                               <div class="form-check form-check-inline">
@@ -301,33 +328,41 @@
                               Fill in details from your previous Railway Pass (refer to image below)
                             </div>
                             <div class="card-body">
-                              <img id="railway-pass-img" data-src="img/Railway Pass.jpg" class="img-fluid mb-3" alt="Railway Pass Reference">
+                              <img id="railway-pass-img" data-src="img/Railway Pass.jpg" class="img-fluid mb-3"
+                                alt="Railway Pass Reference">
 
                               <div class="form-group row mb-2">
-                                <label class="col-md-3 col-form-label">Previous Season/Pass No.<br><small class="text-primary">(MANDATORY)</small></label>
+                                <label class="col-md-3 col-form-label">Previous Season/Pass No.<br><span
+                                    class="text-primary">(MANDATORY)</span></label>
                                 <div class="col-md-9">
-                                  <input type="text" name="passno" id="passno-input" class="form-control" placeholder="Enter your pass number">
+                                  <input type="text" name="passno" id="passno-input" class="form-control"
+                                    placeholder="Enter your pass number" required>
                                 </div>
                               </div>
 
                               <div class="form-group row mb-2">
-                                <label class="col-md-3 col-form-label">Old Pass Expiry<br><small class="text-primary">(MANDATORY)</small></label>
+                                <label class="col-md-3 col-form-label">Old Pass Expiry<br><span
+                                    class="text-primary">(MANDATORY)</span></label>
                                 <div class="col-md-9">
-                                  <input type="date" name="pass_end" id="pass-end-input" class="form-control">
+                                  <input type="date" name="pass_end" id="pass-end-input" class="form-control" required>
                                 </div>
                               </div>
 
                               <div class="form-group row mb-2">
-                                <label class="col-md-3 col-form-label">Old Voucher No.<br><small class="text-primary">(MANDATORY)</small></label>
+                                <label class="col-md-3 col-form-label">Old Voucher No.<br><span
+                                    class="text-primary">(MANDATORY)</span></label>
                                 <div class="col-md-9">
-                                  <input type="text" name="voucher" class="form-control" placeholder="Enter Vch No. (Bottom Right)">
+                                  <input type="text" name="voucher" class="form-control"
+                                    placeholder="Enter Vch No. (Bottom Right)" required>
                                 </div>
                               </div>
 
                               <div class="form-group row mb-2">
-                                <label class="col-md-3 col-form-label">Re-enter Season/Pass No.<br><small class="text-primary">(MANDATORY)</small></label>
+                                <label class="col-md-3 col-form-label">Re-enter Season/Pass No.<br><span
+                                    class="text-primary">(MANDATORY)</span></label>
                                 <div class="col-md-9">
-                                  <input type="number" maxlength="4" name="season" class="form-control" placeholder="Enter Season Ticket No. (Top Right)">
+                                  <input type="number" maxlength="4" name="season" class="form-control"
+                                    placeholder="Enter Season Ticket No. (Top Right)" required>
                                 </div>
                               </div>
                             </div>
@@ -349,23 +384,32 @@
                               <li>Minimum Resolution: 100×100</li>
                               <li>Only JPEG / JPG allowed</li>
                               <li>Reference image shown below</li>
+                              <li>Use <a href="https://tinypng.com/" target="_blank">https://tinypng.com/</a> to compress
+                                image</li>
                             </ul>
                           </div>
 
                           <div class="form-group row mb-2">
-                            <label for="fileInput" class="col-md-3 col-form-label">Upload <strong>I-Kit</strong> Image</label>
+                            <label for="fileInput" class="col-md-3 col-form-label">Upload <strong>I-Kit</strong>
+                              Image</label>
                             <div class="col-md-9">
-                              <input id="fileInput" type="file" name="UploadImage" class="form-control-file" onchange="readURL(this);" required>
-                              <p id="error1" class="text-danger mt-1" style="display:none">Invalid Image Format! Image Format Must Be JPG, JPEG.</p>
-                              <p id="error2" class="text-danger mt-1" style="display:none">Maximum File Size Limit is 1MB.</p>
+                              <input id="fileInput" type="file" name="UploadImage" class="form-control-file"
+                                onclick="this.value=null;" onchange="readURL(this);" required>
+                              <div id="error1" class="alert alert-danger mt-2" style="display:none"><strong>Wrong file
+                                  type.</strong> Only JPG / JPEG images are accepted.</div>
+                              <div id="error2" class="alert alert-danger mt-2" style="display:none"><strong>File too
+                                  large.</strong> Maximum size is 1 MB.</div>
                             </div>
                           </div>
 
-                          <img id="blah" data-src="img/card.jpg" style="max-width:90%;display:block;margin-bottom:1rem" alt="ID Reference">
+                          <img id="blah" data-src="img/card.jpg"
+                            style="max-width:400px;width:100%;display:block;margin-bottom:1rem;border-radius:6px"
+                            alt="ID Reference">
 
                           <div class="d-flex justify-content-between mt-3">
                             <button type="button" class="btn btn-secondary btn-back" data-target="4">Back</button>
-                            <button type="submit" class="btn btn-success btn-lg" name="submit" id="submit_form" value="Submit Form" disabled>Submit Form</button>
+                            <button type="submit" class="btn btn-success btn-lg" name="submit" id="submit_form"
+                              value="Submit Form" disabled>Submit Form</button>
                           </div>
                         </div>
 
@@ -376,30 +420,41 @@
                 </div>
               </div>
 
-<?php endif; ?>
+            <?php endif; ?>
 
-            </div>
-          </section>
-          <?php require __DIR__ . '/includes/footer.php'; ?>
-        </div>
+          </div>
+        </section>
+        <?php require __DIR__ . '/includes/footer.php'; ?>
       </div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
+  <script>
     function readURL(input) {
+      var blah = document.getElementById('blah');
+      var specimen = blah.getAttribute('data-src');
       if (input.files && input.files[0]) {
+        var ext = input.value.split('.').pop().toLowerCase();
+        if (['jpg', 'jpeg'].indexOf(ext) === -1 || input.files[0].size > 1000000) {
+          blah.src = specimen; // restore specimen on bad file
+          return;
+        }
         var reader = new FileReader();
-        reader.onload = function (e) {
-          document.getElementById('blah').src = e.target.result;
-        };
+        reader.onload = function (e) { blah.src = e.target.result; };
         reader.readAsDataURL(input.files[0]);
+      } else {
+        blah.src = specimen;
       }
     }
-    </script>
+    // Clear stale file retained by browser after refresh
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('fileInput').value = '';
+    });
+  </script>
 
-    <script>
+  <script>
     $(function () {
       var currentStep = 1;
       var progressWidths = { 1: 20, 2: 40, 3: 60, 4: 80, 5: 100 };
@@ -463,14 +518,34 @@
             ? '<span class="badge badge-success">Issued</span>'
             : '<span class="badge badge-warning text-dark">Pending</span>';
 
+          var daysAgo = Math.floor((Date.now() - new Date(data.dateofentry)) / 86400000);
+          var imgHtml = data.img_loc
+            ? '<img src="MyUploadImages/' + esc(data.img_loc) + '" alt="Submitted ID" style="max-width:280px;display:block;margin-bottom:.75rem;border-radius:4px">'
+            : '';
+
           var html = '<div class="card border-info">'
             + '<div class="card-header bg-info text-white font-weight-bold">Existing Application Found</div>'
             + '<div class="card-body">'
-            + '<h6 class="card-title mb-2">' + esc(data.name) + '</h6>'
+            + imgHtml
+            + '<h4 class="card-title mb-2">' + esc(data.name) + '</h6>'
+            + '<p class="mb-1"><strong>Enrollment No.:</strong> #' + data.id + '</p>'
             + '<p class="mb-1"><strong>Route:</strong> ' + esc(data.source) + ' &rarr; ' + esc(data.destination) + '</p>'
             + '<p class="mb-1"><strong>Class:</strong> ' + esc(data.classof) + ' &nbsp;&nbsp; <strong>Duration:</strong> ' + esc(data.duration) + '</p>'
             + '<p class="mb-1"><strong>Status:</strong> ' + badge + '</p>'
-            + '<p class="mb-1"><strong>Submitted:</strong> ' + esc(data.dateofentry) + '</p>';
+            + '<p class="mb-1"><strong>Submitted:</strong> ' + esc(data.dateofentry) + ' <span class="text-muted">(' + daysAgo + ' days ago)</span></p>';
+
+          if (data.expires_on) {
+            var expiry = new Date(data.expires_on);
+            var today = new Date(); today.setHours(0, 0, 0, 0);
+            var dateOnly = esc(data.expires_on.slice(0, 10));
+            if (expiry > today) {
+              html += '<p class="mb-1"><strong>Eligible to reapply after:</strong> '
+                + '<span class="badge badge-warning text-dark">' + dateOnly + '</span></p>';
+            } else {
+              html += '<p class="mb-1"><strong>Eligible to reapply:</strong> '
+                + '<span class="badge badge-success">Now</span></p>';
+            }
+          }
 
           if (data.remark) {
             html += '<p class="mb-1"><strong>Remark:</strong> ' + esc(data.remark) + '</p>';
@@ -478,7 +553,7 @@
 
           html += '</div>'
             + '<div class="card-footer d-flex" style="gap:.5rem">'
-            + '<a href="studentsearch" class="btn btn-outline-secondary">Check Status</a>'
+            + '<a href="view_status.php?email=' + encodeURIComponent(data.email || emailInput.value) + '" class="btn btn-outline-info">View My Submitted Form</a>'
             + '<button type="button" id="btn-create-new" class="btn btn-primary">Create New Application</button>'
             + '</div>'
             + '</div>';
@@ -499,9 +574,27 @@
 
       // ── Next / Back ───────────────────────────────────────────────────────
       $('.btn-next').on('click', function () {
-        if (validateCurrentStep()) {
-          showStep(parseInt($(this).data('target')));
+        if (!validateCurrentStep()) return;
+
+        // Extra: age check on step 2
+        if (currentStep === 2) {
+          var dobVal = document.getElementById('dob').value;
+          if (dobVal) {
+            var dob = new Date(dobVal);
+            var today = new Date();
+            var age = today.getFullYear() - dob.getFullYear();
+            var m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+            if (age >= 25) {
+              $('#dob-age').text(age);
+              $('#dob-error').show();
+              return;
+            }
+          }
+          $('#dob-error').hide();
         }
+
+        showStep(parseInt($(this).data('target')));
       });
 
       $('.btn-back').on('click', function () {
@@ -510,15 +603,18 @@
 
       // ── Previous pass toggle (Step 4) ─────────────────────────────────────
       $('input[name="has_prev_pass"]').on('change', function () {
+        var $fields = $('#passno-input, #pass-end-input, [name="voucher"], [name="season"]');
         if ($(this).val() === 'no') {
           $('#old-pass-card').hide();
           $('#passno-input').val('NO');
           $('#pass-end-input, [name="voucher"], [name="season"]').val('');
+          $fields.prop('required', false);
         } else {
           $('#old-pass-card').show();
           if ($('#passno-input').val() === 'NO') {
             $('#passno-input').val('');
           }
+          $fields.prop('required', true);
         }
       });
 
@@ -547,10 +643,14 @@
         }
       });
 
+      // Hide DOB error on change
+      $('#dob').on('change', function () { $('#dob-error').hide(); });
+
       // ── Default pass expiry to today ──────────────────────────────────────
       document.getElementById('pass-end-input').valueAsDate = new Date();
     });
-    </script>
+  </script>
 
-  </body>
+</body>
+
 </html>

@@ -16,7 +16,8 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 $stmt = $db->prepare(
-    "SELECT name, verified, source, destination, classof, duration, dateofentry, remark
+    "SELECT id, fullname, verified, source, destination, classof, duration,
+     dateofentry, Remark, img_loc, datetodelete
      FROM student WHERE email = ? LIMIT 1"
 );
 $stmt->bind_param('s', $email);
@@ -31,12 +32,16 @@ if (!$row) {
 
 echo json_encode([
     'status'      => 'exists',
-    'name'        => $row['name'],
+    'id'          => (int) $row['id'],
+    'email'       => $email,
+    'name'        => $row['fullname'],
     'verified'    => (int) $row['verified'],
     'source'      => $row['source'],
     'destination' => $row['destination'],
     'classof'     => $row['classof'],
     'duration'    => $row['duration'],
     'dateofentry' => $row['dateofentry'],
-    'remark'      => $row['remark'],
+    'remark'      => $row['Remark'],
+    'img_loc'     => $row['img_loc'],
+    'expires_on'  => $row['datetodelete'],
 ]);
