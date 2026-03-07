@@ -141,7 +141,7 @@ $updated   = isset($_GET['updated']);
                         </a>
                         <a href="export_to_csv.php" class="list-group-item list-group-item-action">
                           <i class="fa fa-file-excel-o fa-fw mr-2 text-success"></i>
-                          Download Records (XLS)
+                          Download Records (CSV)
                         </a>
                         <a href="search.php" class="list-group-item list-group-item-action">
                           <i class="fa fa-search fa-fw mr-2 text-primary"></i>
