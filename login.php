@@ -47,7 +47,8 @@ if(isset($_POST['submit']))
 		$q2->free_result();
 		
 		$q3 = $db->prepare("SELECT end_entry FROM admin_controls WHERE id_control = ? LIMIT 1") OR die($db->error);
-		$q3->bind_param("i", ADMIN_CONTROL_ID);
+		$ctrl_id = ADMIN_CONTROL_ID;
+		$q3->bind_param("i", $ctrl_id);
 		$q3->execute();
 		$q3->bind_result($admin_end_id);
 		$q3->fetch();

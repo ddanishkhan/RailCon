@@ -66,9 +66,12 @@
                       <input id="login-username" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material" autofocus>
                       <label for="login-username" class="label-material">User Name</label>
                     </div>
-                    <div class="form-group">
-                      <input id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
+                    <div class="form-group" style="position:relative">
+                      <input id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material" style="padding-right:2.5rem">
                       <label for="login-password" class="label-material">Password</label>
+                      <span id="toggle-pw" style="position:absolute;right:.75rem;bottom:.5rem;cursor:pointer;color:#aaa;user-select:none" title="Hold to show password">
+                        <i id="toggle-pw-icon" class="fa fa-eye"></i>
+                      </span>
                     </div>
 					<input type="submit" name="submit" value="Login" id="login" href="index.html" class="btn btn-primary"></input>
                   </form>
@@ -90,5 +93,18 @@
     <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
     <!-- Main File-->
     <script src="js/front.js"></script>
+    <script>
+      var pw   = document.getElementById('login-password');
+      var icon = document.getElementById('toggle-pw-icon');
+      document.getElementById('toggle-pw').addEventListener('mousedown', function(e) {
+        e.preventDefault(); // prevent focus loss from input
+        pw.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      });
+      document.addEventListener('mouseup', function() {
+        pw.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      });
+    </script>
   </body>
 </html>
