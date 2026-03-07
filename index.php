@@ -163,8 +163,8 @@
                           <div class="form-group row mb-2">
                             <label class="col-md-3 col-form-label" for="contact">Contact No.</label>
                             <div class="col-md-9">
-                              <input type="number" name="contact" id="contact" placeholder="Enter Your Contact No."
-                                maxlength="10" class="form-control" required>
+                              <input type="tel" name="contact" id="contact" placeholder="Enter 10-digit mobile number"
+                                maxlength="10" pattern="[6-9][0-9]{9}" class="form-control" required>
                             </div>
                           </div>
 

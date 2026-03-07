@@ -10,7 +10,7 @@ include_once 'constants/departments.php';
 	$train_dest_selected = '';
 	$dates               = [];
 
-	$sql_date = "SELECT DISTINCT DATE_FORMAT(dateofentry, '%d/%m/%Y') as date FROM student ORDER BY dateofentry DESC";
+	$sql_date = "SELECT DISTINCT DATE_FORMAT(dateofentry, '%d/%m/%Y') as date, DATE(dateofentry) as sort_date FROM student ORDER BY sort_date DESC";
 	$sql_date_rs = $db->query($sql_date);
 	if ($sql_date_rs->num_rows > 0) {
 		while ($rw = $sql_date_rs->fetch_assoc()) {

@@ -14,7 +14,8 @@ $result     = $db->query("SELECT MAX(id) AS id FROM student");
 $student_id = $result->fetch_assoc()['id'] ?? 0;
 
 $stmt_ctrl    = $db->prepare("SELECT end_entry FROM admin_controls WHERE id_control = ? LIMIT 1");
-$stmt_ctrl->bind_param("i", ADMIN_CONTROL_ID);
+$ctrl_id      = ADMIN_CONTROL_ID;
+$stmt_ctrl->bind_param("i", $ctrl_id);
 $stmt_ctrl->execute();
 $result1      = $stmt_ctrl->get_result();
 $stmt_ctrl->close();
@@ -38,9 +39,9 @@ $pincode     = $_POST['pincode'];
 $source      = $_POST['source'];
 $destination = $_POST['destination'];
 $passno      = $_POST['passno'];
-$passEnd     = $_POST['pass_end'];
-$voucher     = $_POST['voucher'];
-$season      = $_POST['season'];
+$passEnd     = !empty($_POST['pass_end']) ? $_POST['pass_end'] : null;
+$voucher     = ($passno === 'NO' || empty($_POST['voucher'])) ? null : $_POST['voucher'];
+$season      = ($passno === 'NO' || empty($_POST['season']))  ? null : $_POST['season'];
 $classof     = $_POST['classof'];
 $duration    = $_POST['duration'];
 $branch      = $_POST['branch'];
@@ -113,15 +114,14 @@ if (!move_uploaded_file($_FILES['UploadImage']['tmp_name'], $upload_directory . 
     die();
 }
 
-$empty = 0;
 $q = $db->prepare(
-    "INSERT INTO student(id,fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,
+    "INSERT INTO student(fullname,gender,semester,email,DOB,contact,aadhar,address,pincode,
      source,destination,passno,pass_end,voucher,season,classof,duration,branch,year,img_loc,dateofentry)
-     VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+     VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 );
 $q->bind_param(
-    "isiissiisisssssissssss",
-    $empty, $fullname, $gender, $sem, $email, $dob, $contact, $aadhar,
+    "siissiisisssssissssss",
+    $fullname, $gender, $sem, $email, $dob, $contact, $aadhar,
     $address, $pincode, $source, $destination, $passno, $passEnd,
     $voucher, $season, $classof, $duration, $branch, $year, $TargetPath, $dateofentry
 );
