@@ -19,10 +19,10 @@ $result = mysqli_query($db, 'SELECT id,fullname,semester,email,DOB,contact,aadha
 $header_written = false;
 while ($row = mysqli_fetch_assoc($result)) {
     if (!$header_written) {
-        fputcsv($out, array_keys($row));
+        fputcsv($out, array_keys($row), ',', '"', '\\');
         $header_written = true;
     }
-    fputcsv($out, array_values($row));
+    fputcsv($out, array_values($row), ',', '"', '\\');
 }
 
 fclose($out);
