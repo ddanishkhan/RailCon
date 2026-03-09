@@ -70,8 +70,8 @@
                 <?= htmlspecialchars($row['passno']) ?>
                 <?php if (strcasecmp($row['passno'], 'NO') != 0): ?>
                   <br><small class="text-muted"><?= htmlspecialchars($row['pass_end']) ?></small>
-                  <br><small class="text-muted"><?= htmlspecialchars($row['voucher']) ?></small>
-                  <br><small class="text-muted"><?= htmlspecialchars($row['season']) ?></small>
+                  <br><small class="text-muted"><?= htmlspecialchars($row['voucher'] ?? '') ?></small>
+                  <br><small class="text-muted"><?= htmlspecialchars($row['season'] ?? '') ?></small>
                 <?php endif; ?>
               </td>
               <td><?= htmlspecialchars($row['classof']) ?></td>
