@@ -103,7 +103,7 @@ php tests/run_all.php   # runs tests/test_*.php (csrf, helpers, admin_controls)
 
 ### Dependencies
 
-No Composer or npm, so there is no lockfile or `update` command. Every bump is a manual file replace or URL edit. Production host (InfinityFree) runs PHP 8.4; check with `phpver.php`.
+No Composer or npm, so there is no lockfile or `update` command. Every bump is a manual file replace or URL edit. Production host (InfinityFree) runs PHP 8.4; check with `phpver.php` (public, prints the PHP version).
 
 **Version-bump map** (versions as of Oct 2026; re-grep `src=`/`href=` before editing, since pages drift):
 
@@ -112,14 +112,13 @@ No Composer or npm, so there is no lockfile or `update` command. Every bump is a
 | PHPMailer | 7.1.1 | `PHPMailer/src/{PHPMailer,SMTP,Exception}.php` (copied, no Composer) | `PHPMailer/sendmail.php`, `senderrormail.php` |
 | Bootstrap | 4.6.2 (CDN, main layout) | CSS in `includes/head.php`; JS bundle only in `includes/bootstrap_js.php` (pulled in by `scripts.php`, `index.php`, `studentsearch.php`) | |
 | Bootstrap | 4.1.1 (local) | `vendor/bootstrap/` | `login.html` |
-| jQuery | 3.3.1 (local) | `vendor/jquery/` | `includes/head.php`, `login.html` |
-| jQuery | 3.3.1 (local) | `vendor/jquery/` | also `notification.php`, `notificationFormClosed.php`; `error.php` uses `includes/head.php` |
+| jQuery | 3.3.1 (local) | `vendor/jquery/` | `includes/head.php`, `login.html`, `notification.php`, `notificationFormClosed.php` |
 | Popper | 1.14.3 (local) | `vendor/popper.js/` | `login.html` (the main layout gets Popper via the Bootstrap bundle) |
 | Chart.js | 2.7.2 | `vendor/chart.js/` | `includes/scripts.php`, `login.html` |
 | jquery-validation | 1.17.0 | `vendor/jquery-validation/` | `includes/scripts.php`, `login.html` |
 | jquery.cookie | 1.4.1 | `vendor/jquery.cookie/` | `includes/scripts.php`, `login.html` |
 | Font Awesome | local | `vendor/font-awesome/` | `includes/head.php`, `login.html` |
-| SweetAlert | unpinned (unpkg `latest`) | | `notification.php`, `notificationFormClosed.php` |
+| SweetAlert | 2.1.2 (unpkg, pinned) | | `notification.php`, `notificationFormClosed.php` |
 
 **Gotchas**
 - Bootstrap 4.x needs jQuery 3.x and Popper 1.x. Bootstrap 5 drops jQuery and would break the plugins above, so stay on 4.6.x.
