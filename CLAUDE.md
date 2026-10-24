@@ -109,13 +109,12 @@ No Composer or npm, so there is no lockfile or `update` command. Every bump is a
 
 | Library | Version | Where it lives | Referenced from |
 |---|---|---|---|
-| PHPMailer | 6.6.0 | `PHPMailer/src/{PHPMailer,SMTP,Exception}.php` (copied, no Composer) | `PHPMailer/sendmail.php`, `senderrormail.php` |
+| PHPMailer | 7.1.1 | `PHPMailer/src/{PHPMailer,SMTP,Exception}.php` (copied, no Composer) | `PHPMailer/sendmail.php`, `senderrormail.php` |
 | Bootstrap | 4.6.2 (CDN, main layout) | CSS in `includes/head.php`; JS bundle only in `includes/bootstrap_js.php` (pulled in by `scripts.php`, `index.php`, `studentsearch.php`) | |
-| Bootstrap | 4.1.0 (CDN, stale) | `error.php` (maxcdn) | |
 | Bootstrap | 4.1.1 (local) | `vendor/bootstrap/` | `login.html` |
 | jQuery | 3.3.1 (local) | `vendor/jquery/` | `includes/head.php`, `login.html` |
-| jQuery | 3.3.1 / 3.1.1 (Google CDN) | | `error.php` (3.3.1); `notification.php`, `notificationFormClosed.php` (3.1.1) |
-| Popper | 1.14.3 (local), 1.14.0 (cdnjs) | `vendor/popper.js/` | `login.html`; `error.php` |
+| jQuery | 3.3.1 (local) | `vendor/jquery/` | also `notification.php`, `notificationFormClosed.php`; `error.php` uses `includes/head.php` |
+| Popper | 1.14.3 (local) | `vendor/popper.js/` | `login.html` (the main layout gets Popper via the Bootstrap bundle) |
 | Chart.js | 2.7.2 | `vendor/chart.js/` | `includes/scripts.php`, `login.html` |
 | jquery-validation | 1.17.0 | `vendor/jquery-validation/` | `includes/scripts.php`, `login.html` |
 | jquery.cookie | 1.4.1 | `vendor/jquery.cookie/` | `includes/scripts.php`, `login.html` |
