@@ -67,7 +67,7 @@ update.php → include 'PHPMailer/sendmail.php'   (on issue)
 |---|---|
 | `student` | Active pass applications |
 | `oldstudent` | Archived (expired) records — same schema |
-| `members` | Admin accounts (password stored as MD5) |
+| `members` | Admin accounts (bcrypt; legacy MD5 hashes upgraded on login in `login.php`) |
 | `admin_controls` | Single-row table; `end_entry` controls whether form accepts new submissions |
 
 Key columns on `student`: `verified` (0/1 issued), `edit` (0/1 allow re-edit), `datetodelete` (auto-archive date), `img_loc` (filename in `MyUploadImages/`).
@@ -87,6 +87,46 @@ Key columns on `student`: `verified` (0/1 issued), `edit` (0/1 allow re-edit), `
 **Admin filtering**: `filter_bar.php` POSTs to `admin.php`, which builds a WHERE clause and stores it in `$_SESSION['query']`. Pagination reads the cached query from session.
 
 **Form open/close**: `change_number.php` updates `admin_controls.end_entry`. On login, `login.php` compares the latest student ID against `end_entry` to decide whether to show `notificationFormClosed.php`.
+
+### Shared Includes (`includes/`)
+
+- `csrf.php`: `csrf_input()` in every POST form, `validate_csrf_token($_POST['csrf_token'] ?? '')` at the top of every POST handler
+- `auth.php`: `require_login()` at the top of admin-only pages
+- `helpers.php`: `archiveStudentById()`, `deleteImage()`, `checkIfPassExpiredForExistingEmail()`
+- `head.php` / `scripts.php` / `footer.php`: shared layout (GA4 lives in `head.php`)
+
+### Tests
+
+```bash
+php tests/run_all.php   # runs tests/test_*.php (csrf, helpers, admin_controls)
+```
+
+### Dependencies
+
+No Composer or npm, so there is no lockfile or `update` command. Every bump is a manual file replace or URL edit. Production host (InfinityFree) runs PHP 8.4; check with `phpver.php`.
+
+**Version-bump map** (versions as of Oct 2026; re-grep `src=`/`href=` before editing, since pages drift):
+
+| Library | Version | Where it lives | Referenced from |
+|---|---|---|---|
+| PHPMailer | 6.6.0 | `PHPMailer/src/{PHPMailer,SMTP,Exception}.php` (copied, no Composer) | `PHPMailer/sendmail.php`, `senderrormail.php` |
+| Bootstrap | 4.6.2 (CDN, main layout) | jsDelivr URL in `includes/head.php` and `includes/scripts.php`; also `index.php:426`, `studentsearch.php:209` | |
+| Bootstrap | 4.1.0 (CDN, stale) | `error.php` (maxcdn) | |
+| Bootstrap | 4.1.1 (local) | `vendor/bootstrap/` | `login.html` |
+| jQuery | 3.3.1 (local) | `vendor/jquery/` | `includes/head.php`, `login.html` |
+| jQuery | 3.3.1 / 3.1.1 (Google CDN) | | `error.php` (3.3.1); `notification.php`, `notificationFormClosed.php` (3.1.1) |
+| Popper | 1.14.3 (local), 1.14.0 (cdnjs) | `vendor/popper.js/` | `login.html`; `error.php` |
+| Chart.js | 2.7.2 | `vendor/chart.js/` | `includes/scripts.php`, `login.html` |
+| jquery-validation | 1.17.0 | `vendor/jquery-validation/` | `includes/scripts.php`, `login.html` |
+| jquery.cookie | 1.4.1 | `vendor/jquery.cookie/` | `includes/scripts.php`, `login.html` |
+| Font Awesome | local | `vendor/font-awesome/` | `includes/head.php`, `login.html` |
+| SweetAlert | unpinned (unpkg `latest`) | | `notification.php`, `notificationFormClosed.php` |
+
+**Gotchas**
+- Bootstrap 4.x needs jQuery 3.x and Popper 1.x. Bootstrap 5 drops jQuery and would break the plugins above, so stay on 4.6.x.
+- Prefer one shared include (`includes/head.php` / `scripts.php`) per library. `error.php`, `login.html`, `notification*.php` carry their own copies and must be bumped separately.
+- Dead refs to clean up: `oss.maxcdn.com` html5shiv/respond (`includes/head.php`, `login.html`, `page-error-*.html`; IE9-only) and `http://fonts.googleapis.com` in `icons-reference/`. `page-error-*.html` point at `css/lib/` and `js/lib/` paths that look unmaintained; verify before relying on them.
+- No test covers the UI. After a bump, load `index.php`, `login.html`, `admin.php` and an error page and check the browser console. After a PHPMailer bump, issue and reject a test pass to confirm mail still sends.
 
 ### Logging
 

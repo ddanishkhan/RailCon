@@ -1,13 +1,13 @@
 <HTML>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="vendor/jquery/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-$nuum = $_SESSION['endnumber'];
+$nuum = $_SESSION['endnumber'] ?? '100 (sample)'; // direct visit has no session value
 
 ?>
 <script>
