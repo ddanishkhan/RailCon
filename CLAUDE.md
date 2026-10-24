@@ -111,19 +111,19 @@ No Composer or npm, so there is no lockfile or `update` command. Every bump is a
 |---|---|---|---|
 | PHPMailer | 7.1.1 | `PHPMailer/src/{PHPMailer,SMTP,Exception}.php` (copied, no Composer) | `PHPMailer/sendmail.php`, `senderrormail.php` |
 | Bootstrap | 4.6.2 (CDN, main layout) | CSS in `includes/head.php`; JS bundle only in `includes/bootstrap_js.php` (pulled in by `scripts.php`, `index.php`, `studentsearch.php`) | |
-| Bootstrap | 4.1.1 (local) | `vendor/bootstrap/` | `login.html` |
-| jQuery | 3.3.1 (local) | `vendor/jquery/` | `includes/head.php`, `login.html`, `notification.php`, `notificationFormClosed.php` |
-| Popper | 1.14.3 (local) | `vendor/popper.js/` | `login.html` (the main layout gets Popper via the Bootstrap bundle) |
-| Chart.js | 2.7.2 | `vendor/chart.js/` | `includes/scripts.php`, `login.html` |
-| jquery-validation | 1.17.0 | `vendor/jquery-validation/` | `includes/scripts.php`, `login.html` |
+| Bootstrap | 4.6.2 (local) | `vendor/bootstrap/` | `login.html` |
+| jQuery | 3.7.1 (local) | `vendor/jquery/` | `includes/head.php`, `login.html`, `notification.php`, `notificationFormClosed.php` |
+| Popper | 1.16.1 (local) | `vendor/popper.js/` | `login.html` (the main layout gets Popper via the Bootstrap bundle) |
+| Chart.js | 2.9.4 | `vendor/chart.js/` | `includes/scripts.php`, `login.html` |
+| jquery-validation | 1.22.1 | `vendor/jquery-validation/` | `includes/scripts.php`, `login.html` |
 | jquery.cookie | 1.4.1 | `vendor/jquery.cookie/` | `includes/scripts.php`, `login.html` |
 | Font Awesome | local | `vendor/font-awesome/` | `includes/head.php`, `login.html` |
 | SweetAlert | 2.1.2 (unpkg, pinned) | | `notification.php`, `notificationFormClosed.php` |
 
 **Gotchas**
-- Bootstrap 4.x needs jQuery 3.x and Popper 1.x. Bootstrap 5 drops jQuery and would break the plugins above, so stay on 4.6.x.
+- Stay on the current major lines: Bootstrap 4.6.x (5 drops jQuery), jQuery 3.x (4 is a breaking release), Popper 1.x, Chart.js 2.x (3+ has a new API). Vendored files are copied from the npm tarballs (`dist/`), keeping the same file names.
 - `login.html` is static, uses theme `style.sea.css` and local `vendor/` libs, and keeps its own library tags. It can't be renamed to `login.php` (that is the POST handler), so bump it by hand.
-- Prefer one shared include (`includes/head.php` / `scripts.php`) per library. `error.php`, `login.html`, `notification*.php` carry their own copies and must be bumped separately.
+- Prefer one shared include (`includes/head.php` / `scripts.php`) per library. `login.html` and `notification*.php` carry their own tags and must be bumped separately.
 - Dead refs to clean up: `oss.maxcdn.com` html5shiv/respond (`includes/head.php`, `login.html`, `page-error-*.html`; IE9-only) and `http://fonts.googleapis.com` in `icons-reference/`. `page-error-*.html` point at `css/lib/` and `js/lib/` paths that look unmaintained; verify before relying on them.
 - No test covers the UI. After a bump, load `index.php`, `login.html`, `admin.php` and an error page and check the browser console. After a PHPMailer bump, issue and reject a test pass to confirm mail still sends.
 
