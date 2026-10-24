@@ -110,7 +110,7 @@ No Composer or npm, so there is no lockfile or `update` command. Every bump is a
 | Library | Version | Where it lives | Referenced from |
 |---|---|---|---|
 | PHPMailer | 6.6.0 | `PHPMailer/src/{PHPMailer,SMTP,Exception}.php` (copied, no Composer) | `PHPMailer/sendmail.php`, `senderrormail.php` |
-| Bootstrap | 4.6.2 (CDN, main layout) | jsDelivr URL in `includes/head.php` and `includes/scripts.php`; also `index.php:426`, `studentsearch.php:209` | |
+| Bootstrap | 4.6.2 (CDN, main layout) | CSS in `includes/head.php`; JS bundle only in `includes/bootstrap_js.php` (pulled in by `scripts.php`, `index.php`, `studentsearch.php`) | |
 | Bootstrap | 4.1.0 (CDN, stale) | `error.php` (maxcdn) | |
 | Bootstrap | 4.1.1 (local) | `vendor/bootstrap/` | `login.html` |
 | jQuery | 3.3.1 (local) | `vendor/jquery/` | `includes/head.php`, `login.html` |
@@ -124,6 +124,7 @@ No Composer or npm, so there is no lockfile or `update` command. Every bump is a
 
 **Gotchas**
 - Bootstrap 4.x needs jQuery 3.x and Popper 1.x. Bootstrap 5 drops jQuery and would break the plugins above, so stay on 4.6.x.
+- `login.html` is static, uses theme `style.sea.css` and local `vendor/` libs, and keeps its own library tags. It can't be renamed to `login.php` (that is the POST handler), so bump it by hand.
 - Prefer one shared include (`includes/head.php` / `scripts.php`) per library. `error.php`, `login.html`, `notification*.php` carry their own copies and must be bumped separately.
 - Dead refs to clean up: `oss.maxcdn.com` html5shiv/respond (`includes/head.php`, `login.html`, `page-error-*.html`; IE9-only) and `http://fonts.googleapis.com` in `icons-reference/`. `page-error-*.html` point at `css/lib/` and `js/lib/` paths that look unmaintained; verify before relying on them.
 - No test covers the UI. After a bump, load `index.php`, `login.html`, `admin.php` and an error page and check the browser console. After a PHPMailer bump, issue and reject a test pass to confirm mail still sends.

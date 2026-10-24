@@ -423,7 +423,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <?php require __DIR__ . '/includes/bootstrap_js.php'; ?>
 
   <script>
     function readURL(input) {

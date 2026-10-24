@@ -206,7 +206,7 @@ $show_results = isset($_POST['email_id'])
   <span id="lightbox-name"></span>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<?php require __DIR__ . '/includes/bootstrap_js.php'; ?>
 <script>
   // Lightbox
   document.querySelectorAll('.result-thumb').forEach(function (img) {
